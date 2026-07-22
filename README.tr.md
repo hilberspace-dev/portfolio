@@ -25,9 +25,9 @@ sonuç “bulgu yok” olduğunda da sonucu aynen raporla.
 
 **1. ReconPilot — Ödeme Mutabakat Motoru** ([vaka çalışması](projects/03-reconpilot-payment-reconciliation/) · [kaynak kod](https://github.com/hilberspace-dev/reconpilot))
 Bir e-ticaret operasyonunun üç para raporunu — PSP, banka ekstresi, pazaryeri hakedişi — kuruşuna
-kadar uzlaştıran deterministik motor. Dört doğruluk kuralı hem çalışma zamanında hem PostgreSQL
-şemasında zorlanır. Herkese açık benchmark: ~50.000 işlem, 7 enjekte edilmiş uyuşmazlık tipi →
-**7/7 tespit, 0 yanlış eşleşme, ~4 saniye**; her push'ta CI yeniden koşar.
+kadar uzlaştıran deterministik motor. Dört doğruluk garantisi çalışma zamanı kontrolleri ve
+PostgreSQL kısıtları arasında açıkça bölünür. Herkese açık benchmark: ~50.000 işlem, 7 enjekte
+edilmiş uyuşmazlık tipi → **7/7 tespit, 0 yanlış eşleşme, ~4 saniye**; her push'ta CI yeniden koşar.
 Aynı statik binary, sürümlü bir REST endpoint'i, HTML raporu, health/readiness kontrollerini ve
 Prometheus metriklerini sunar. Tohumlanmış PostgreSQL demosu tek Docker Compose komutuyla açılır.
 
