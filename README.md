@@ -33,8 +33,9 @@ evidence and report the result even when the correct result is “no finding.”
 *Makes card, marketplace and bank reports agree to the last cent.*
 
 Uses a deterministic three-stage matching chain, seven explicit discrepancy types and four
-runtime/database invariants. Its seeded ~50K benchmark checks every match against generator ground
-truth: **7/7 types detected, 0 false matches, ~4 s**; CI reruns it on every push. The same static
+correctness guarantees split between runtime checks and PostgreSQL constraints. Its seeded ~50K
+benchmark checks every match against generator ground truth: **7/7 types detected, 0 false matches,
+~4 s**; CI reruns it on every push. The same static
 binary serves REST, HTML, health/readiness and Prometheus metrics, with a one-command seeded Compose
 stack.
 

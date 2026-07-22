@@ -1,6 +1,6 @@
 # Case Study — ReconPilot: Deterministic Payment Reconciliation Engine
 
-> ### Claim: 50K transactions · 3 sources · 7 injected discrepancy types → 7/7 detected, 0 false matches, zero kuruş imbalance
+> ### Claim: 50K transactions · 3 sources · 7 injected discrepancy types → 7/7 detected, 0 false matches, 0 intended pairs/groups missed
 >
 > | | |
 > |---|---|
@@ -20,8 +20,9 @@
 > in Excel, where mistakes are silent and expensive. I built software that does this automatically
 > for tens of thousands of transactions in seconds and sorts every mismatch into a named category.
 > One command replays a 50,000-transaction benchmark in which every decision is checked against a
-> known answer key, with zero wrong pairings. It refuses to
-> produce a report at all if even one cent is unaccounted for.
+> known answer key, with zero wrong pairings. It refuses to return a result if an input record is
+> neither matched nor classified, or if a transaction-level discrepancy delta violates its type's
+> money rules.
 
 **Role:** Design and implementation (solo)
 **Domain:** E-commerce payment operations — PSP reports vs. bank statements vs. marketplace settlements
@@ -50,7 +51,7 @@ flowchart LR
     I --> DB[("PostgreSQL<br/>schema constraints")]
     DB --> S["CLI / REST service"]
     S --> E["Deterministic engine<br/>exact → tolerant → group"]
-    E --> V["Classification + 4 invariants"]
+    E --> V["Classification + runtime checks 1–3"]
     V --> DB
     V --> O["JSON summary / HTML report"]
     S --> X["health · readiness · metrics"]
@@ -63,19 +64,20 @@ flowchart LR
   for payouts (payout = Σ orders − commission). The subset search is bounded *before* it starts —
   counterparty + 14-day window, ≤20 candidates — and overflow degrades to an explicit `unknown` instead
   of guessing.
-- **Four invariants checked on every run, hard-failing:** no kuruş unaccounted for; no transaction in
-  two matches; classified deltas sum exactly to the reported difference; re-ingesting a file is a
-  no-op. Two of the four are *also* database constraints (`UNIQUE`, `CHECK`) — defence in depth no
-  refactor can silently bypass. The engine cannot produce a wrong report quietly; it aborts instead.
-- **Money is `int64` minor units end-to-end.** No floats, no epsilons — an imbalance of one kuruş is
-  exactly representable, so "zero imbalance" is a provable statement.
+- **Three runtime invariants, hard-failing:** every input transaction is matched or classified; no
+  transaction appears in two match groups; and every transaction-level discrepancy delta obeys its
+  type's money semantics. A fourth, ingestion-level guarantee makes re-ingesting the same file a
+  no-op through PostgreSQL `UNIQUE(dedup_key)` and a real-database integration test. The schema also
+  backs the no-double-match rule and rejects ownerless discrepancy rows.
+- **Money is `int64` minor units end-to-end.** No floats, no epsilons — one-kuruş differences remain
+  exactly representable throughout matching, classification and reporting.
 - **Architecture as a build failure, not an opinion:** the one-way flow
   `ingestion → matching → classification → reporting` is enforced by `go-arch-lint` in CI.
 
 ## Operational surface
 
 `POST /api/v1/reconciliation-runs` loads stored transactions, invokes the same pure engine as the
-CLI, checks all four invariants and atomically persists the result. `/healthz` separates process
+CLI, checks the three runtime invariants and atomically persists the result. `/healthz` separates process
 liveness from PostgreSQL-aware `/readyz`; `/metrics` exposes fixed-cardinality Prometheus metrics;
 `/report` serves the existing HTML report. The server has bounded timeouts and graceful shutdown.
 
@@ -101,8 +103,8 @@ missing             193        193  ok
 unknown             193        193  ok
 
 false matches: 0 — intended pairs/groups not fully matched: 0
-invariants: all 4 PASSED (checked inside engine.Run)
-RESULT: PASS — 7/7 injected types detected, 0 false matches, kuruş balance intact
+runtime invariants: 3/3 PASSED (checked inside engine.Run)
+RESULT: PASS — 7/7 injected types detected, 0 false matches, 0 intended pairs/groups missed
 ```
 
 It exits non-zero on any false match, missed pairing or undetected type; CI runs it on every push.
