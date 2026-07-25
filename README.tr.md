@@ -1,61 +1,166 @@
-# atilgandev — Backend Mühendisi
+# atilgandev — Ödeme ve Veri Bütünlüğü Sistemleri için Backend Mühendisi
 
-**Go · PostgreSQL · ödeme sistemleri · yüksek doğruluk gerektiren yazılım**
+**Go · PostgreSQL · mutabakat · yüksek bütünlüklü yazılım**
 
-Ek derinlik: uçtan uca ürün teslimatı (full-stack), uygulamalı bilgisayarlı görü ve akıllı
-kontrat güvenliği.
+Ürün şirketleri ve yazılım ajansları için para ve kayıtların doğru, açıklanabilir ve izlenebilir
+kalması gereken backend sistemleri geliştiriyorum.
 
-📍 Türkiye · ✉️ [E-posta](mailto:hilberspace@gmail.com) · Ayrıntılı portföy (İngilizce): [README.md](README.md)
+> **Ürün şirketleri ve yazılım ajanslarıyla sabit kapsamlı B2B çalışmalara açığım.**
+>
+> Problemi, mevcut teknoloji yığınını, beklenen teslimatı ve zaman planını
+> [e-postayla gönderin](mailto:hilberspace@gmail.com).
+
+Şartname, ticket, dokümantasyon ve kod incelemesi için profesyonel yazılı İngilizceyle async-first
+çalışırım.
+
+📍 Türkiye · [GitHub profili](https://github.com/hilberspace-dev) ·
+[Ayrıntılı İngilizce portföy](README.md)
+
+## Hizmetler
+
+- **Ödeme mutabakatı ve finansal veri sistemleri** — PSP, banka ve pazaryeri entegrasyonları,
+  deterministik eşleştirme, uyuşmazlık sınıflandırma ve raporlama.
+- **Go/PostgreSQL backend güvenilirliği** — şema değişmezleri, idempotency, API'ler, otomatik
+  testler, CI ve gözlemlenebilirlik.
+- **Yazılım ajansları için kapsamı belli backend alt yükleniciliği** — tanımlı ticket veya
+  şartnamenin test, kanıt, dokümantasyon ve devir paketiyle bağımsız teslimi.
+
+Kanıta dayalı teslimat: tekrarlanabilir testler, açık değişmezler, uygun işlerde negatif kontroller
+ve belgelenmiş sonuçlar.
 
 ---
 
-## Çalışma biçimim
+## Öne çıkan proje — ReconPilot
 
-Bu portföydeki her iddianın arkasında okuyucunun kendisinin kontrol edebileceği bir şey vardır:
-bir benchmark komutu, herkese açık bir CI koşusu, yazılı bir kanıt dosyası veya bir tekrar üretme
-tarifi.
+### Deterministik ödeme mutabakat motoru
 
-## Mühendislik standardı
+[Vaka çalışması](projects/03-reconpilot-payment-reconciliation/) ·
+[Açık kaynak, testler ve benchmark](https://github.com/hilberspace-dev/reconpilot) ·
+[![ReconPilot CI](https://github.com/hilberspace-dev/reconpilot/actions/workflows/ci.yml/badge.svg)](https://github.com/hilberspace-dev/reconpilot/actions/workflows/ci.yml)
 
-→ **[`METHODOLOGY.md`](METHODOLOGY.md)** — bu portföyün tamamında uyguladığım doğrulama standardı:
-ortamı sabitle, testten önce değişmezleri tanımla, negatif kontrolü zorunlu tut, kanıtı koru ve doğru
-sonuç “bulgu yok” olduğunda da sonucu aynen raporla.
+**Problem.** PSP raporları, banka ekstreleri ve pazaryeri hakedişleri aynı parayı farklı biçimlerde
+anlatır. Elle mutabakat, tesadüfi yanlış eşleşmeler ve kalan kayıtlardan sessizce düşen işlemler
+üretebilir.
 
-## Projeler
+**Teslim edilen çözüm.** Üç kaynağı içeri alıp tekilleştiren; deterministik kesin → toleranslı → grup
+eşleştirme zinciri uygulayan; eşleşmeyen her kaydı sınıflandıran ve doğruluk değişmezleri ihlal
+edildiğinde sonuç üretmeyen Go/PostgreSQL servisi.
 
-**1. ReconPilot — Ödeme Mutabakat Motoru** ([vaka çalışması](projects/03-reconpilot-payment-reconciliation/) · [kaynak kod](https://github.com/hilberspace-dev/reconpilot))
-Bir e-ticaret operasyonunun üç para raporunu — PSP, banka ekstresi, pazaryeri hakedişi — kuruşuna
-kadar uzlaştıran deterministik motor. Dört doğruluk garantisi çalışma zamanı kontrolleri ve
-PostgreSQL kısıtları arasında açıkça bölünür. Herkese açık benchmark: ~50.000 işlem, 7 enjekte
-edilmiş uyuşmazlık tipi → **7/7 tespit, 0 yanlış eşleşme, ~4 saniye**; her push'ta CI yeniden koşar.
-Aynı statik binary, sürümlü bir REST endpoint'i, HTML raporu, health/readiness kontrollerini ve
-Prometheus metriklerini sunar. Tohumlanmış PostgreSQL demosu tek Docker Compose komutuyla açılır.
+**Ticari karşılık.** Tohumlu sentetik benchmark ~50 bin işlemi ~4 saniyede uzlaştırıyor:
+**7/7 enjekte edilmiş uyuşmazlık tipi tespit, 0 yanlış eşleşme ve 0 kaçırılmış amaçlanan
+eşleşme/grup**. Doğrulanan bu kapsamda hiçbir kayıt sonuçtan sessizce kaybolmuyor; manuel inceleme,
+izsiz bir kalandan değil açık bir uyuşmazlık sınıfından başlıyor.
 
-**2. Aura — Fotogerçekçi 3D Cerrahi Önizleme ve Klinik Platformu** *(özel, ticari)* ([vaka çalışması](projects/04-aura-photoreal-3d-clinic-platform/))
-Tek mühendis, ~800 commit: ~15 saniyelik telefon videosundan fotogerçekçi 3D kafa (3D Gaussian
-Splatting, çevrimdışı GPU işi), tarayıcıda ~0,4 saniyede anlık 2.5D önizleme, milimetre cinsinden
-simülasyon matematiği, 838 açık erişimli klinik yayınla doğrulanmış sonuç tahmini. KVKK/HIPAA
-uyumlu veri işleme. Kaynak kod gizlidir; vaka çalışması yalnızca kapsamı ve hassas olmayan
-ölçümleri anlatır.
+```mermaid
+flowchart LR
+    A["PSP · banka · pazaryeri"] --> B["İçe aktar + tekilleştir"]
+    B --> C["Deterministik eşleştirme"]
+    C --> D["Eşleşme veya adlı uyuşmazlık"]
+    D --> E["REST · HTML rapor · metrikler"]
+```
 
-**3. ERC-4337 EntryPoint v0.8 — Güvenlik İncelemesi** ([vaka çalışması](projects/02-erc4337-entrypoint-review/))
-Defalarca denetlenmiş altyapı kodunda gerçek (düşük şiddetli) bir kusur bulundu ve iki bağımsız
-yöntemle kanıtlandı. Sorumlu ifşa gereği mekanizma, üretici düzeltene kadar açıklanmıyor.
+[![ReconPilot altın veri seti HTML mutabakat raporu](https://raw.githubusercontent.com/hilberspace-dev/reconpilot/main/docs/report-screenshot.png)](https://github.com/hilberspace-dev/reconpilot/blob/main/docs/report-screenshot.png)
 
-**4. Canlı Protokol Güvenlik Denetimi (~16,7M $) — Disiplinli bir "sorun yok" kararı** ([vaka çalışması](projects/01-smart-contract-security-audit/))
-~16,7M $ tutan canlı bir sistemde en güçlü zafiyet hipotezi gerçek zincir verisi üzerinde yeniden
-üretildi ve kendi kanıtıyla çürütüldü. Hiçbir bulgu şişirilmeden "güvenli" raporlandı — güvenlik
-işinde en zor ve en değerli disiplin.
+*Altın veri seti HTML raporu — tam boyut için görsele tıklayın.*
 
-## Çalışma tercihi ve iletişim
+**Teslim edilen kapsam**
 
-**Sözleşmeli ve alt-yüklenici işlere açığım** — ajans veya lider geliştirici arkasında bağımsız
-teknik teslimat: kapsamı belli bir işi alır, bağımsız çalışır, testleri ve kanıtıyla teslim ederim.
+- Sürümlü REST, sunucu taraflı HTML, health/readiness ve Prometheus metrikleri sunan Go servisi
+- Tekilleştirme ve eşleşme bütünlüğü kısıtları içeren PostgreSQL şeması ve migration'lar
+- Entegrasyon ve property-based testler, Docker Compose, CI, ADR'ler ve operasyon dokümantasyonu
 
-Yazılı İngilizcem şartname, dokümantasyon, ticket ve kod incelemesi için profesyonel düzeydedir;
-sözlü iletişimi öncelikle Türkçe yürütürüm.
+**Benzer teslimatlar:** PSP/banka/pazaryeri entegrasyonları · mutabakat motorları · işlem
+tekilleştirme · finansal raporlama backend'leri · veri bütünlüğü denetimleri
 
-✉️ [E-posta](mailto:hilberspace@gmail.com)
+---
+
+## Ticari çalışma
+
+### Aura — Fotogerçekçi 3D Cerrahi Önizleme ve Klinik Platformu *(özel, ticari)*
+
+[Vaka çalışması](projects/04-aura-photoreal-3d-clinic-platform/)
+
+**Problem.** Hastaya özel görsel simülasyonu ve günlük klinik operasyonlarını, hasta bağlantılı veri
+işlemeyi zayıflatmadan tek bir ticari ürüne dönüştürmek.
+
+**Teslim edilen çözüm.** Ürün, web uygulaması, API ve GPU/ML iş yüklerinde tek başına teknik
+sahiplik; hastaya özel önizleme deneyimi ve onu çevreleyen klinik iş akışı.
+
+**Ticari karşılık.** Gizlilik kontrolleri ve operasyonel devir paketi bulunan, kliniğe hazır ticari
+ürün. Kaynak kod ile uygulamaya özgü müşteri fikrî mülkiyeti gizlidir; vaka çalışması yalnızca
+sorumlulukları ve hassas olmayan kanıtları belgeler.
+
+**Teslim edilen kapsam**
+
+- Full-stack ürün, API ve GPU/ML iş yükü entegrasyonu
+- Çıktı tutarlılığı, ödeme, gizlilik ve erişilebilirlik için otomatik kontroller
+- Sürüm betikleri, runbook'lar, uyum dokümanları ve kaynak kod devir paketi
+
+---
+
+## Güvenlik araştırmaları
+
+### ERC-4337 EntryPoint v0.8 — Güvenlik İncelemesi
+
+[Vaka çalışması](projects/02-erc4337-entrypoint-review/)
+
+**Problem.** Yoğun biçimde denetlenmiş bir hesap soyutlama bileşenini kendi belgelenmiş doğruluk
+kurallarına karşı sınamak.
+
+**Teslim.** Bağımsız kaynak kod incelemesi, negatif kontrollü kanıt ve digest ile sabitlenmiş Prague
+istemcisinde ikinci tekrar üretim.
+
+**Sonuç.** Düşük şiddetli deterministik bir doğruluk kusuru iki ortamda tekrar üretildi. Bulgu
+gönderilmedi veya dışarıdan doğrulanmadı; upstream'de düzeltilmediği için mekanizma açıklanmıyor.
+
+### Canlı Protokol Denetimi (~16,7M $) — Disiplinli NO-GO
+
+[Vaka çalışması](projects/01-smart-contract-security-audit/)
+
+**Problem.** Canlı bir protokoldeki şüphenin sorumlu bir bildirim gerektirip gerektirmediğini
+belirlemek.
+
+**Teslim.** ~45 milyon blok üzerinde zincir analizi, deployed bytecode doğrulaması, 14 değişmezli
+şartname ve sabit blokta Foundry kanıtı.
+
+**Sonuç.** En güçlü hipotez tekrar üretildi, sonra kendi kanıtıyla çürütüldü. Bulgu gönderilmedi;
+abartılı iddia yerine çalışmayı durdurup eforu başka hedefe yönlendirme kararı verildi.
+
+---
+
+## Mühendislik süreci
+
+1. Kapsam ve kabul kriterleri
+2. Yazılı teknik plan
+3. Artımlı uygulama
+4. Testler ve tekrarlanabilir doğrulama
+5. Dokümantasyon ve devir
+
+Kapsamı belli ticket veya şartnameyi alır, bağımsız çalışır ve incelenebilir sonucu testleriyle
+birlikte teslim ederim. Saldırgan bakış açılı güvenlik incelemesi ve kanıt paketleme standardı için
+[Güvenlik İncelemesi ve PoC Metodolojisi](METHODOLOGY.md) *(İngilizce)* belgesine bakın.
+
+## Teknik beceriler
+
+**Ana alanlar:** Go · PostgreSQL · backend mimarisi · ödeme ve işlem sistemleri · API
+entegrasyonları · test ve CI · Docker · gözlemlenebilirlik
+
+**Ek deneyim:** TypeScript / Node.js · .NET · React · bilgisayarlı görü ve GPU iş yükleri ·
+Solidity / EVM
+
+## İletişim
+
+Ürün şirketi veya yazılım ajansından sabit kapsamlı B2B iş talepleri için
+[e-postada](mailto:hilberspace@gmail.com) şunları paylaşın:
+
+- çözülmesi gereken problem
+- mevcut teknoloji yığını
+- beklenen teslimat
+- hedef zaman planı
+- repo veya erişim kısıtları
+
+Şartname, ticket, dokümantasyon ve kod incelemesi için profesyonel yazılı İngilizceyle async-first
+çalışırım.
 
 ---
 

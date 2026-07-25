@@ -1,8 +1,13 @@
-# Engineering Standard — Security Review & Proof-of-Concept
+# Security Review & Proof-of-Concept Methodology
 
-My working standard for auditing a codebase, proving a defect, and packaging it to a level a triager
+My evidence standard for auditing a codebase, proving a defect, and packaging it to a level a triager
 can act on without asking follow-up questions. It is protocol-agnostic; the worked example that
 produced it was an ERC-4337 EntryPoint review.
+
+This document is deliberately narrower than the portfolio's general delivery process: it covers
+adversarial review, defect proof and triager-ready packaging. The
+[portfolio README](README.md#engineering-process) describes the B2B delivery workflow used for
+backend work.
 
 **North star: evidence before assertions.** A finding is worth reporting only when a running proof ties
 an attacker-controlled input to a violated invariant with measured impact on an honest party, and the
