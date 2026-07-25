@@ -1,118 +1,174 @@
-# atilgandev — Backend Engineer
+# atilgandev — Backend Engineer for Payment & Data-Integrity Systems
 
-**Go · PostgreSQL · payment systems · high-integrity software**
+**Go · PostgreSQL · reconciliation · high-integrity software**
 
-Full-stack product delivery, applied computer vision and smart-contract security as additional
-technical depth.
+I build backend systems for product companies and software agencies where money and records must
+remain correct, explainable and recoverable.
 
-📍 Türkiye · ✉️ [Email](mailto:hilberspace@gmail.com) · 🔗 [GitHub profile](https://github.com/hilberspace-dev) · 🇹🇷 [Türkçe özet](README.tr.md)
+> **Available for fixed-scope B2B engagements with product companies and software agencies.**
+>
+> Send the problem, current stack, expected deliverable and timeline → [email me](mailto:hilberspace@gmail.com).
+
+Async-first collaboration with professional written English for specifications, tickets,
+documentation and code review.
+
+📍 Türkiye · [GitHub profile](https://github.com/hilberspace-dev) ·
+[Türkçe özet](README.tr.md)
+
+## Services
+
+- **Payment reconciliation and financial-data systems** — PSP, bank and marketplace integrations,
+  deterministic matching, discrepancy classification and reporting.
+- **Go/PostgreSQL backend reliability** — schema invariants, idempotency, APIs, automated tests, CI
+  and observability.
+- **Scoped backend subcontract delivery for software agencies** — a defined ticket or specification
+  delivered independently with tests, evidence, documentation and handover.
+
+Evidence-backed delivery: reproducible tests, explicit invariants, negative controls where
+applicable and documented results.
 
 ---
 
-## How I work
+## Featured project — ReconPilot
 
-Every claim in this portfolio is backed by something a reader can check: a benchmark command, a
-public CI run, a written evidence file, or a reproduction recipe, so the projects can speak in
-numbers instead of adjectives.
+### Deterministic payment reconciliation engine
 
-## Engineering standard
+[Case study](projects/03-reconpilot-payment-reconciliation/) ·
+[Public source, tests and benchmark](https://github.com/hilberspace-dev/reconpilot) ·
+[![ReconPilot CI](https://github.com/hilberspace-dev/reconpilot/actions/workflows/ci.yml/badge.svg)](https://github.com/hilberspace-dev/reconpilot/actions/workflows/ci.yml)
 
-→ **[`METHODOLOGY.md`](METHODOLOGY.md)** — the verification standard applied across this portfolio:
-freeze the environment, state invariants before testing, require negative controls, preserve the
-evidence and report the result even when the correct result is “no finding.”
+**Problem.** PSP reports, bank statements and marketplace settlements describe the same money in
+different ways. Manual reconciliation creates two silent risks: coincidental false matches and
+records that disappear from the remainder.
 
----
+**Delivered solution.** A Go/PostgreSQL service that ingests and deduplicates all three sources,
+applies a deterministic exact → tolerant → group matching chain, classifies every unmatched record
+and hard-fails when its correctness invariants are violated.
 
-## Projects
+**Business outcome.** Its seeded synthetic benchmark reconciles ~50K transactions in ~4 seconds:
+**7/7 injected discrepancy types detected, 0 false matches and 0 intended pairs/groups missed**.
+Within that benchmarked scope, no record silently disappears from the result; manual investigation
+starts from an explicit discrepancy category instead of an untraceable remainder.
 
-### 1. ReconPilot — Payment Reconciliation Engine
-→ [case study](projects/03-reconpilot-payment-reconciliation/) · [source, tests & benchmark](https://github.com/hilberspace-dev/reconpilot)
+```mermaid
+flowchart LR
+    A["PSP · bank · marketplace"] --> B["Ingest + deduplicate"]
+    B --> C["Deterministic matching"]
+    C --> D["Match or named discrepancy"]
+    D --> E["REST · HTML report · metrics"]
+```
 
-**Demonstrates:** deterministic backend design, financial-data integrity, schema-level constraints, production-grade testing.
+[![ReconPilot HTML reconciliation report from the golden dataset](https://raw.githubusercontent.com/hilberspace-dev/reconpilot/main/docs/report-screenshot.png)](https://github.com/hilberspace-dev/reconpilot/blob/main/docs/report-screenshot.png)
 
-*Makes card, marketplace and bank reports agree to the last cent.*
+*Golden-dataset HTML report — click to inspect the full-size image.*
 
-Uses a deterministic three-stage matching chain, seven explicit discrepancy types and four
-correctness guarantees split between runtime checks and PostgreSQL constraints. Its seeded ~50K
-benchmark checks every match against generator ground truth: **7/7 types detected, 0 false matches,
-~4 s**; CI reruns it on every push. The same static
-binary serves REST, HTML, health/readiness and Prometheus metrics, with a one-command seeded Compose
-stack.
+**Delivered**
+
+- Go service with versioned REST, server-rendered HTML, health/readiness and Prometheus metrics
+- PostgreSQL schema and migrations with constraints for deduplication and match integrity
+- Integration and property-based tests, Docker Compose, CI, ADRs and operational documentation
+
+**Related engagements:** PSP/bank/marketplace integrations · reconciliation engines · transaction
+deduplication · financial reporting backends · data-integrity audits
 
 `Go` `PostgreSQL` `REST` `Prometheus` `Docker Compose` `property-based testing` `testcontainers` `CI`
 
-### 2. Aura — Photoreal 3D Surgical-Preview & Clinic Platform *(private, commercial)*
-→ [case study](projects/04-aura-photoreal-3d-clinic-platform/)
+---
 
-**Demonstrates:** solo commercial delivery, full-stack ownership, applied computer vision / ML.
+## Commercial work
 
-*A patient sees a realistic preview based on their own face; the clinic gets its operations in one
-system.*
+### Aura — Photoreal 3D Surgical-Preview & Clinic Platform *(private, commercial)*
 
-Built solo across ~800 commits: photoreal head reconstruction from a ~15-second phone capture video
-(3D Gaussian Splatting, offline GPU job), an instant in-browser 2.5D preview (~0.4 s), simulation
-math in physical millimetres checked against published anthropometric norms, and an outcome
-predictor validated against **838 open-access clinical publications**. KVKK/HIPAA-aligned;
-payment paths carry property-based and mutation testing. Source is private — the case study covers
-scope and non-sensitive measurements only.
+[Case study](projects/04-aura-photoreal-3d-clinic-platform/)
 
-`3D Gaussian Splatting` `computer vision` `TypeScript` `React` `Node.js` `mutation testing` `KVKK`
+**Problem.** Turn patient-specific visual simulation and day-to-day clinic operations into one
+commercial product without compromising patient-adjacent data handling.
 
-### 3. ERC-4337 EntryPoint v0.8 — Security Review
-→ [case study](projects/02-erc4337-entrypoint-review/)
+**Delivered solution.** Sole technical ownership across the product, web application, API and
+GPU/ML workloads, including a patient-specific preview experience and the surrounding clinic
+workflow.
 
-**Demonstrates:** source-level protocol analysis, reproducible proof construction, disclosure discipline.
+**Business outcome.** A clinic-ready commercial product with privacy controls and an operational
+handover package. Source and implementation-specific client IP remain private; the case study
+documents responsibilities and non-sensitive evidence only.
 
-*In widely trusted, repeatedly inspected infrastructure code, I found a small but genuine
-bookkeeping flaw and proved it two independent ways.*
+**Delivered**
 
-Independent review of heavily audited account-abstraction infrastructure (three public audit
-reports ship in its repository). Identified a Low-severity deterministic correctness defect,
-isolated it against a sibling code path that handles the equivalent case correctly, and reproduced
-it twice — on the local toolchain and on a digest-pinned Prague-enabled client. Not submitted;
-mechanism withheld pending an upstream fix.
+- Full-stack product, API and GPU/ML workload integration
+- Automated controls around output consistency, payments, privacy and accessibility
+- Release scripts, runbooks, compliance documentation and source-code handover package
 
-`Solidity` `Hardhat` `TypeScript` `ERC-4337` `EIP-7702` `Docker-pinned geth`
-
-### 4. Live-Protocol Security Audit (~$16.7M) — a Disciplined NO-GO
-→ [case study](projects/01-smart-contract-security-audit/)
-
-**Demonstrates:** hypothesis testing, risk assessment, professional judgment under incentive to overclaim.
-
-*I stress-tested a live system holding ~$16.7M of user funds and proved the suspected weakness was
-in fact safe — then reported exactly that.*
-
-On-chain forensics across ~45M blocks, deployed-bytecode verification, a 14-invariant security
-specification, and a Foundry proof-of-concept forking mainnet at a pinned block. The leading
-vulnerability hypothesis was reproduced on the fork and then refuted by its own evidence; nothing
-was submitted.
-
-`Solidity` `Foundry` `EVM fork testing` `JSON-RPC forensics` `Node.js`
+`TypeScript` `React` `Node.js` `computer vision` `GPU workloads` `automated testing` `KVKK`
 
 ---
+
+## Security research
+
+### ERC-4337 EntryPoint v0.8 — Security Review
+
+[Case study](projects/02-erc4337-entrypoint-review/)
+
+**Problem.** Test a heavily audited account-abstraction component against its own documented
+correctness rules.
+
+**Delivered.** An independent source-level review, a negative-controlled proof and a second
+reproduction on a digest-pinned Prague client.
+
+**Outcome.** One Low-severity deterministic correctness defect reproduced in two environments. It
+was not submitted or externally validated; the mechanism remains withheld while unfixed upstream.
+
+`Solidity` `Hardhat` `TypeScript` `ERC-4337` `EIP-7702`
+
+### Live-Protocol Audit (~$16.7M) — Disciplined NO-GO
+
+[Case study](projects/01-smart-contract-security-audit/)
+
+**Problem.** Determine whether a suspected weakness in a live protocol warranted a responsible
+submission.
+
+**Delivered.** On-chain forensics across ~45M blocks, deployed-bytecode verification, a
+14-invariant specification and a pinned-block Foundry proof.
+
+**Outcome.** The leading hypothesis was reproduced, then refuted by its own evidence. Nothing was
+submitted; the recommendation was to stop and redirect effort rather than overclaim a finding.
+
+`Solidity` `Foundry` `EVM fork testing` `JSON-RPC forensics`
+
+---
+
+## Engineering process
+
+1. Scope and acceptance criteria
+2. Written technical plan
+3. Incremental implementation
+4. Tests and reproducible verification
+5. Documentation and handover
+
+I take a scoped ticket or specification, work independently and return a reviewable result with its
+tests and evidence. For adversarial security review and proof packaging, see the detailed
+[Security Review & Proof-of-Concept Methodology](METHODOLOGY.md).
 
 ## Technical skills
 
-| Area | |
-|---|---|
-| **Backend** | API design, service architecture, data modelling, integration work |
-| **Frontend** | Application UI, state management, API integration |
-| **Data** | Pipelines, transformation, analysis and reporting |
-| **DevOps** | Containerization, CI, environment reproducibility, deployment |
-| **AI / ML / CV** | Applied computer vision, 3D reconstruction, model evaluation, LLM API orchestration with fallback design, containerized ML workloads, GPU pipelines |
-| **Blockchain** | Solidity, Foundry, EVM internals, proxy patterns, on-chain analysis |
-| **Tooling** | Git, Go, Node.js, TypeScript, .NET, PowerShell/Bash |
+**Core:** Go · PostgreSQL · backend architecture · payment and transaction systems · API
+integrations · testing and CI · Docker · observability
 
----
+**Additional experience:** TypeScript / Node.js · .NET · React · computer vision and GPU workloads ·
+Solidity / EVM
 
-## Working with me
+## Contact
 
-Open to **contract and subcontract work** — independent technical delivery behind an agency or a
-lead developer: I take a scoped ticket or spec, work independently, and return it done, with tests
-and evidence.
+For fixed-scope B2B work with a product company or software agency,
+[email me](mailto:hilberspace@gmail.com) with:
 
-Professional written English for specifications, documentation, tickets and code review; spoken
-communication primarily in Turkish.
+- the problem to solve
+- the current stack
+- the expected deliverable
+- the target timeline
+- repository or access constraints
+
+Async-first collaboration; professional written English for specifications, tickets,
+documentation and code review.
 
 ---
 
