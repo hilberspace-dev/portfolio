@@ -1,3 +1,5 @@
+[![Türkçe sürüm](https://img.shields.io/badge/Language-T%C3%BCrk%C3%A7e-E30A17?style=for-the-badge)](README.tr.md)
+
 # Case Study — Smart-Contract Security Audit (Immunefi Bug Bounty, Arbitrum One)
 
 **Role:** Independent security researcher (solo)

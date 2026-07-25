@@ -1,3 +1,5 @@
+[![Türkçe sürüm](https://img.shields.io/badge/Language-T%C3%BCrk%C3%A7e-E30A17?style=for-the-badge)](README.tr.md)
+
 # Case Study — Aura: Photoreal 3D Surgical-Preview & Clinic Platform (private, commercial)
 
 > ### A computer-vision research problem turned into a clinic-ready product by one engineer
