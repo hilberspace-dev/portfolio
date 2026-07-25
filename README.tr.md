@@ -34,7 +34,8 @@ ve belgelenmiş sonuçlar.
 
 ### Deterministik ödeme mutabakat motoru
 
-[Vaka çalışması](projects/03-reconpilot-payment-reconciliation/) ·
+[Vaka çalışması](projects/03-reconpilot-payment-reconciliation/README.tr.md) ·
+[**🇬🇧 English**](projects/03-reconpilot-payment-reconciliation/) ·
 [Açık kaynak, testler ve benchmark](https://github.com/hilberspace-dev/reconpilot) ·
 [![ReconPilot CI](https://github.com/hilberspace-dev/reconpilot/actions/workflows/ci.yml/badge.svg)](https://github.com/hilberspace-dev/reconpilot/actions/workflows/ci.yml)
 
@@ -78,7 +79,8 @@ tekilleştirme · finansal raporlama backend'leri · veri bütünlüğü denetim
 
 ### Aura — Fotogerçekçi 3D Cerrahi Önizleme ve Klinik Platformu *(özel, ticari)*
 
-[Vaka çalışması](projects/04-aura-photoreal-3d-clinic-platform/)
+[Vaka çalışması](projects/04-aura-photoreal-3d-clinic-platform/README.tr.md) ·
+[**🇬🇧 English**](projects/04-aura-photoreal-3d-clinic-platform/)
 
 **Problem.** Hastaya özel görsel simülasyonu ve günlük klinik operasyonlarını, hasta bağlantılı veri
 işlemeyi zayıflatmadan tek bir ticari ürüne dönüştürmek.
@@ -102,7 +104,8 @@ sorumlulukları ve hassas olmayan kanıtları belgeler.
 
 ### ERC-4337 EntryPoint v0.8 — Güvenlik İncelemesi
 
-[Vaka çalışması](projects/02-erc4337-entrypoint-review/)
+[Vaka çalışması](projects/02-erc4337-entrypoint-review/README.tr.md) ·
+[**🇬🇧 English**](projects/02-erc4337-entrypoint-review/)
 
 **Problem.** Yoğun biçimde denetlenmiş bir hesap soyutlama bileşenini kendi belgelenmiş doğruluk
 kurallarına karşı sınamak.
@@ -115,7 +118,8 @@ gönderilmedi veya dışarıdan doğrulanmadı; upstream'de düzeltilmediği iç
 
 ### Canlı Protokol Denetimi (~16,7M $) — Disiplinli NO-GO
 
-[Vaka çalışması](projects/01-smart-contract-security-audit/)
+[Vaka çalışması](projects/01-smart-contract-security-audit/README.tr.md) ·
+[**🇬🇧 English**](projects/01-smart-contract-security-audit/)
 
 **Problem.** Canlı bir protokoldeki şüphenin sorumlu bir bildirim gerektirip gerektirmediğini
 belirlemek.
@@ -138,7 +142,7 @@ abartılı iddia yerine çalışmayı durdurup eforu başka hedefe yönlendirme 
 
 Kapsamı belli ticket veya şartnameyi alır, bağımsız çalışır ve incelenebilir sonucu testleriyle
 birlikte teslim ederim. Saldırgan bakış açılı güvenlik incelemesi ve kanıt paketleme standardı için
-[Güvenlik İncelemesi ve PoC Metodolojisi](METHODOLOGY.md) *(İngilizce)* belgesine bakın.
+[Güvenlik İncelemesi ve PoC Metodolojisi](METHODOLOGY.tr.md) belgesine bakın.
 
 ## Teknik beceriler
 

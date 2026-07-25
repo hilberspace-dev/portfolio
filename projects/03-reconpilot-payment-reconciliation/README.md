@@ -1,3 +1,5 @@
+[![Türkçe sürüm](https://img.shields.io/badge/Language-T%C3%BCrk%C3%A7e-E30A17?style=for-the-badge)](README.tr.md)
+
 # Case Study — ReconPilot: Deterministic Payment Reconciliation Engine
 
 > ### Claim: 50K transactions · 3 sources · 7 injected discrepancy types → 7/7 detected, 0 false matches, 0 intended pairs/groups missed

@@ -34,6 +34,7 @@ applicable and documented results.
 ### Deterministic payment reconciliation engine
 
 [Case study](projects/03-reconpilot-payment-reconciliation/) ·
+[**🇹🇷 Türkçe oku**](projects/03-reconpilot-payment-reconciliation/README.tr.md) ·
 [Public source, tests and benchmark](https://github.com/hilberspace-dev/reconpilot) ·
 [![ReconPilot CI](https://github.com/hilberspace-dev/reconpilot/actions/workflows/ci.yml/badge.svg)](https://github.com/hilberspace-dev/reconpilot/actions/workflows/ci.yml)
 
@@ -79,7 +80,8 @@ deduplication · financial reporting backends · data-integrity audits
 
 ### Aura — Photoreal 3D Surgical-Preview & Clinic Platform *(private, commercial)*
 
-[Case study](projects/04-aura-photoreal-3d-clinic-platform/)
+[Case study](projects/04-aura-photoreal-3d-clinic-platform/) ·
+[**🇹🇷 Türkçe oku**](projects/04-aura-photoreal-3d-clinic-platform/README.tr.md)
 
 **Problem.** Turn patient-specific visual simulation and day-to-day clinic operations into one
 commercial product without compromising patient-adjacent data handling.
@@ -106,7 +108,8 @@ documents responsibilities and non-sensitive evidence only.
 
 ### ERC-4337 EntryPoint v0.8 — Security Review
 
-[Case study](projects/02-erc4337-entrypoint-review/)
+[Case study](projects/02-erc4337-entrypoint-review/) ·
+[**🇹🇷 Türkçe oku**](projects/02-erc4337-entrypoint-review/README.tr.md)
 
 **Problem.** Test a heavily audited account-abstraction component against its own documented
 correctness rules.
@@ -121,7 +124,8 @@ was not submitted or externally validated; the mechanism remains withheld while 
 
 ### Live-Protocol Audit (~$16.7M) — Disciplined NO-GO
 
-[Case study](projects/01-smart-contract-security-audit/)
+[Case study](projects/01-smart-contract-security-audit/) ·
+[**🇹🇷 Türkçe oku**](projects/01-smart-contract-security-audit/README.tr.md)
 
 **Problem.** Determine whether a suspected weakness in a live protocol warranted a responsible
 submission.

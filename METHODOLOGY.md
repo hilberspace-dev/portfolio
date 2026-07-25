@@ -1,3 +1,5 @@
+[![Türkçe sürüm](https://img.shields.io/badge/Language-T%C3%BCrk%C3%A7e-E30A17?style=for-the-badge)](METHODOLOGY.tr.md)
+
 # Security Review & Proof-of-Concept Methodology
 
 My evidence standard for auditing a codebase, proving a defect, and packaging it to a level a triager

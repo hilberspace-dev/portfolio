@@ -1,3 +1,5 @@
+[![Türkçe sürüm](https://img.shields.io/badge/Language-T%C3%BCrk%C3%A7e-E30A17?style=for-the-badge)](README.tr.md)
+
 # Case Study — ERC-4337 EntryPoint v0.8 Security Review
 
 > ### Finding: a deterministic correctness defect in `EntryPoint` v0.8 core
