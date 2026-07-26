@@ -8,20 +8,20 @@
 > |---|---|
 > | **Durum** | **Özel, ticari — kendi ürünüm** — kaynak kod herkese açık değil ve yayımlanmayacak |
 > | **Ölçek** | Yaklaşık 800 commit; ürün, web uygulaması, API, ML/GPU iş yükleri ve operasyon araçları |
-> | **Ana yetenek** | **Yaklaşık 15 saniyelik telefon çekiminden** fotogerçekçi 3D kafa (3D Gaussian Splatting, standart bir GPU'da çevrimdışı yeniden yapılandırma) ve buna eşlik eden **tarayıcı içi anlık 2.5D önizleme** (ilk görüntü yaklaşık 0,4 saniye) |
+> | **Ana yetenek** | **Yaklaşık 15 saniyelik telefon çekiminden** fotogerçekçi 3D kafa modeli (3D Gaussian Splatting, standart bir GPU'da çevrimdışı yeniden yapılandırma) ve buna eşlik eden **tarayıcı içi anlık 2.5D önizleme** (ilk görüntü yaklaşık 0,4 saniye) |
 > | **Ölçülen kalite** | Yeniden yapılandırmaya dahil edilmeyen karelerde yaklaşık 27,9 dB PSNR / 0,88 SSIM; anlık ve çevrimdışı çıktılar arasında otomatik uyum kontrolleri |
 > | **Klinik dayanak** | Simülasyon değerleri fiziksel milimetre cinsinden; çıktılar yayımlanmış yüz antropometrisi normlarıyla kontrol edildi; klinik referans külliyatı **838 açık erişimli yayını** ve yaklaşık 2.000 önce/sonra görselini kapsıyor |
 > | **Mühendislik kontrolleri** | Tekrar üretilebilir iç ölçümler, çıktılar arası sapma testleri, ödeme yollarında property-based ve mutation testleri |
 >
-> **Gizlilik sınırı.** Bu benim kendi ürünüm. Tamamını ben yazdım ve fikrî mülkiyeti bende; devre
-> hazırlanıyor — uygulamanın kapalı kalmasının sebebi bu. Bu vaka çalışması yalnızca üstlendiğim
+> **Gizlilik sınırı.** Bu benim kendi ürünüm. Tamamını ben yazdım, fikrî mülkiyet bende ve devir
+> hazırlığı sürüyor; uygulama bu nedenle kapalı. Bu vaka çalışması yalnızca üstlendiğim
 > sorumlulukları, mühendislik kapsamını ve hassas olmayan ölçümleri belgeler.
 >
 > | Bağlam | |
 > |---|---|
-> | **Sahiplik** | Kendi ticari ürünüm — tek başıma yazıldı, fikrî mülkiyet bende ve devre hazırlanıyor |
+> | **Sahiplik** | Kendi ticari ürünüm — tamamını tek başıma yazdım, fikrî mülkiyet bende ve devir hazırlığı sürüyor |
 > | **Rol** | Tek mühendis / teknik sahip — ürün, frontend, backend, ML/GPU iş yükleri ve operasyon |
-> | **Teslim durumu** | Kliniğe hazır; sürüm betikleri, runbook'lar ve uyum belgelerini içeren kaynak kod teslim paketi hazırlandı |
+> | **Teslim durumu** | Kliniğe hazır; sürüm betiklerini, runbook'ları ve uyum belgelerini içeren kaynak kod teslim paketi hazırlandı |
 > | **Sunulabilen doğrulama** | Gizlilik koşuluyla mimari anlatım ve seçilmiş, gizli olmayan kanıtlar |
 > | **Gizli tutulanlar** | Kaynak kod, ticari ayrıntılar, iç mimari, algoritmalar ve model/veri varlıkları |
 
@@ -35,11 +35,11 @@
 
 ## Bu çalışma neyi gösteriyor?
 
-Aura; **ticari bir ürünün uçtan uca teslimini**, **full-stack teknik sahipliği** ve uygulamalı
-bilgisayarlı görünün ürüne dönüştürülmesini gösteriyor. Çalışma; hastanın kullandığı deneyimi, klinik
+Aura **ticari bir ürünün uçtan uca teslimini**, **full-stack teknik sahipliği** ve uygulamalı
+bilgisayarlı görünün ürüne dönüştürülmesini gösteriyor. Çalışma, hastanın kullandığı deneyimi, klinik
 operasyonlarını, backend servislerini, veri korumayı, ML/GPU iş yüklerini, sürüm paketini ve
-operasyonel devri kapsadı. Ürünü farklılaştıran uygulamaya özgü yöntemler bu herkese açık belgenin
-bilinçli olarak dışında tutuluyor.
+operasyonel devri kapsadı. Ürünü farklılaştıran uygulamaya özgü yöntemler, bilinçli olarak bu herkese
+açık belgenin dışında tutuluyor.
 
 ## Herkese açık sistem görünümü
 
@@ -100,9 +100,9 @@ eklenen hatalarla sınanır.
 ### Gizlilik, operasyon ve devir
 
 Hasta verisiyle ilişkili işlemler için KVKK kontrolleri ve HIPAA ile uyumlu korumalar belgelenmiştir;
-bunlara açık rıza ve ticari ileti izinleri de dahildir. Teslim paketi; operasyon ayarlarını, sürüm
-doğrulamasını, runbook'ları, sözleşme testlerini ve erişilebilirlik kontrolleri içeren uçtan uca test
-kapsamını barındırır. Dağıtım topolojisi ve ticari iş akışlarının ayrıntıları açıklanmıyor.
+bunlara açık rıza ve ticari ileti izinleri de dahildir. Teslim paketinde operasyon ayarları, sürüm
+doğrulaması, runbook'lar, sözleşme testleri ve erişilebilirlik kontrolleri içeren uçtan uca test
+kapsamı bulunur. Dağıtım topolojisi ve ticari iş akışlarının ayrıntıları açıklanmıyor.
 
 ---
 

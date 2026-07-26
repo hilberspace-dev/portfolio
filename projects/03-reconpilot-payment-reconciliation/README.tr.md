@@ -2,7 +2,7 @@
 
 # Vaka Çalışması — ReconPilot: Deterministik Ödeme Mutabakat Motoru
 
-> ### İddia: 50 bin işlem · 3 kaynak · enjekte edilmiş 7 uyuşmazlık tipi → 7/7 tespit, 0 yanlış eşleşme, 0 kaçırılmış amaçlanan eşleşme/grup
+> ### İddia: 50 bin işlem · 3 kaynak · enjekte edilmiş 7 uyuşmazlık tipi → 7/7 tespit, 0 yanlış eşleşme, amaçlanan eşleşme/gruplarda 0 kayıp
 >
 > | | |
 > |---|---|
@@ -19,18 +19,18 @@
 
 > **Teknik olmayan kısa anlatım.** Bir e-ticaret işletmesi aynı anda kart ödeme kuruluşundan,
 > pazaryerlerinden ve banka hesabından para alır. Üç kaynak, “aynı” parayı farklı biçimlerde raporlar.
-> Finans ekibinden biri bu üç anlatımı çoğunlukla Excel'de elle uzlaştırır; hatalar sessiz ve pahalı
-> olabilir. Geliştirdiğim yazılım, on binlerce işlemi saniyeler içinde otomatik olarak uzlaştırıyor ve
-> her farkı adı belli bir kategoriye ayırıyor. Tek komut, 50 bin işlemlik benchmark'ı tekrar çalıştırıyor
+> Finans ekibinden biri bu üç anlatımın mutabakatını çoğunlukla Excel'de elle yapar; hatalar sessiz ve pahalı
+> olabilir. Geliştirdiğim yazılım, on binlerce işlemin mutabakatını saniyeler içinde otomatik olarak yapıyor ve
+> her farkı adı belli bir kategoriye yerleştiriyor. Tek komut, 50 bin işlemlik benchmark'ı tekrar çalıştırıyor
 > ve her kararı bilinen doğru cevaplarla karşılaştırıyor; yanlış eşleştirme üretmiyor. Bir girdi
 > eşleşmemiş veya sınıflandırılmamışsa ya da uyuşmazlık tutarı kendi türünün para kuralını ihlal
 > ediyorsa sistem sonuç döndürmeyi reddediyor.
 
 **Rol:** Tasarım ve uygulama (tek başına)<br>
 **Alan:** E-ticaret ödeme operasyonları — PSP raporları, banka ekstreleri ve pazaryeri hakedişleri<br>
-**Sonuç:** Doğruluk kuralları hem çalışma zamanında hem veritabanı değişmezleriyle uygulanan;
-property-based testlerle sınanan; REST, HTML ve metrik yüzeyleri bulunan; seed'li benchmark ve Docker
-Compose demosuyla tekrar üretilebilen mutabakat servisi.
+**Sonuç:** Doğruluk kuralları hem çalışma zamanı kontrolleriyle hem de veritabanı değişmezleriyle
+uygulanan; property-based testlerle sınanan; REST, HTML ve metrik yüzeyleri bulunan; seed'li benchmark
+ve Docker Compose demosuyla tekrar üretilebilen bir mutabakat servisidir.
 
 ---
 
@@ -69,14 +69,14 @@ flowchart LR
   Sınırı aşan durumlarda tahmin yürütmek yerine açıkça `unknown` sonucu üretilir.
 - **İhlalde işlemi durduran üç çalışma zamanı değişmezi** vardır: her girdi ya eşleşir ya
   sınıflandırılır; hiçbir işlem iki eşleşme grubunda yer alamaz; işlem düzeyindeki her uyuşmazlık
-  farkı kendi türünün para semantiğine uyar. Dördüncü, içe aktarma düzeyindeki garanti aynı dosyanın
+  farkı kendi türünün para semantiğine uyar. İçe aktarma düzeyindeki dördüncü garanti, aynı dosyanın
   yeniden yüklenmesini PostgreSQL `UNIQUE(dedup_key)` ve gerçek veritabanı entegrasyon testiyle
   etkisiz kılar. Şema ayrıca çift eşleşmeyi engeller ve hiçbir işleme bağlı olmayan uyuşmazlık
   satırlarını reddeder.
-- **Para uçtan uca `int64` en küçük para birimiyle tutulur.** Float veya epsilon kullanılmaz; bir
+- **Para, uçtan uca en küçük para birimi cinsinden `int64` olarak tutulur.** Float veya epsilon kullanılmaz; bir
   kuruşluk fark bile eşleştirme, sınıflandırma ve raporlama boyunca tam değerini korur.
 - **Mimari sınır bir görüş değil, build kuralıdır:** `ingestion → matching → classification →
-  reporting` tek yönlü akışı CI içinde `go-arch-lint` ile zorlanır.
+  reporting` tek yönlü akışı CI içinde `go-arch-lint` ile zorunlu tutulur.
 
 ## Operasyonel yüzey
 
@@ -92,9 +92,8 @@ algoritma, ikinci bir teknoloji yığını eklenmeden çalıştırılabilir bir 
 
 ## Doğrulama
 
-Property-based testler, her çalışmada hatalı örneği küçültme (shrinking) destekli 100 rastgele işlem
-defteri üzerinde
-değişmezleri sınar. Entegrasyon testleri mock yerine testcontainers ile gerçek PostgreSQL üzerinde
+Property-based testler, her çalışmada üretilen 100 rastgele işlem defteri üzerinde değişmezleri
+sınar; hata bulunduğunda örnek en küçük hâline indirgenir (shrinking). Entegrasyon testleri mock yerine testcontainers ile gerçek PostgreSQL üzerinde
 çalışır. Benchmark, bilinen konumlara yedi uyuşmazlık türü enjekte edilmiş yaklaşık 50 bin işlem
 üretir ve bulunan her eşleşmeyi veri üretecinin amaçladığı eşleme kümesiyle karşılaştırır:
 
@@ -116,7 +115,7 @@ RESULT: PASS — 7/7 injected types detected, 0 false matches, 0 intended pairs/
 Herhangi bir yanlış eşleşme, kaçırılmış eşleşme veya tespit edilemeyen tür varsa komut sıfırdan
 farklı çıkış koduyla kapanır. CI bu benchmark'ı her push'ta yeniden çalıştırır.
 
-Sistemin doğruluğunu taşıyan her karar için repoda bir ADR bulunur: tamsayı para modeli, tek stack
+Sistemin doğruluğunu belirleyen her karar için repoda bir ADR bulunur: tamsayı para modeli, tek stack
 gerekçesi, sınırlı grup araması, şema düzeyindeki değişmezler ve HTTP/gözlemlenebilirlik sınırı.
 
 `Go` `PostgreSQL` `REST` `Prometheus` `Docker Compose` `pgx` `property-based testing`

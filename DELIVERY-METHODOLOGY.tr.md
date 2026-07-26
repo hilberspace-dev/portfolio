@@ -2,63 +2,66 @@
 
 # Teslim ve Quality Gate Metodolojisi
 
-Production'daki bir sistemi bir değişiklik talebinden yayımlanmış bir release'e, kimsenin dikkatli
-olmayı hatırlamasına bel bağlamadan taşıma yöntemim. Stack'ten bağımsızdır; bu yöntemi ortaya çıkaran
-uygulama, GPU/ML workload'u taşıyan, veri koruma kısıtları altında işletilen ve çok küçük bir ekiple
-sürdürülen multi-tenant ticari bir platformdu.
+Production'daki bir sistemi, bir değişiklik talebinden yayımlanmış bir release'e kadar, kimsenin
+dikkatli olmayı hatırlamasına bel bağlamadan taşıma yöntemimi anlatır. Yöntem stack'ten bağımsızdır;
+onu ortaya çıkaran uygulama ise GPU/ML workload'u taşıyan, veri koruma kısıtları altında işletilen ve
+çok küçük bir ekiple sürdürülen multi-tenant ticari bir platformdu.
 
 Bu belge, saldırgan bakış açılı incelemeyi ve defect kanıtlamayı anlatan
 [Güvenlik İncelemesi ve PoC Metodolojisi'nin](METHODOLOGY.tr.md) tamamlayıcısıdır. Bir işin nasıl
-yürüdüğünün kısa özeti [portföy README'sinde](README.tr.md); işin içinde ne olduğunun uzun hâli
-burada.
+yürüdüğünün kısa özetini [portföy README'sinde](README.tr.md) bulabilirsiniz; işin içinde ne olduğu
+ise burada ayrıntılı olarak anlatılmaktadır.
 
-**Temel ilke: hatırlanmaya bağlı kural, kural değildir.** Öğrenmesi gerçekten pahalıya mal olmuş her
-ders ya bir makinenin kontrol ettiği bir şeye dönüşür ya da geri gelir.
+**Temel ilke: hatırlanmaya bağlı kural, kural değildir.** Öğrenilmesi gerçekten pahalıya mal olmuş
+her ders ya bir makinenin denetlediği bir kontrole dönüşür ya da er geç geri gelir.
 
 ---
 
 ## 0. Değişmez kurallar
 
-1. **İddiadan önce kanıt.** Hiçbir şey; çalıştırılan komut, çıktısı ve exit code'u olmadan "düzeldi",
-   "geçiyor" veya "bitti" diye anlatılmaz. Kodu okumak verification değildir. Yeniden çalıştırıp
-   yeşil almak, önceki bir failure'ı geçersiz kılmaz. Çalıştırılmayan ne varsa açıkça söylenir.
-2. **Instance'ı değil class'ı düzelt.** Bug'ı gideren commit işin yarısıdır. Diğer yarısı, bu defect'i
-   hangi kontrolün yakalaması gerekirken yakalamadığını yanıtlamak ve o kontrolü kurmaktır.
-3. **Debt'i dondur, asla genişletme.** Mevcut sorunlar ölçülür ve bugünkü büyüklüğünde sabitlenir.
-   Yenisi build'i düşürür. Gate'i yeşile çevirmek için kimse bir baseline'ı düzenlemez.
-4. **Fail-closed davran ve kör noktanı söyle.** Para, güvenlik veya kişisel veri taşıyan her path'te
-   belirsizlik reddetmeye çözülür. Her ölçüm aracı, kendi dosyasında neyi göremediğini yazar.
-5. **Root cause'u gideren en küçük değişiklik.** Aynı diff'e ilişkisiz temizlik, formatlama,
-   spekülatif abstraction veya istenmemiş API kırılması binmez.
+1. **İddiadan önce kanıt.** Çalıştırılan komut, çıktısı ve exit code'u ortada olmadan hiçbir iş için
+   "düzeldi", "geçiyor" veya "bitti" denmez. Kodu okumak verification yerine geçmez. Yeniden
+   çalıştırıp yeşil almak, daha önceki bir failure'ı geçersiz kılmaz. Çalıştırılmayan ne varsa
+   açıkça belirtilir.
+2. **Instance'ı değil class'ı düzelt.** Bug'ı gideren commit işin yalnızca yarısıdır. Diğer yarısı,
+   bu defect'i hangi kontrolün yakalaması gerektiği hâlde yakalamadığını tespit etmek ve o kontrolü
+   kurmaktır.
+3. **Debt'i dondur, asla genişletme.** Mevcut sorunlar ölçülür ve bugünkü büyüklüğünde sabitlenir;
+   yenisi build'i düşürür. Gate'i yeşile çevirmek için hiç kimse bir baseline'ı düzenlemez.
+4. **Fail-closed davran ve kör noktanı bildir.** Para, güvenlik veya kişisel veri taşıyan her path'te
+   belirsizlik reddetme yönünde çözülür. Her ölçüm aracı, neyi göremediğini kendi dosyasında yazar.
+5. **Root cause'u gideren en küçük değişikliği yap.** Aynı diff'e ilişkisiz temizlik, formatlama,
+   spekülatif abstraction veya istenmemiş bir API kırılması eklenmez.
 
 ---
 
 ## 1. Bir değişikliğin "done" tanımı
 
-Kod yazmadan önce: gözlemlenebilir hedef, kabul kriterleri, scope ve ayakta kalması gereken
-invariant'lar. Ardından mevcut kod, testleri ve **tüm call chain** okunur — değişen fonksiyon değil,
-içinde durduğu zincir. Planın dayandığı her dosyanın, route'un, komutun ve ayarın adından tahmin
-edilmek yerine gerçekten var olduğu doğrulanır.
+Kod yazmadan önce gözlemlenebilir hedef, kabul kriterleri, scope ve ayakta kalması gereken
+invariant'lar belirlenir. Ardından mevcut kod, testleri ve **tüm call chain** okunur; yalnızca
+değişen fonksiyon değil, onun içinde yer aldığı zincir incelenir. Planın dayandığı her dosyanın,
+route'un, komutun ve ayarın adından tahmin edilmek yerine gerçekten var olduğu doğrulanır.
 
-Sonra tutarlı en küçük değişiklik yazılır, çalışırken hedefli kontroller koşulur ve değişikliğin
-gerçekten gerektirdiği regression suite'i çalıştırılır. Hedefli bir test artı ekran görüntüsü
-regression geçişi sayılmaz; bunu baştan söylemek, sonradan yakalanmaktan ucuzdur.
+Bunun ardından tutarlı en küçük değişiklik yazılır, çalışma sırasında hedefli kontroller koşulur ve
+değişikliğin gerçekten gerektirdiği regression suite'i çalıştırılır. Hedefli bir test ile ekran
+görüntüsünün birleşimi regression geçişi sayılmaz; bunu baştan söylemek, sonradan fark etmekten çok
+daha ucuzdur.
 
-Kapanış, diff'in tamamını scope, güvenlik ve yan etki açısından okumak ve neyin çalıştırılıp ne
-döndüğünü kaydetmektir. Bilinçli olarak atlanan iş, gerekçesiyle birlikte atlanmış olarak yazılır.
+Kapanışta diff'in tamamı scope, güvenlik ve yan etki açısından okunur; neyin çalıştırıldığı ve ne
+döndürdüğü kaydedilir. Bilinçli olarak atlanan iş, gerekçesiyle birlikte atlanmış olarak yazılır.
 
 Davranışı koruyan refactor'lar uygulanmadan önce planlanır. Büyümüş bir modülün her bölünmesi kendi
-küçük değişikliği olarak yazılır ve kuralları eklenir: yalnızca bölünen birimin içinde hâlihazırda
-var olan kod taşınır, çıkarılan parça ince tutulur ve bağımlılıkları inject edilir, taşımayla aynı
-değişiklikte route adı veya response şekli değiştirilmez, mevcut testler import'lar dışında
-düzenlenmeden yeşil kalır.
+küçük değişikliği olarak ele alınır ve şu kurallara bağlanır: yalnızca bölünen birimin içinde
+hâlihazırda var olan kod taşınır, çıkarılan parça ince tutulur ve bağımlılıkları dışarıdan verilir,
+taşımayla aynı değişiklikte route adı veya response şekli değiştirilmez, mevcut testler import
+satırları dışında düzenlenmeden yeşil kalır.
 
 ---
 
 ## 2. Gate merdiveni
 
-Dört kontrol seti. Her biri ilk hatada duran bir zincir, böylece hangi komutun düştüğü hiç belirsiz
-kalmaz.
+Dört kontrol seti vardır. Her biri ilk hatada duran bir zincirdir; böylece hangi komutun düştüğü hiç
+belirsiz kalmaz.
 
 | Katman | Kapsam | Nerede |
 | --- | --- | --- |
@@ -71,12 +74,12 @@ Bunu kâğıt üstünde kalmaktan çıkaran iki şey var.
 
 **Asıl gate yereldeki hook'tur.** Package lifecycle üzerinden kendini kurar ve checkout dışında
 hiçbir şey yapmaz; böylece taze bir clone kimse ayar yapmadan korunur. Uzaktaki policy job'ı aynı
-scanner setini koşar, dolayısıyla yereli atlamak gecikmeden başka bir şey kazandırmaz.
+scanner setini koşar; dolayısıyla yereli atlamak gecikmeden başka bir şey kazandırmaz.
 
 **Escape hatch tabanı kapatamaz.** Belgelenmiş tek bir bypass var. Yalnızca hızlı gate'i atlar,
-secret scan'i asla; kendini stderr'e duyurur ve zaman kazanmak için ona uzanmak tavsiye
-edilmemekle kalmaz, kurallara aykırıdır. Tekil scanner içindeki istisnalar da aynı mantıkta: satır
-düzeyinde, yazılı gerekçeli ve bir kuralı sessizce susturmak yerine diff'te görünür.
+secret scan'i asla atlamaz; kendini stderr'e duyurur. Zaman kazanmak için ona uzanmak tavsiye
+edilmemekle kalmaz, kurallara aykırıdır. Tekil scanner içindeki istisnalar da aynı mantığa tabidir: satır
+düzeyindedir, yazılı gerekçelidir ve bir kuralı sessizce susturmak yerine diff'te görünür.
 
 Her CI step'i çıktısını bir log dosyasına yazar ve child process'in kendi exit code'uyla sonlanır;
 böylece hiçbir wrapper bir failure'ı geçen bir step'e çeviremez. Her job, yalnızca bir şey düştüğünde
@@ -87,8 +90,8 @@ bilinçli olarak dışarıda bırakan sanitize edilmiş bir diagnostic paketi ü
 
 ## 3. Ratchet: eski debt nasıl tutuluyor
 
-Codebase temizlenene kadar release yapmamak bir plan değildir. Debt'i görmezden gelmek de. Ortadaki
-yol, onu ölçmek, sabitlemek ve büyümesini fail ettirmektir.
+Codebase temizlenene kadar release yapmamak bir plan değildir. Debt'i görmezden gelmek de bir plan
+değildir. Ortadaki yol, onu ölçmek, sabitlemek ve büyümesini fail ettirmektir.
 
 **Sayısal ratchet** yalnızca aşağı inebilen tek bir tam sayıdır: design token'ları dışında kalan ham
 renk değerleri, API contract'ındaki gevşek schema girdileri, hedeflenenin altında bir tier ile
@@ -123,7 +126,7 @@ bir taban olarak kalır; asıl güvence dört başka şeyden gelir.
 CSRF, body parsing, rate limiting — gerçek uygulama composition'ı üzerinden test edilir; asla çıplak
 bir framework instance'ına mount edilmiş bir handler üzerinden değil. Bu ayrım teorik değil:
 production'a ulaşan iki defect, kolaycı test setup'larında görünmezken testler gerçek composition'ı
-ayağa kaldırdığı anda apaçık hâle geldi. Mevcut kısayollar bir baseline'da dondurulur, yenileri
+ayağa kaldırdığı anda apaçık hâle geldi. Mevcut kısayollar bir baseline'da dondurulur; yenileri
 düşer.
 
 **Önce kırmızı veren, doğru nedenle kırmızı veren regression testleri.** Önemsiz olmayan bir test,
@@ -139,30 +142,30 @@ Para path'lerinde bu, beklenen değeri yapısal olarak farklı bir yoldan hesapl
 olduğu kuralı ifade eder.
 
 **Karşılığını verdiği yerde mutation testing.** Para işleyen her modül için tek bir dosyayı mutate
-eden ve yalnızca o modülün testlerini koşan dar bir config. Threshold'lar, kanıtlanabilir biçimde
+eden ve yalnızca o modülün testlerini koşan dar bir config kullanılır. Threshold'lar, kanıtlanabilir biçimde
 equivalent olan mutant'lar bir yorumda hesaba katılarak ölçülmüş koşulardan gelir; böylece break
 değeri "*yeni* hayatta kalan her mutant koşuyu düşürür" anlamına gelir. Threshold'lar coverage
-iyileştikçe yükselir. Bir koşuyu geçirmek için asla düşmez.
+iyileştikçe yükselir. Bir koşuyu geçirmek için asla düşürülmez.
 
 Bunların altında üç alışkanlık var:
 
 - **Determinizm umut edilmez, kurulur.** Rastgele sleep yok; asenkron assertion'lar bir koşulu
-  bekler. Zamana bağlı mantık mock'lanmak yerine saati parametre olarak alır — bu aynı zamanda onu
-  mutate etmeyi ucuzlatır. Assertion'lar açık UTC timestamp'leriyle yazılır.
+  bekler. Zamana bağlı mantık mock'lanmak yerine saati parametre olarak alır — bu, söz konusu mantığı
+  mutate etmeyi de ucuzlatır. Assertion'lar açık UTC timestamp'leriyle yazılır.
 - **Hiçbir şey ölçmemiş bir probe, failure'dır.** Bir isolation testi sınır ötesi hiç deneme
   yapmadıysa ya da control probe kendi tarafında hiç başarılı olmadıysa, koşu temiz sonuç bildirmek
   yerine boş ölçüm olarak düşer. Bu, [güvenlik metodolojisindeki](METHODOLOGY.tr.md) negative
   control'ün teslim tarafındaki ikizidir.
-- **Flake araştırılır, retry'lanmaz.** Özellikle accessibility hataları: bunlar gürültü değil,
-  hukuki boyutu olan defect'lerdir. Doğası gereği kırılgan bir suite'te flake'in kaynağı ortadan
-  kaldırılır — animasyon kapatılır, font yüklenmesi beklenir — gerçek bir regression'ı gizleyecek bir
-  retry'a sarılmaz.
+- **Flake araştırılır, retry'lanmaz.** Bu kural özellikle accessibility hataları için geçerlidir:
+  bunlar gürültü değil, hukuki boyutu olan defect'lerdir. Doğası gereği kırılgan bir suite'te flake'in kaynağı ortadan
+  kaldırılır — animasyon kapatılır, font yüklenmesi beklenir — ve gerçek bir regression'ı gizleyecek
+  bir retry'a sarılmaz.
 
 Doğruluğun ötesinde, haftalık bir non-functional katman sistemin baskı altında sağlıklı kalıp
 kalmadığını sorar: bir load smoke'u, uzun bir soak ve hataların yokluğunu değil **failure'ın şeklini**
 assert eden bir stress suite'i. Çekişmeli bir randevu slot'u tam olarak bir kazanan üretmelidir.
 Hostile input, process'i devirmeden reddedilmelidir. Aynı anda yarışan tenant'lar birbirinin verisini
-okumamalıdır. Bilinçli backpressure kalkanın çalıştığı sayılır; başka bir şey sayılmaz. Load
+okumamalıdır. Bilinçli backpressure, kalkanın çalıştığının kanıtı sayılır; başka hiçbir şey sayılmaz. Load
 threshold'ları kulağa rahat geldiği için değil, ölçülmüş bir plateau'dan kalibre edilir.
 
 ---
@@ -180,17 +183,17 @@ karşılaştırır; bozuk bir walker'ın sessizce geçmemesi için bulunan route
 assertion'ı koyar. Dürüst olan sayı runtime'ınkidir ve ikisinin ayrışması beklenir. Coverage'ın
 göremediğini üç kardeş kontrol korur: çözülemeyen `$ref`'ler — review'da iyi görünürken dokümanı her
 katı consumer için geçersiz kılar; eski dialect'ten kalma keyword'ler — güncel bir validator onları
-reddetmez, yok sayar, yani sessiz anlam kaybıdır; ve security tanımı olmayan operation'lar — her
+reddetmez, yok sayar, yani bu sessiz bir anlam kaybıdır; ve security tanımı olmayan operation'lar — her
 entegratör ve code generator için public okunur.
 
 Modül sınırları iyi niyetle değil kontrollerle korunur. Server kodu browser kodunu import etmez.
 Modül graph'ında cycle yoktur; bu, parse edilmiş bir import graph'ı üzerinde, runtime'da yok olan
-type-only edge'ler dışarıda bırakılarak tespit edilir. Her iki allowlist de sıfırdadır, ki bu onları
-ratchet olmaktan çıkarıp invariant'a dönüştürür. Browser'dan API'ye giden tüm trafik; credential'ları,
+type-only edge'ler dışarıda bırakılarak tespit edilir. Her iki allowlist de sıfırdadır; bu da onları
+ratchet olmaktan çıkarıp invariant'a dönüştürür. Browser'dan API'ye giden tüm trafik, credential'ları,
 header'ları, timeout'ları ve circuit breaker'ı sahiplenen tek bir client'tan geçer. Onu bypass eden
 her şeyin bir baseline'da yazılı gerekçesi olmak zorundadır.
 
-Type check'i düz tek bir pass yerine project graph'ı üzerinde build modunda koşar; çünkü project'lerin
+Type check, düz tek bir pass yerine project graph'ı üzerinde build modunda koşulur; çünkü project'lerin
 lib ve target ayarları farklıdır ve hepsini tek pass'e indirmek server kodunu DOM global'lerine karşı
 kontrol etmek anlamına gelir.
 
@@ -208,12 +211,12 @@ database'de aynı tabloları oluşturmak için yarışamaz. Crash sonrası recov
 kanıtlanabilir biçimde ölmüş bir process'ten geri alır ve liveness belirlenemediğinde dosya yaşına
 bakan staleness kontrolüne düşer — çünkü senkron bir migration event loop'u bloke eder, uzun süren
 bir index build'i hayattayken kendi timestamp'ini yenileyemez ve yalnızca yaşa bakan bir kural,
-boot etmekte olan bir peer'in lock'u altından çekmesine izin verirdi. Bu, mock'larla değil, aynı
+lock'un boot etmekte olan bir peer'in altından çekilmesine izin verirdi. Bu, mock'larla değil, aynı
 dosya üzerinde çekişen gerçek process'lerle doğrulanır.
 
 Down migration yoktur. Rollback, bir snapshot'tan restore etmektir. Müşteri başına tek stack çalışan
 bir deployment'ta dürüst cevap budur ve bunu bir karar olarak yazmak, bir incident sırasında
-keşfetmeye yeğdir.
+keşfetmekten yeğdir.
 
 Operasyonel prosedürler hatırlanmaz, script'lenir: retention ve pruning içeren zamanlanmış backup'lar,
 uyarı ve kritik kademeli boyut monitoring'i, path traversal'a karşı doğrulama yapan bir restore ve
@@ -225,30 +228,30 @@ sıra, bir sonraki mimari kararı tetikleyen sayıların yanında, bir runbook't
 ## 7. Güvenlik duruşu
 
 Her savunma primitifi kendi modülünde yaşar ve kapattığı saldırıyı veya incident'ı adlandıran bir
-yorumla açılır. Bu, her birini tek başına incelenebilir tutar ve gerekçeyi refactor'lar boyunca kodun
+yorumla açılır. Bu, her birini tek başına incelenebilir kılar ve gerekçeyi refactor'lar boyunca kodun
 yanında tutar.
 
 Para hareket ettiren callback'ler hostile input kabul edilir: önce signature doğrulanır, dönen token
 constant-time karşılaştırmayla intent üzerindeki token'a bind edilir, authoritative kayıt
 provider'dan çekilir, tahsil edilen tutar beklenenle karşılaştırılır ve ancak ondan sonra state
 değişir. Tutarlar floating point'te çarpılmak yerine digit string'inden parse edilir; çünkü floating
-point yolu tutarsız yuvarlar ve doğru bir settlement'ı eksik okuyabilir. State geçişleri guard'ını
+point yolu tutarsız yuvarlar ve doğru bir settlement'ı eksik okuyabilir. State geçişleri, guard'ını
 SQL predicate'inin içinde tekrarlar, böylece eşzamanlı bir callback read-then-write race'ini
 kazanamaz; terminal state'ler terminaldir ve idempotency bir uygulama kontrolü değil database
 constraint'idir.
 
 Bir kontrolün birbiriyle uyuşması gereken iki yarısı varsa — örneğin body parsing'den muaf bir path
-ile aynı path'in CSRF muafiyeti — structural bir test ikisini birden assert eder ve eksik girdi kadar
+ile aynı path'in CSRF muafiyeti — structural bir test ikisini birden assert eder ve eksik girdide olduğu kadar
 stale girdide de düşer; böylece bir sonraki ekleme tek tarafı bağlanmış hâlde yayına giremez.
 
-Yetki tier'ları tartışılmaz, ölçülür. "Kaç endpoint olması gerekenden düşük korunuyor" sorusu iki ayrı
+Yetki tier'ları tartışılmaz, ölçülür. "Kaç endpoint olması gerekenden düşük bir tier'la korunuyor" sorusu iki ayrı
 günde iki ayrı cevap üretince, çözüm üçüncü bir görüş değil, aynı census'ü her seferinde aynı şekilde
 üreten bir script oldu: hem sayı hem liste donduruldu, böylece bir girdiyi başkasıyla değiştirmek
 yenisini gizleyemez. Behavioural bir test bunu destekler; çünkü dependency injection'ın guard'ı
 gizlediği her yerde metin taraması stale olur.
 
 Secret scan iki derinlikte yapılır: working tree'de ve commit'lenmiş history'de — böylece bir zamanlar
-commit'lenip sonra silinmiş bir credential hâlâ push'u engeller. Supply chain kod olarak policy'dir:
+commit'lenip sonra silinmiş bir credential hâlâ push'u engeller. Supply chain, kod olarak policy'dir:
 sabitlenmiş lockfile formatı, yalnızca registry üzerinden resolution, install script'i çalıştırmasına
 izin verilen paketler için bir allowlist, tam commit hash'ine pin'lenmiş üçüncü taraf CI action'ları,
 her workflow'da explicit permission tanımı ve untrusted input'un shell komutlarına interpolate
@@ -269,16 +272,16 @@ neyin girdiğini, hangi kuralların uygulandığını kaydeden bir manifest eşl
 
 Verification, working tree'yi değil **extract edilmiş kopyayı** yeniden build edip yeniden test eder.
 Verifier hash'i kontrol eder, absolute path'leri ve path traversal'ı reddeden bir reader ile açar ve
-ardından install, policy scanner'ları, lint, build ve test suite'lerini working directory extract
+ardından install, policy scanner'ları, lint, build ve test suite'lerini, working directory extract
 edilmiş kopyanın içindeyken koşar. Engellenmiş bir subprocess, environment blocker olarak raporlanır
 ve CI'da fatal'dır; böylece kontrol sessizce bir dosya listelemesine indirgenemez.
 
-Deployment, halihazırda publish edilmiş bir artifact'ı promote eder; asla yenisini build etmez. Remote
+Deployment, hâlihazırda publish edilmiş bir artifact'ı promote eder; asla yenisini build etmez. Remote
 script checksum'ı doğrular, release'e özel bir dizine extract eder, var olanın üzerine yazmayı
 reddeder, önce veriyi snapshot'lar, host üzerinde install eder, çıkan release'i kaydeder, canlı
 symlink'i çevirir, servisi restart eder, health endpoint'lerini poll eder ve failure hâlinde otomatik
 rollback yapar. Readiness endpoint'i gerçek bir dependency probe'udur — gerçek bir query ve gerçek
-filesystem kontrolleri — çünkü koşulsuz "healthy" dönen bir endpoint, bozuk bir instance'ı rotasyonda
+filesystem kontrolleri — çünkü koşulsuz "healthy" döndüren bir endpoint, bozuk bir instance'ı rotasyonda
 tutar.
 
 Release dokümantasyonu, yeşil bir test koşusunun production sign-off ile aynı şey olmadığını açıkça
@@ -290,13 +293,13 @@ dışı bir backup.
 
 ## 9. Dark launch ve ön koşul olarak compliance
 
-Önemli feature'lar kapalı yayınlanır. Operatörlere onları listeleyen tek bir küratörlü catalog vardır
-ve bu catalog'un her flag'e bakışı, onu tüketen kodun kendi semantiğini yansıtmak zorundadır — girdi
-başına o kod işaret edilerek — aynı kontrolün daha gevşek bir kopyasını yeniden yazmak yerine.
+Önemli feature'lar kapalı yayınlanır. Operatörler için onları listeleyen tek bir küratörlü catalog vardır
+ve bu catalog'un her flag'e bakışı — girdi başına o kod işaret edilerek — aynı kontrolün daha gevşek
+bir kopyasını yeniden yazmak yerine onu tüketen kodun kendi semantiğini yansıtmak zorundadır.
 
 Status vocabulary'sinin üç değeri bilinçlidir. *On*, bir precondition sonradan bozulmuş olsa bile
-gerçekte neyin çalıştığını doğru söyler. *Off*, dark ve hazır demektir. *Blocked*, dark ve
-karşılanmamış bir precondition var demektir.
+gerçekte neyin çalıştığını doğru söyler. *Off*, dark ve hazır demektir. *Blocked*, dark demektir ve
+karşılanmamış bir precondition olduğunu gösterir.
 
 İşin ilginç yanı, neyin precondition sayıldığıdır. Makinece kontrol edilebilir olguların — bir key
 mevcut, bir provider yapılandırılmış — yanında insani olanlar durur: bir aydınlatma metninin
@@ -307,13 +310,13 @@ kontrolün makine tarafından okunabilir kalması için aynı flag mekanizmasıy
 
 Rollout yüzdeleri, flag ve entity üzerinden stable bir hash ile bucket'lanır; böylece kısmi bir
 rollout her evaluation'da aynı entity'leri içerir, request başına yeniden karılmaz. Her evaluation,
-kararı veren kuralı adlandıran machine-readable bir reason döner.
+kararı veren kuralı adlandıran machine-readable bir reason döndürür.
 
 Dışa giden entegrasyonlar dayanıklı bir outbox ve bir worker üzerinden yürür; böylece kullanıcıya
 bakan bir request hiçbir zaman üçüncü tarafı beklemez. Idempotency, logical event üzerinde bir unique
 index'tir. Retry'lar cap'li exponential backoff ile yapılır ve tükenmiş job'lar kaybolmak yerine
 operatöre görünür explicit bir "dead" state'ine geçer. Düzenleyici yükümlülük taşıyan entegrasyonlar
-fail-closed davranır ve primary source'unu modül başlığında belirtir: onay onaylar, ret **veya hiçbir
+fail-closed davranır ve primary source'unu modül başlığında belirtir: onay izin verir, ret **veya hiçbir
 kaydın bulunmaması** engeller; çünkü kayıt yoksa eylem hukuka uygun değildir. Cache'leri kesin cevap
 için uzun, hata için kısa bir TTL kullanır; böylece bir kesinti permissive tarafa değil,
 blocked-ama-hızlı-toparlanır tarafına degrade olur.
@@ -326,24 +329,24 @@ Birinin üzerine iş yapabileceği belgeler her iddiayı ya doğrulanmış — o
 da açık olarak işaretler. Üçüncü bir durum yoktur ve işaretsiz olan doğrulanmamış sayılır.
 
 Ölçüm içeren her belge, ölçümün alındığı commit'i ve tarihi kaydeder ve sayıların bayatladığını
-söyler. Stale sayı taşıyan bir belge, okuyucuyu içindeki diğer her şeyi kontrol etmeye davet eder; ki
-bu, belgenin yazılma amacının tam tersidir.
+söyler. Stale sayı taşıyan bir belge, okuyucuyu içindeki diğer her şeyi kontrol etmeye davet eder; bu ise
+belgenin yazılma amacının tam tersidir.
 
-Karar kayıtları (ADR) sabit bir şekle sahiptir: tarih, durum ve kararı tetikleyen bulguya geri
+Karar kayıtlarının (ADR) sabit bir şekli vardır: tarih, durum ve kararı tetikleyen bulguya geri
 bağlantı içeren bir başlık; her gözlemin somut bir dosyayı veya ayarı işaret ettiği gözlem-kanıt
 tablosu biçiminde context; tek cümlelik karar; ardından işin "şimdi yapılacak" — her maddesi onu
 tutacak kontrole bağlanmış — ve "adlandırılmış sayısal trigger geldiğinde yapılacak" diye ikiye
 ayrılması. Kapanış, koddan türetilemeyen tek girdiyi adlandırıp onun için karar istemektir.
 
 Audit bulguları sabit ID'ler alır ve sonra dolaşır: aynı ID karar kaydında, fix'i zorlayan kontrolde
-ve takip işinde görünür. Bir audit ayrıca hangi kontrollerin gerçekten koşturulduğunu kaydeder ve
+ve takip işinde görünür. Bir audit ayrıca hangi kontrollerin gerçekten koşulduğunu kaydeder ve
 neyi kapsamadığını açıkça söyler.
 
 Nedensellik iddiası taşıyan her şey, veri var olmadan önce pre-register edilir — primary metric ve
 hipotez, exclusion'lar, stopping rule ve hangi secondary metric'lerin manşet iddiada
 kullanılamayacağı — ve tasarım, pre-register edilen her kuralı onu zorlayan teste bağlayan bir tablo
 taşır. Simülasyon işleri, gate'i "asla kullanılabilir bir sonuç üretmemek" olan bir null arm'ın
-yanında, geçene kadar ayarlanmış değil analitik olarak türetilmiş bir tolerance'a karşı kontrol edilen
+yanında, geçene kadar ayarlanmış değil, analitik olarak türetilmiş bir tolerance'a karşı kontrol edilen
 known-truth arm'ını koşar.
 
 ---
@@ -372,8 +375,8 @@ rapora benzer şekilde üretilmiş sentetik veriyle yeniden üretilir. Gerçekte
 gerektiren adımlar hazırlanır ve devredilir, çalıştırılmaz.
 
 **Geliştirme ortamı katlanılan değil, mühendisliği yapılan bir yüzeydir.** Build ve start öncesinde
-koşan bir preflight script'i gerekli dosya ve dizinleri denetler ve native dependency'leri yüklendiğine
-güvenmek yerine gerçekten çalıştırır. Bilinen platform arızaları kabile bilgisi yerine repoya
+koşan bir preflight script'i gerekli dosya ve dizinleri denetler ve native dependency'lerin yüklendiğine
+güvenmek yerine onları gerçekten çalıştırır. Bilinen platform arızaları, ağızdan ağıza aktarılan bilgi yerine repoya
 commit'lenmiş script'lerle karşılanır. Ağır job'lar üst üste binmez ve biri başlamadan önce mevcut
 headroom kontrol edilir.
 
@@ -389,8 +392,8 @@ scope'u vardır ve birçoğu kendi kör noktasını kendi dosyasında yazar. Ye�
 kötüleşmediği anlamına gelir.
 
 **Beyan edilen governance, uygulanan governance değildir.** Required check'leri ve review'ları
-tanımlayan bir manifest, hiçbiri hosting platformunda enforce edilmiyorken kendi içinde tutarlı
-doğrulanabilir. İkisini zihinde ayrı tutmakta fayda var.
+tanımlayan bir manifest'in, hiçbiri hosting platformunda enforce edilmiyorken kendi içinde tutarlı
+olduğu doğrulanabilir. İkisini zihinde ayrı tutmakta fayda var.
 
 **Süreç, ikinci bir çift gözün yerine geçmez.** Hassas bir değişikliğin bağımsız review'ı, bir şey onu
 fiilen zorlamadığı sürece bir mekanizma değil bir taahhüttür. Küçük bir ekipte bu boşluk gerçektir ve
@@ -398,5 +401,5 @@ fiilen zorlamadığı sürece bir mekanizma değil bir taahhüttür. Küçük bi
 
 **Bazı tercihler yalnızca bu ölçekte doğrudur.** Bir metrics stack'i işletmek yerine operasyonel
 görünürlüğü query zamanında hesaplamak, müşteri başına tek instance için makul, elli instance için
-kötü bir trade-off'tur. Buradaki her mimari seçimin, doğru olmaktan çıktığı bir büyüklük vardır; işe
+kötü bir trade-off'tur. Buradaki her mimari seçimin doğru olmaktan çıktığı bir büyüklük vardır; işe
 yarayan kısım, oraya vardığını sana hangi sayısal trigger'ın söyleyeceğini bilmektir.
