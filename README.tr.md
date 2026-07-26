@@ -13,20 +13,20 @@ kaybolduğunu gösteremez ve elle kapatılan her ay hem maliyet hem risk üretir
 
 ### Taklit edilmesi zor üç şey
 
-- **Bir ürünün tamamını tek başıma taşıdım.** Ödeme alan, kişisel veri işleyen ve GPU/ML workload'u
-  çalıştıran, canlı ve multi-tenant bir ticari SaaS'ın tek teknik sahibiydim. Mimari, API, web
-  arayüzü, release süreci, KVKK dokümantasyonu ve handover paketi bana aitti.
-- **Başkalarının incelemiş olduğu para kodunda hata bulurum.** İşlemleri doğrulayan ve ödemesini
-  yapan, yoğun biçimde denetlenmiş bir bileşen olan ERC-4337 EntryPoint v0.8'de deterministik bir
-  doğruluk kusurunu iki ayrı ortamda tekrar ürettim; birincisini negatif kontrollü bir kanıtla,
+- **Bir ürünün tamamını tek başıma taşıdım.** Canlı, multi-tenant bir ticari SaaS'ın tek teknik
+  sahibiydim. Ürün ödeme alıyor, kişisel veri işliyor ve GPU/ML workload'u çalıştırıyordu. Mimari,
+  API, web arayüzü, release süreci, KVKK dokümantasyonu ve handover paketi bana aitti.
+- **Başkalarının incelemiş olduğu para kodunda hata bulurum.** ERC-4337 EntryPoint v0.8, işlemleri
+  doğrulayıp ödemesini yapan ve yoğun biçimde denetlenmiş bir bileşendir. Burada deterministik bir
+  doğruluk kusurunu iki ayrı ortamda tekrar ürettim. İlkini negatif kontrollü bir kanıtla,
   ikincisini digest ile sabitlenmiş bağımsız bir ortamda doğruladım. Bir mutabakat defterine ya da
   bir ödeme callback'ine de aynı yöntemle bakarım.
 - **Kanıt "dur" diyorsa dururum.** Yaklaşık 16,7 milyon dolarlık bir incelemede kendi kanıtım en
   güçlü hipotezimi çürüttüğü için çalışmayı yazılı bir NO-GO ile bitirdim; hiçbir bildirim
   göndermedim. Sayılar umduğunuz sonucu desteklemiyorsa bunu ilk benden duyarsınız.
 
-Asıl önemli olan üçüncüsüdür. Bu portföydeki her iddia doğrulanabilir; doğrulanamayacak olanlar ise
-açıkça öyle işaretlenmiştir.
+Asıl önemli olan üçüncüsüdür. Bu portföydeki her iddia doğrulanabilir. Doğrulanamayanları ise
+açıkça belirttim.
 
 > ### Sabit kapsamlı iş alıyorum
 >
@@ -79,8 +79,8 @@ görüntüsü toplamak arasındaki fark budur.
 
 ## Nasıl çalıştığım — yazılı olarak
 
-Bu depoda iki metodoloji belgesi bulunuyor. Bunlar pazarlama metni değil, fiilen kendime
-uyguladığım standartlardır; aradığınız kişi olup olmadığıma karar vermenizin de en hızlı yoludur.
+Bu depoda iki metodoloji belgesi var. Bunlar pazarlama metni değil, fiilen kendime uyguladığım
+standartlar. Aradığınız kişi miyim, en hızlı buradan görürsünüz.
 
 - **[Teslim ve Quality Gate Metodolojisi](DELIVERY-METHODOLOGY.tr.md)** — bir değişikliğin
   production'a nasıl çıktığı: gate merdiveni, eski debt'in nasıl dondurulup aşağı zorlandığı,
@@ -90,8 +90,8 @@ uyguladığım standartlardır; aradığınız kişi olup olmadığıma karar ve
   beş halkalı zincir ve değerlendirmeye hazır paketleme.
 
 İkisinin de dayandığı ilke aynı: **iddiadan önce kanıt.** Çalıştırılan komut, çıktısı ve exit code'u
-olmadan hiçbir şeye "düzeldi", "geçiyor" veya "bitti" denmez — çalıştırılmayan ne varsa açıkça
-söylenir.
+olmadan hiçbir şeye "düzeldi", "geçiyor" veya "bitti" denmez. Çalıştırılmayan her şey açıkça
+belirtilir.
 
 Ayrıca mutabakat motorunun kaynak kodu, testleri ve benchmark'ı herkese açıktır; iddia ettiğim
 sayıyı kendiniz çalıştırarak doğrulayabilirsiniz.
@@ -105,12 +105,13 @@ sayıyı kendiniz çalıştırarak doğrulayabilirsiniz.
 [Vaka çalışması](projects/04-aura-photoreal-3d-clinic-platform/README.tr.md) ·
 [English](projects/04-aura-photoreal-3d-clinic-platform/)
 
-**Durum.** Hastaya özel görsel simülasyonu ve günlük klinik operasyonunu, hasta verisinin
-işlenmesinden ödün vermeden tek bir ticari üründe birleştirmek gerekiyordu.
+**Durum.** Hastaya özel görsel simülasyon ile günlük klinik operasyonu tek bir ticari üründe
+birleşmeliydi. Bunu yaparken hasta verisinin işlenmesinden ödün verilemezdi.
 
-**Yaptığım.** Bu benim kendi ticari ürünüm; tamamını tek başıma yazdım. Ürün, web uygulaması, API ve
-GPU/ML workload'larının teknik sahibi bendim. Multi-tenant mimari, ödeme akışı, KVKK kontrolleri,
-otomatik quality gate'ler ile release ve deployment süreci bu kapsamdaydı.
+**Yaptığım.** Bu benim kendi ticari ürünüm; tamamını tek başıma yazdım. Ürünün, web uygulamasının,
+API'nin ve GPU/ML workload'larının teknik sahibi bendim. Multi-tenant mimari, ödeme akışı, KVKK
+kontrolleri ve otomatik quality gate'lerle işleyen release ve deployment süreci bu işin
+kapsamındaydı.
 
 **Sonuç.** Gizlilik kontrolleri ve operasyonel devir paketiyle birlikte kliniğe hazır hâle gelmiş
 bir ticari ürün. Fikrî mülkiyet devir için hazırlandığından kaynak kod kapalı tutuluyor; vaka
@@ -128,15 +129,17 @@ bir ticari ürün. Fikrî mülkiyet devir için hazırlandığından kaynak kod 
 **Durum.** PSP raporları, banka ekstreleri ve pazaryeri hakedişleri aynı parayı farklı biçimlerde
 anlatır; elle mutabakat yanlış eşleşme ve sessiz kayıp üretir.
 
-**Yaptığım.** Üç kaynağı içeri alıp tekilleştiren, kesin → toleranslı → grup eşleştirme zincirini
-deterministik biçimde uygulayan, eşleşmeyen her kaydı sınıflandıran ve correctness invariant'ları
-ihlal edildiğinde sessizce devam etmek yerine duran Go/PostgreSQL servisi.
+**Yaptığım.** Go ve PostgreSQL ile bir mutabakat servisi yazdım. Servis üç kaynağı içeri alıp
+tekilleştirir, kesin → toleranslı → grup eşleştirme zincirini deterministik biçimde uygular ve
+eşleşmeyen her kaydı sınıflandırır. Bir correctness invariant'ı ihlal edilirse sessizce devam etmez,
+durur.
 
 **Sonuç.** Seed'li sentetik benchmark yaklaşık 50 bin işlemin mutabakatını yaklaşık 4 saniyede
 tamamlıyor: **enjekte edilmiş 7 uyuşmazlık tipinin 7'si de tespit edildi, 0 yanlış eşleşme, 0
 kaçırılmış eşleşme.** Bu kapsamda hiçbir kayıt sonuçtan sessizce kaybolmuyor; manuel inceleme, izi
 sürülemeyen bir bakiye kalanından değil, adı konmuş bir uyuşmazlık sınıfından başlıyor. *(Rakamlar
-üretim verisinden değil, herkese açık sentetik veri setinden gelir; kendiniz de çalıştırabilirsiniz.)*
+üretim verisinden değil, herkese açık sentetik veri setinden gelir; kendiniz de
+çalıştırabilirsiniz.)*
 
 ```mermaid
 flowchart LR
@@ -154,12 +157,12 @@ flowchart LR
 
 ### 3. Bağımsız güvenlik incelemeleri
 
-Para ve varlık taşıyan kodu, kendi belgelenmiş kurallarına karşı bağımsız olarak incelediğim iki
-çalışma. İkisi de aynı disipline dayanıyor: kanıtlanamayan bulgu raporlanmaz.
+Para ve varlık taşıyan kodu, kendi belgelenmiş kurallarına göre bağımsız olarak incelediğim iki
+çalışma var. İkisi de aynı disipline dayanıyor: kanıtlanamayan bulgu raporlanmaz.
 
-**ERC-4337 EntryPoint v0.8 incelemesi** — yoğun denetlenmiş bir bileşende düşük şiddetli
-deterministik bir doğruluk kusuru, negatif kontrollü kanıtla ve digest ile sabitlenmiş ikinci bir
-ortamda olmak üzere iki kez tekrar üretildi.
+**ERC-4337 EntryPoint v0.8 incelemesi** — yoğun denetlenmiş bir bileşende düşük şiddetli,
+deterministik bir doğruluk kusuru buldum. Kusuru iki kez tekrar ürettim: önce negatif kontrollü bir
+kanıtla, sonra digest ile sabitlenmiş ikinci bir ortamda.
 [Vaka çalışması](projects/02-erc4337-entrypoint-review/README.tr.md)
 
 **Canlı protokol denetimi (~16,7M $) — disiplinli NO-GO** — en güçlü hipotez önce tekrar üretildi,
@@ -178,7 +181,7 @@ yerine ilk adımı ucuz ve geri dönülebilir yapıyorum:
   Devam etmemeye karar verseniz de rapor sizde kalır.
 - **Milestone bazlı ödeme.** Peşin toplu ödeme yok; her teslim parçası kendi ödemesini taşır.
 - **İlk milestone'da yazılı kabul kriteri.** Kriteri karşılamazsam o milestone'u faturalamam. Bunu
-  yazmamın sebebi, maliyetinin bana ait olmasıdır; referansın yerini tutan da budur.
+  yazıyorum çünkü maliyeti bana kalıyor. Referans listesinin yerini tutan da bu.
 
 Sonrasındaki akış:
 
@@ -226,5 +229,5 @@ sistemleri · mutabakat · API entegrasyonları · otomatik test ve CI · Docker
 
 ---
 
-*Bu portföy, işler tamamlandıktan sonra derlenip yayımlanmıştır. Commit tarihleri yayımlama ve
-dokümantasyon geçmişini yansıtır, orijinal geliştirme takvimini değil.*
+*Bu portföy, işler tamamlandıktan sonra derlenip yayımlandı. Commit tarihleri geliştirme takvimini
+değil, yayımlama ve dokümantasyon geçmişini gösterir.*
