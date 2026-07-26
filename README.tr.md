@@ -32,7 +32,8 @@ edilemeyecek olanlar da öyle olduğu yazılarak işaretlenmiştir.
 > Problemi, mevcut sistemi ve beklediğiniz sonucu yazın; kapsamı, süreyi ve teslim edilecekleri
 > yazılı olarak geri göndereyim. İlk görüşme ve ön değerlendirme ücretsizdir.
 >
-> **[E-posta gönderin →](mailto:hilberspace@gmail.com)**
+> **[E-posta →](mailto:hilberspace@gmail.com)** · **[WhatsApp →](https://wa.me/905431064025)** ·
+> **[+90 543 106 40 25](tel:+905431064025)**
 
 **atilgandev** · 📍 Türkiye · Türkçe yürütülen projeler, Türkçe dokümantasyon ·
 [GitHub profili](https://github.com/hilberspace-dev) ·
@@ -189,8 +190,10 @@ sistemleri · mutabakat · API entegrasyonları · otomatik test ve CI · Docker
 
 ## İletişim
 
-Sabit kapsamlı bir iş için [e-posta gönderin](mailto:hilberspace@gmail.com). Şunları yazarsanız ilk
-dönüşte kapsam ve süre tahmini paylaşabilirim:
+**Telefon / WhatsApp:** [+90 543 106 40 25](tel:+905431064025) ·
+**E-posta:** [hilberspace@gmail.com](mailto:hilberspace@gmail.com)
+
+Şunları paylaşırsanız ilk dönüşte kapsam ve süre tahmini verebilirim:
 
 - çözülmesi gereken problem ve bugün nasıl idare edildiği
 - mevcut sistem ve teknoloji yığını

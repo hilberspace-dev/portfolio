@@ -35,7 +35,8 @@ the parts that cannot be checked are labelled as such.
 > Send the problem, the current system and the outcome you expect. You get the scope, the timeline
 > and the deliverables back in writing. The first call and the initial assessment are free.
 >
-> **[Email me →](mailto:hilberspace@gmail.com)**
+> **[Email →](mailto:hilberspace@gmail.com)** · **[WhatsApp →](https://wa.me/905431064025)** ·
+> **[+90 543 106 40 25](tel:+905431064025)**
 
 **atilgandev** · 📍 Türkiye · working with companies in Türkiye and internationally ·
 [GitHub profile](https://github.com/hilberspace-dev) ·
@@ -195,8 +196,10 @@ specifications, tickets, documentation and code review. Async-first collaboratio
 
 ## Contact
 
-[Email me](mailto:hilberspace@gmail.com) for fixed-scope work. Include these and you get a scope and
-timeline estimate on the first reply:
+**Phone / WhatsApp:** [+90 543 106 40 25](tel:+905431064025) ·
+**Email:** [hilberspace@gmail.com](mailto:hilberspace@gmail.com)
+
+Include these and you get a scope and timeline estimate on the first reply:
 
 - the problem, and how it is being handled today
 - the current system and stack
