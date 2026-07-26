@@ -11,17 +11,21 @@ I build backend systems for the places where the payment, the invoice and the re
 The work has a common shape: money or records are going missing somewhere, nobody can point at
 exactly where, and every month closed by hand costs both money and risk.
 
+🇹🇷 **Türkiye'deki şirketler için:** [Türkçe portföy →](README.tr.md)
+
 ### Three things that are hard to fake
 
-- **I have owned a whole product alone.** Sole technical ownership of a live, multi-tenant commercial
-  SaaS that takes payments, processes personal data and runs a GPU/ML workload — architecture,
-  API, web, release process, compliance documentation and the handover package.
-- **I found a real defect in code that top firms had already audited.** A deterministic correctness
-  defect in ERC-4337 EntryPoint v0.8, reproduced twice: once with a negative-controlled proof, once
-  on an independently pinned second environment.
-- **I stopped a ~$16.7M finding because my own evidence refuted it.** After ~45M blocks of on-chain
-  forensics and a pinned-block proof, the leading hypothesis did not hold. Nothing was submitted.
-  I would rather report a defensible nothing than a plausible something.
+- **I have carried a whole product alone.** Sole technical ownership of a live, multi-tenant
+  commercial SaaS that takes payments, processes personal data and runs a GPU/ML workload —
+  architecture, API, web, release process, compliance documentation and the handover package.
+- **I find defects in money-handling code that others have already reviewed.** In ERC-4337 EntryPoint
+  v0.8 — a heavily audited component that validates and pays for transactions — I reproduced a
+  deterministic correctness defect twice: once with a negative control, once on an independently
+  pinned second environment. That is the same method I point at a reconciliation ledger or a payment
+  callback.
+- **I stop when the evidence says stop.** A ~$16.7M investigation ended in a written NO-GO after my
+  own proof refuted my leading hypothesis. Nothing was submitted. If your numbers do not support the
+  conclusion you were hoping for, you will hear it from me first.
 
 The third one is the one worth hiring for. Everything I claim in this portfolio can be checked, and
 the parts that cannot be checked are labelled as such.
@@ -33,7 +37,7 @@ the parts that cannot be checked are labelled as such.
 >
 > **[Email me →](mailto:hilberspace@gmail.com)**
 
-📍 Türkiye · working with companies in Türkiye and internationally ·
+**atilgandev** · 📍 Türkiye · working with companies in Türkiye and internationally ·
 [GitHub profile](https://github.com/hilberspace-dev) ·
 [**🇹🇷 Türkçe portföy**](README.tr.md)
 
