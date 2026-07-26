@@ -6,10 +6,10 @@ My evidence standard for auditing a codebase, proving a defect, and packaging it
 can act on without asking follow-up questions. It is protocol-agnostic; the worked example that
 produced it was an ERC-4337 EntryPoint review.
 
-This document is deliberately narrower than the portfolio's general delivery process: it covers
-adversarial review, defect proof and triager-ready packaging. The
-[portfolio README](README.md#engineering-process) describes the B2B delivery workflow used for
-backend work.
+This document is deliberately narrower than my general delivery process: it covers adversarial
+review, defect proof and triager-ready packaging. For how a change reaches production — the gate
+ladder, ratcheted debt baselines, tests that detect rather than execute, release verification and
+rollback — see the [Delivery & Quality-Gate Methodology](DELIVERY-METHODOLOGY.md).
 
 **North star: evidence before assertions.** A finding is worth reporting only when a running proof ties
 an attacker-controlled input to a violated invariant with measured impact on an honest party, and the

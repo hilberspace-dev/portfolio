@@ -6,9 +6,11 @@ Bir kod tabanını denetlerken, kusuru kanıtlarken ve raporu inceleyen kişinin
 geçebileceği bir kanıt paketi hazırlarken kullandığım standart. Protokolden bağımsızdır; bu yöntemi
 ortaya çıkaran ilk kapsamlı uygulama bir ERC-4337 EntryPoint incelemesiydi.
 
-Bu belge bilinçli olarak portföydeki genel teslim sürecinden daha dardır: saldırgan bakış açılı
-incelemeyi, kusurun kanıtlanmasını ve değerlendirmeye hazır paketlenmesini anlatır. Backend işlerinde
-kullandığım B2B teslim süreci [portföy README'sinde](README.tr.md#mühendislik-süreci) yer alır.
+Bu belge bilinçli olarak genel teslim sürecimden daha dardır: saldırgan bakış açılı incelemeyi,
+kusurun kanıtlanmasını ve değerlendirmeye hazır paketlenmesini anlatır. Bir değişikliğin üretime
+nasıl çıktığı — kapı merdiveni, ratchet'lenmiş borç baseline'ları, çalıştıran değil yakalayan
+testler, sürüm doğrulaması ve geri alma — için
+[Teslim ve Kalite Kapısı Metodolojisi](DELIVERY-METHODOLOGY.tr.md) belgesine bakın.
 
 **Temel ilke: iddiadan önce kanıt.** Bir bulgu ancak saldırganın kontrol ettiği girdiyi, ihlal edilen
 bir değişmeze ve dürüst bir taraf üzerindeki ölçülmüş etkiye çalışan bir kanıtla bağlıyorsa; kök neden
