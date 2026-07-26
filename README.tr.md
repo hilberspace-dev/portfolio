@@ -1,5 +1,5 @@
 [![English version](https://img.shields.io/badge/Dil-English-1F6FEB?style=for-the-badge)](README.md)
-[![Teslim ve Kalite Kapısı Metodolojisi](https://img.shields.io/badge/Metodoloji-Teslim%20ve%20Kalite%20Kap%C4%B1s%C4%B1-0A5C36?style=for-the-badge)](DELIVERY-METHODOLOGY.tr.md)
+[![Teslim ve Quality Gate Metodolojisi](https://img.shields.io/badge/Metodoloji-Teslim%20ve%20Quality%20Gate-0A5C36?style=for-the-badge)](DELIVERY-METHODOLOGY.tr.md)
 [![Güvenlik İncelemesi ve PoC Metodolojisi](https://img.shields.io/badge/Metodoloji-G%C3%BCvenlik%20%C4%B0ncelemesi-1F3A5F?style=for-the-badge)](METHODOLOGY.tr.md)
 
 # Para ve kayıt doğruluğunun kritik olduğu backend sistemleri
@@ -13,9 +13,9 @@ gösteremiyor ve elle kapatılan her ay hem maliyet hem risk üretiyor.
 
 ### Taklit edilmesi zor üç şey
 
-- **Bir ürünün tamamını tek başıma taşıdım.** Ödeme alan, kişisel veri işleyen ve GPU/ML iş yükü
-  koşan canlı, çok kiracılı ticari bir SaaS'ın tek teknik sahibiydim: mimari, API, web, sürüm
-  süreci, KVKK dokümantasyonu ve devir paketi.
+- **Bir ürünün tamamını tek başıma taşıdım.** Ödeme alan, kişisel veri işleyen ve GPU/ML workload'u
+  koşan canlı, multi-tenant ticari bir SaaS'ın tek teknik sahibiydim: mimari, API, web, release
+  süreci, KVKK dokümantasyonu ve handover paketi.
 - **Önde gelen firmaların denetlediği kodda gerçek bir kusur buldum.** ERC-4337 EntryPoint v0.8'de
   deterministik bir doğruluk kusuru; biri negatif kontrollü kanıtla, diğeri bağımsız olarak
   sabitlenmiş ikinci bir ortamda olmak üzere iki kez tekrar üretildi.
@@ -49,7 +49,7 @@ eşleşmeyen kaydın adlandırılmış bir sınıfa düşmesi ve ihlal hâlinde 
 
 **"Sistemi yazan ekip gitti, kimse dokunmaya cesaret edemiyor."**
 Testi olmayan, dokümante edilmemiş, her değişiklikte bir yeri kıran sistemler. Yaptığım iş önce
-davranışı sabitlemek: mevcut davranışı yakalayan testler, açık değişmezler, sonra kontrollü
+davranışı pinlemek: mevcut davranışı yakalayan testler, açık invariant'lar, sonra kontrollü
 değişiklik. Devrederken çalışan bir sistem değil, **devralınabilir** bir sistem bırakıyorum.
 
 **"KVKK ve denetim tarafında kanıt üretemiyoruz."**
@@ -60,8 +60,8 @@ sistemler kurdum; bu, denetim sırasında ekran görüntüsü toplamakla arasın
 | | KOBİ ve büyüyen ürün şirketleri | Kurumsal ve holding yapıları |
 | --- | --- | --- |
 | **Tipik ihtiyaç** | Tek bir kritik problemin hızlı ve kalıcı çözümü; iç ekibi büyütmeden ilerlemek | Mevcut sisteme dokunan, denetlenebilir ve devredilebilir bir iş paketi |
-| **Çalışma biçimi** | Sabit kapsam, sabit fiyat, tek muhatap | Tanımlı iş paketi, yazılı kabul kriterleri, gizlilik sözleşmesi, süreç dokümanı |
-| **Teslimde alınan** | Çalışan sistem + testler + nasıl işletileceği | Yukarıdakiler + karar kayıtları, runbook, devir paketi, denetim kanıtı |
+| **Çalışma biçimi** | Sabit kapsam, sabit fiyat, tek muhatap | Tanımlı iş paketi, yazılı kabul kriterleri, NDA, süreç dokümanı |
+| **Teslimde alınan** | Çalışan sistem + testler + nasıl işletileceği | Yukarıdakiler + ADR'ler, runbook, handover paketi, denetim kanıtı |
 
 ---
 
@@ -70,14 +70,14 @@ sistemler kurdum; bu, denetim sırasında ekran görüntüsü toplamakla arasın
 Bu depoda iki metodoloji belgesi duruyor. Bunlar pazarlama sayfası değil; fiilen kendime
 uyguladığım standartlar ve doğru kişi olup olmadığıma karar vermenin en hızlı yolu.
 
-- **[Teslim ve Kalite Kapısı Metodolojisi](DELIVERY-METHODOLOGY.tr.md)** — bir değişikliğin üretime
-  nasıl çıktığı: kapı merdiveni, eski borcun nasıl dondurulup aşağı zorlandığı, çalıştıran değil
-  yakalayan testler, sözleşme disiplini, sürüm doğrulaması ve geri alma.
-- **[Güvenlik İncelemesi ve PoC Metodolojisi](METHODOLOGY.tr.md)** — bir kusurun nasıl kanıtlandığı:
-  değişmez şartnamesi, çok açılı saldırgan inceleme, bir bulgunun sağlaması gereken beş halkalı
-  zincir ve değerlendirmeye hazır paketleme.
+- **[Teslim ve Quality Gate Metodolojisi](DELIVERY-METHODOLOGY.tr.md)** — bir değişikliğin
+  production'a nasıl çıktığı: gate merdiveni, eski debt'in nasıl dondurulup aşağı zorlandığı,
+  çalıştıran değil yakalayan testler, contract disiplini, release verification ve rollback.
+- **[Güvenlik İncelemesi ve PoC Metodolojisi](METHODOLOGY.tr.md)** — bir defect'in nasıl
+  kanıtlandığı: invariant şartnamesi, çok açılı saldırgan inceleme, bir bulgunun sağlaması gereken
+  beş halkalı zincir ve değerlendirmeye hazır paketleme.
 
-İkisinin de dayandığı ilke aynı: **iddiadan önce kanıt.** Çalıştırılan komut, çıktısı ve çıkış kodu
+İkisinin de dayandığı ilke aynı: **iddiadan önce kanıt.** Çalıştırılan komut, çıktısı ve exit code'u
 olmadan hiçbir şeye "düzeldi", "geçiyor" veya "bitti" denmez — çalıştırılmayan ne varsa açıkça
 söylenir.
 
@@ -96,14 +96,15 @@ kendiniz koşturabilirsiniz.
 **Durum.** Hastaya özel görsel simülasyon ile günlük klinik operasyonunu, hasta verisi işlemeyi
 zayıflatmadan tek bir ticari ürüne dönüştürmek.
 
-**Yaptığım.** Ürün, web uygulaması, API ve GPU/ML iş yüklerinde tek başına teknik sahiplik. Çok
-kiracılı mimari, ödeme akışı, KVKK kontrolleri, otomatik kalite kapıları, sürüm ve dağıtım süreci.
+**Yaptığım.** Ürün, web uygulaması, API ve GPU/ML workload'larında tek başına teknik sahiplik.
+Multi-tenant mimari, ödeme akışı, KVKK kontrolleri, otomatik quality gate'ler, release ve deployment
+süreci.
 
 **Sonuç.** Gizlilik kontrolleri ve operasyonel devir paketi bulunan, kliniğe hazır ticari ürün.
 Kaynak kod ve uygulamaya özgü müşteri fikrî mülkiyeti gizlidir; vaka çalışması yalnızca
 sorumlulukları ve hassas olmayan kanıtları belgeler.
 
-`TypeScript` `React` `Node.js` `çok kiracılı SaaS` `ödeme` `KVKK` `GPU/ML` `otomatik test`
+`TypeScript` `React` `Node.js` `multi-tenant SaaS` `ödeme` `KVKK` `GPU/ML` `otomatik test`
 
 ### 2. ReconPilot — Deterministik ödeme mutabakat motoru
 
@@ -116,10 +117,10 @@ sorumlulukları ve hassas olmayan kanıtları belgeler.
 anlatır; elle mutabakat yanlış eşleşme ve sessiz kayıp üretir.
 
 **Yaptığım.** Üç kaynağı içeri alıp tekilleştiren, kesin → toleranslı → grup eşleştirme zincirini
-deterministik biçimde uygulayan, eşleşmeyen her kaydı sınıflandıran ve doğruluk değişmezleri ihlal
-edildiğinde sessizce devam etmek yerine duran Go/PostgreSQL servisi.
+deterministik biçimde uygulayan, eşleşmeyen her kaydı sınıflandıran ve correctness invariant'ları
+ihlal edildiğinde sessizce devam etmek yerine duran Go/PostgreSQL servisi.
 
-**Sonuç.** Tohumlu sentetik benchmark ~50 bin işlemi ~4 saniyede uzlaştırıyor: **7/7 enjekte edilmiş
+**Sonuç.** Seed'li sentetik benchmark ~50 bin işlemi ~4 saniyede uzlaştırıyor: **7/7 enjekte edilmiş
 uyuşmazlık tipi tespit edildi, 0 yanlış eşleşme, 0 kaçırılmış eşleşme.** Bu kapsamda hiçbir kayıt
 sonuçtan sessizce kaybolmuyor; manuel inceleme izsiz bir kalandan değil, adı konmuş bir uyuşmazlık
 sınıfından başlıyor. *(Rakamlar üretim verisinden değil, açık kaynak sentetik veri setinden gelir ve
@@ -168,8 +169,7 @@ sonra kendi kanıtıyla çürütüldü. Bulgu gönderilmedi; abartılı iddia ye
 5. **Devir.** Dokümantasyon, runbook ve gerekli durumda ekibinize devir oturumu. İşin sonunda
    bana bağımlı kalmanız gereken bir sistem bırakmam.
 
-**Gizlilik.** Gizlilik sözleşmesiyle çalışırım; müşteri kaynak kodu ve verisi hiçbir portföy
-belgesinde yer almaz. Bu depodaki ticari vaka çalışması da bu nedenle yalnızca sorumlulukları ve
+**Gizlilik.** NDA ile çalışırım; müşteri kaynak kodu ve verisi hiçbir portföy belgesinde yer almaz. Bu depodaki ticari vaka çalışması da bu nedenle yalnızca sorumlulukları ve
 hassas olmayan kanıtları anlatır.
 
 ---
@@ -177,7 +177,7 @@ hassas olmayan kanıtları anlatır.
 ## Teknik kapsam
 
 **Ana alanlar:** Go · PostgreSQL · Node.js / TypeScript · backend mimarisi · ödeme ve işlem
-sistemleri · mutabakat · API entegrasyonları · otomatik test ve CI · Docker · gözlemlenebilirlik
+sistemleri · mutabakat · API entegrasyonları · otomatik test ve CI · Docker · observability
 
 **Ek deneyim:** React · .NET · bilgisayarlı görü ve GPU iş yükleri · Solidity / EVM
 
@@ -195,7 +195,7 @@ dönüşte kapsam ve süre tahmini paylaşabilirim:
 - mevcut sistem ve teknoloji yığını
 - beklenen teslimat
 - hedef zaman planı
-- erişim kısıtları (repo, ortam, gizlilik sözleşmesi)
+- erişim kısıtları (repo, ortam, NDA)
 
 ---
 

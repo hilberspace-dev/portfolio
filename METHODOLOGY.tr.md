@@ -7,13 +7,13 @@ geçebileceği bir kanıt paketi hazırlarken kullandığım standart. Protokold
 ortaya çıkaran ilk kapsamlı uygulama bir ERC-4337 EntryPoint incelemesiydi.
 
 Bu belge bilinçli olarak genel teslim sürecimden daha dardır: saldırgan bakış açılı incelemeyi,
-kusurun kanıtlanmasını ve değerlendirmeye hazır paketlenmesini anlatır. Bir değişikliğin üretime
-nasıl çıktığı — kapı merdiveni, ratchet'lenmiş borç baseline'ları, çalıştıran değil yakalayan
-testler, sürüm doğrulaması ve geri alma — için
-[Teslim ve Kalite Kapısı Metodolojisi](DELIVERY-METHODOLOGY.tr.md) belgesine bakın.
+kusurun kanıtlanmasını ve değerlendirmeye hazır paketlenmesini anlatır. Bir değişikliğin production'a
+nasıl çıktığı — gate merdiveni, ratchet'lenmiş debt baseline'ları, çalıştıran değil yakalayan
+testler, release verification ve rollback — için
+[Teslim ve Quality Gate Metodolojisi](DELIVERY-METHODOLOGY.tr.md) belgesine bakın.
 
 **Temel ilke: iddiadan önce kanıt.** Bir bulgu ancak saldırganın kontrol ettiği girdiyi, ihlal edilen
-bir değişmeze ve dürüst bir taraf üzerindeki ölçülmüş etkiye çalışan bir kanıtla bağlıyorsa; kök neden
+bir invariant'a ve dürüst bir taraf üzerindeki ölçülmüş etkiye çalışan bir kanıtla bağlıyorsa; kök neden
 kapsam içindeyse ve bulgu mükerrer değilse raporlanmaya değerdir.
 
 ---
@@ -22,7 +22,7 @@ kapsam içindeyse ve bulgu mükerrer değilse raporlanmaya değerdir.
 
 1. **Çıktısını okumadığın bir komutun başarılı olduğunu asla söyleme.** Komutu saran aracın çıkış
    kodunun 0 olması, alttaki aracın gerçekten geçtiği anlamına gelmez. stdout/stderr'i ve gerçek
-   çıkış kodunu oku. Gerçek bir örnekte test komutu 0 döndüğü hâlde test runner hiç başlamamıştı.
+   exit code'unu oku. Gerçek bir örnekte test komutu 0 döndüğü hâlde test runner hiç başlamamıştı.
 2. **Bulgu üretmeye çalışma.** Yoğun biçimde denetlenmiş bir kod tabanında doğru ve beklenen sonuç
    hiçbir gerçek bulgu çıkmaması olabilir. Sıfır gerçek bulgu, kulağa makul gelen yirmi yanlış
    bulgudan iyidir.
@@ -65,21 +65,21 @@ durumlar). Sonraki her analizde iki listeyi de kullan.
 Yenilik iddiasını daima şu sınırla kur: *“Herkese açık kaynaklarda aynı bulguya veya önceki çalışmaya
 rastlanmadı. Özel raporlar gözlemlenemiyor.”* Bir bulgunun kesinlikle mükerrer olmadığını söyleme.
 
-## 3. Doğru cevabın ölçütü değişmezler şartnamesidir
+## 3. Doğru cevabın ölçütü invariant şartnamesidir
 
-Kapsamdaki her dosyayı bütünüyle oku, ardından güvenlik değişmezlerini yaz: saldırganın varlık çalmak
+Kapsamdaki her dosyayı bütünüyle oku, ardından güvenlik invariant'larını yaz: saldırganın varlık çalmak
 veya sistemi çalışamaz hâle getirmek için bozması gereken koşullar. Sık rastlanan sınıflar; ödeme
 gücü ve varlıkların korunumu, ödeme tutarlarının korunumu, tekrar oynatma/benzersizlik, kaynak
 muhasebesi, işlemler arası yalıtım, elle yazılmış assembly'de bellek güvenliği, doğrulama ile
 çalıştırmanın ayrılması ve reentrancy kapsamıdır.
 
-Her değişmez için bir kimlik, biçimsel koşul, koşulu uygulayan tam `dosya:satır` konumu, varsayımlar
+Her invariant için bir kimlik, biçimsel koşul, koşulu uygulayan tam `dosya:satır` konumu, varsayımlar
 ve tehdit modeli altında kırılabileceği en olası yolu kaydet. Bu kırılma hipotezleri incelemenin
 hedefidir; bu adım olmadan yapılan kod okuması yönsüzdür.
 
 ## 4. Saldırgan bakış açılı inceleme
 
-Her seferinde tek bir saldırı yüzeyine odaklan; tehdit modelini, değişmezler şartnamesini ve bilinen
+Her seferinde tek bir saldırı yüzeyine odaklan; tehdit modelini, invariant şartnamesini ve bilinen
 konular listesini önünde tut. Kod parçaları yerine gerçek kaynak dosyaları oku, assembly'yi kelime
 kelime simüle et, gas/değer/offset hesaplarını somut sayılarla yap ve `unchecked` aritmetiği
 taşırabilecek erişilebilir girdiyi bul. Bir turdan sonuç çıkmaması geçerli bir sonuçtur.
@@ -96,7 +96,7 @@ yalnızca kanıtla ayakta kalanları koru:
 
 Belirsiz durumda varsayılan karar “çürütüldü” olmalıdır. Oy sayısı tek başına hiçbir şeyi kanıtlamaz;
 yalnızca kapsam içindeki kök nedeni ve ölçülmüş etkiyi gösteren çalışan kanıt değerlidir. Turun
-sonunda kapsam eleştirisi yap: hangi saldırı yüzeyi, değişmez veya saldırgan rolü yeterince
+sonunda kapsam eleştirisi yap: hangi saldırı yüzeyi, invariant veya saldırgan rolü yeterince
 incelenmedi? Sonraki tur buradan başlar.
 
 Uzun bir incelemenin baştan yapılmak yerine kaldığı yerden sürdürülebilmesi için ara sonuçları
@@ -110,7 +110,7 @@ ele.
 1. **Saldırganın kontrol ettiği girdi:** Saldırganın belirlediği tam byte'lar, alanlar veya değerler.
 2. **Erişilebilir yol:** Her adım için `dosya:satır` verilen somut çağrı zinciri ve hiçbir önceki
    require/revert'in yolu neden kapatmadığı.
-3. **İhlal edilen değişmez:** Şartnamedeki kimliğine bağlanan kesin koşul.
+3. **İhlal edilen invariant:** Şartnamedeki kimliğine bağlanan kesin koşul.
 4. **Ölçülmüş etki:** Çalınan değer, kaybedilen gas, yetkisiz çalıştırma sayısı veya doğrulanabilir
    DoS maliyeti. “Kötü olabilir” yeterli değildir.
 5. **Tekrar üretilebilir kanıt:** Kapsam commit'indeki gerçek sözleşmelere karşı çalışan test.
@@ -129,7 +129,7 @@ almasında bulunmalıdır.
 Yalnızca şu durumlarda adayı reddet: kök neden bütünüyle harici bileşenin kendi kodundaysa; saldırı
 dürüst bir karşı tarafın standarda aykırı davranmasını gerektiriyorsa; standartlara uygun simülasyon
 işlemi zaten reddedecekse; sonuç yalnızca saldırganın kendisine zarar veriyorsa veya dürüst bir
-işlem, yatırılmış varlık, değişmez ya da erişilebilirlik özelliği etkilenmiyorsa.
+işlem, yatırılmış varlık, invariant ya da erişilebilirlik özelliği etkilenmiyorsa.
 
 **Aşamaları karıştırma:** Doğrulama aşamasının kuralları, execution veya callback aşamalarına
 otomatik olarak uygulanmaz. Execution aşamasındaki saldırıyı validation kurallarına uymadığı
@@ -147,7 +147,7 @@ gerekçesiyle doğrudan eleme.
   Kullanılıyorsa test dosyasının başında açıkça belirtilmelidir.
 - **Negatif kontrol zorunludur.** Saldırgan girdisi kaldırıldığında etkinin de kaybolduğunu doğrula;
   böylece sonucun test düzeneğinden değil, iddia edilen kök nedenden geldiğini göster.
-- **Değişmezi somut biçimde doğrula:** düzeltme gelmiş kodda başarısız, zafiyetli kodda başarılı
+- **Invariant'ı somut biçimde doğrula:** düzeltme gelmiş kodda başarısız, zafiyetli kodda başarılı
   olacak şekilde önce/sonra bakiyeleri, çalıştırma sayısını veya hatalı alanın tam değerini denetle.
 - **Projenin kendi test yardımcılarını kullan.** Yenilerini yazmadan önce mevcut testleri incele.
 - Kanıtı önce **tek başına**, ardından mevcut test paketiyle birlikte çalıştır; önceden var olan
