@@ -7,25 +7,26 @@
 **Mutabakat · ödeme ve banka entegrasyonları · KVKK uyumlu veri işleme · devralınan sistemlerin
 toparlanması**
 
-Ödemenin, faturanın ve kaydın tutması gereken yerlerde backend geliştiriyorum. Çalıştığım işlerin
-ortak paydası şu: bir yerde para veya kayıt kayboluyor, kimse tam olarak nerede olduğunu
-gösteremiyor ve elle kapatılan her ay hem maliyet hem risk üretiyor.
+Ödemenin, faturanın ve kaydın birbirini tutması gereken yerlerde backend geliştiriyorum. Çalıştığım
+işlerin ortak paydası şudur: bir yerde para ya da kayıt kaybolur, kimse tam olarak nerede
+kaybolduğunu gösteremez ve elle kapatılan her ay hem maliyet hem risk üretir.
 
 ### Taklit edilmesi zor üç şey
 
 - **Bir ürünün tamamını tek başıma taşıdım.** Ödeme alan, kişisel veri işleyen ve GPU/ML workload'u
-  koşan canlı, multi-tenant ticari bir SaaS'ın tek teknik sahibiydim: mimari, API, web, release
-  süreci, KVKK dokümantasyonu ve handover paketi.
-- **Başkalarının zaten incelediği para koduna hata bulurum.** ERC-4337 EntryPoint v0.8'de — işlem
-  doğrulayan ve ödemesini yapan, yoğun biçimde denetlenmiş bir bileşen — deterministik bir doğruluk
-  kusurunu iki kez tekrar ürettim: biri negatif kontrollü kanıtla, diğeri bağımsız olarak sabitlenmiş
-  ikinci bir ortamda. Bir mutabakat defterine ya da bir ödeme callback'ine de aynı yöntemle bakarım.
-- **Kanıt "dur" diyorsa dururum.** ~16,7M $'lık bir inceleme, kendi kanıtım en güçlü hipotezimi
-  çürüttüğü için yazılı bir NO-GO ile bitti. Hiçbir bildirim gönderilmedi. Sayılar umduğunuz sonucu
-  desteklemiyorsa, bunu ilk benden duyarsınız.
+  çalıştıran, canlı ve multi-tenant bir ticari SaaS'ın tek teknik sahibiydim. Mimari, API, web
+  arayüzü, release süreci, KVKK dokümantasyonu ve handover paketi bana aitti.
+- **Başkalarının incelemiş olduğu para kodunda hata bulurum.** İşlemleri doğrulayan ve ödemesini
+  yapan, yoğun biçimde denetlenmiş bir bileşen olan ERC-4337 EntryPoint v0.8'de deterministik bir
+  doğruluk kusurunu iki ayrı ortamda tekrar ürettim; birincisini negatif kontrollü bir kanıtla,
+  ikincisini digest ile sabitlenmiş bağımsız bir ortamda doğruladım. Bir mutabakat defterine ya da
+  bir ödeme callback'ine de aynı yöntemle bakarım.
+- **Kanıt "dur" diyorsa dururum.** Yaklaşık 16,7 milyon dolarlık bir incelemede kendi kanıtım en
+  güçlü hipotezimi çürüttüğü için çalışmayı yazılı bir NO-GO ile bitirdim; hiçbir bildirim
+  göndermedim. Sayılar umduğunuz sonucu desteklemiyorsa bunu ilk benden duyarsınız.
 
-Asıl işe alınması gereken üçüncüsü. Bu portföydeki her iddia kontrol edilebilir; kontrol
-edilemeyecek olanlar da öyle olduğu yazılarak işaretlenmiştir.
+Asıl önemli olan üçüncüsüdür. Bu portföydeki her iddia doğrulanabilir; doğrulanamayacak olanlar ise
+açıkça öyle işaretlenmiştir.
 
 > ### Sabit kapsamlı iş alıyorum
 >
@@ -44,20 +45,22 @@ edilemeyecek olanlar da öyle olduğu yazılarak işaretlenmiştir.
 ## Hangi problemleri çözüyorum
 
 **"PSP raporu, banka ekstresi ve pazaryeri hakedişi birbirini tutmuyor."**
-Üç kaynak aynı parayı farklı anlatır. Elle mutabakatta iki sessiz risk vardır: tesadüfen eşleşen
-yanlış kayıtlar ve kalan listesinden düşüp kaybolan işlemler. Deterministik eşleştirme, her
-eşleşmeyen kaydın adlandırılmış bir sınıfa düşmesi ve ihlal hâlinde sonucu üretmek yerine durması
-üzerine kurulu sistemler yazıyorum.
+Üç kaynak aynı parayı farklı biçimde anlatır. Elle yapılan mutabakat iki sessiz risk taşır:
+tesadüfen eşleşen yanlış kayıtlar ve kalan listesinden düşerek kaybolan işlemler. Bu işi üç ilke
+üzerine kurulu sistemlerle çözüyorum: eşleştirme deterministiktir, eşleşmeyen her kayıt adı konmuş
+bir sınıfa düşer ve bir doğruluk kuralı ihlal edildiğinde sistem sonuç üretmek yerine durur.
 
 **"Sistemi yazan ekip gitti, kimse dokunmaya cesaret edemiyor."**
-Testi olmayan, dokümante edilmemiş, her değişiklikte bir yeri kıran sistemler. Yaptığım iş önce
-davranışı pinlemek: mevcut davranışı yakalayan testler, açık invariant'lar, sonra kontrollü
-değişiklik. Devrederken çalışan bir sistem değil, **devralınabilir** bir sistem bırakıyorum.
+Testi olmayan, dokümante edilmemiş ve her değişiklikte başka bir yeri kıran sistemlerden söz
+ediyoruz. Böyle bir işte önce davranışı sabitlerim: mevcut davranışı kayıt altına alan testler ve
+açıkça yazılmış invariant'lar. Kontrollü değişiklik ancak ondan sonra başlar. Devrederken yalnızca
+çalışan bir sistem değil, **devralınabilir** bir sistem bırakırım.
 
 **"KVKK ve denetim tarafında kanıt üretemiyoruz."**
 Kişisel veriye dokunan ürünlerde saklama, rıza, silme ve erişim kontrollerinin yalnızca yazılı
-değil, **çalıştırılabilir** olması gerekiyor. Uyum kontrollerini otomatik koşan ve kanıtını üreten
-sistemler kurdum; bu, denetim sırasında ekran görüntüsü toplamakla arasındaki farktır.
+olması yetmez; **çalıştırılabilir** olması gerekir. Uyum kontrollerini otomatik çalıştıran ve kendi
+kanıtını üreten sistemler kurdum. Denetim sırasında bir komut çalıştırmakla haftalarca ekran
+görüntüsü toplamak arasındaki fark budur.
 
 | | KOBİ ve büyüyen ürün şirketleri | Kurumsal ve holding yapıları |
 | --- | --- | --- |
@@ -68,15 +71,16 @@ sistemler kurdum; bu, denetim sırasında ekran görüntüsü toplamakla arasın
 > ### Ücretsiz teşhis
 >
 > Anonimleştirilmiş bir mutabakat ekstresi ya da örnek veri gönderin; sessiz kayıpların nerede
-> olduğunu ve nasıl kapatılacağını yazılı olarak geri göndereyim. Karşılığında bir taahhüt
-> beklemiyorum. Ne yapabildiğimi anlatmak yerine kendi verinizde göstermenin en kısa yolu bu.
+> oluştuğunu ve bunların nasıl kapatılacağını yazılı olarak geri göndereyim. Karşılığında herhangi
+> bir taahhüt beklemiyorum. Ne yapabildiğimi anlatmak yerine kendi verinizin üzerinde göstermenin en
+> kısa yolu budur.
 
 ---
 
 ## Nasıl çalıştığım — yazılı olarak
 
-Bu depoda iki metodoloji belgesi duruyor. Bunlar pazarlama sayfası değil; fiilen kendime
-uyguladığım standartlar ve doğru kişi olup olmadığıma karar vermenin en hızlı yolu.
+Bu depoda iki metodoloji belgesi bulunuyor. Bunlar pazarlama metni değil, fiilen kendime
+uyguladığım standartlardır; aradığınız kişi olup olmadığıma karar vermenizin de en hızlı yoludur.
 
 - **[Teslim ve Quality Gate Metodolojisi](DELIVERY-METHODOLOGY.tr.md)** — bir değişikliğin
   production'a nasıl çıktığı: gate merdiveni, eski debt'in nasıl dondurulup aşağı zorlandığı,
@@ -89,8 +93,8 @@ uyguladığım standartlar ve doğru kişi olup olmadığıma karar vermenin en 
 olmadan hiçbir şeye "düzeldi", "geçiyor" veya "bitti" denmez — çalıştırılmayan ne varsa açıkça
 söylenir.
 
-Ayrıca mutabakat motorunun kaynağı, testleri ve benchmark'ı herkese açıktır: iddia ettiğim sayıyı
-kendiniz koşturabilirsiniz.
+Ayrıca mutabakat motorunun kaynak kodu, testleri ve benchmark'ı herkese açıktır; iddia ettiğim
+sayıyı kendiniz çalıştırarak doğrulayabilirsiniz.
 
 ---
 
@@ -101,16 +105,16 @@ kendiniz koşturabilirsiniz.
 [Vaka çalışması](projects/04-aura-photoreal-3d-clinic-platform/README.tr.md) ·
 [English](projects/04-aura-photoreal-3d-clinic-platform/)
 
-**Durum.** Hastaya özel görsel simülasyon ile günlük klinik operasyonunu, hasta verisi işlemeyi
-zayıflatmadan tek bir ticari ürüne dönüştürmek.
+**Durum.** Hastaya özel görsel simülasyonu ve günlük klinik operasyonunu, hasta verisinin
+işlenmesinden ödün vermeden tek bir ticari üründe birleştirmek gerekiyordu.
 
-**Yaptığım.** Kendi ticari ürünüm, tek başıma yazdım: ürün, web uygulaması, API ve GPU/ML
-workload'larında tek teknik sahiplik — multi-tenant mimari, ödeme akışı, KVKK kontrolleri, otomatik
-quality gate'ler, release ve deployment süreci.
+**Yaptığım.** Bu benim kendi ticari ürünüm; tamamını tek başıma yazdım. Ürün, web uygulaması, API ve
+GPU/ML workload'larının teknik sahibi bendim. Multi-tenant mimari, ödeme akışı, KVKK kontrolleri,
+otomatik quality gate'ler ile release ve deployment süreci bu kapsamdaydı.
 
-**Sonuç.** Gizlilik kontrolleri ve operasyonel devir paketi bulunan, kliniğe hazır ticari ürün.
-Varlık devre hazırlandığı için kaynak kod ve fikrî mülkiyet gizli tutuluyor; vaka çalışması
-yalnızca sorumlulukları ve hassas olmayan kanıtları belgeler.
+**Sonuç.** Gizlilik kontrolleri ve operasyonel devir paketiyle birlikte kliniğe hazır hâle gelmiş
+bir ticari ürün. Fikrî mülkiyet devir için hazırlandığından kaynak kod kapalı tutuluyor; vaka
+çalışması yalnızca üstlendiğim sorumlulukları ve hassas olmayan kanıtları belgeliyor.
 
 `TypeScript` `React` `Node.js` `multi-tenant SaaS` `ödeme` `KVKK` `GPU/ML` `otomatik test`
 
@@ -128,11 +132,11 @@ anlatır; elle mutabakat yanlış eşleşme ve sessiz kayıp üretir.
 deterministik biçimde uygulayan, eşleşmeyen her kaydı sınıflandıran ve correctness invariant'ları
 ihlal edildiğinde sessizce devam etmek yerine duran Go/PostgreSQL servisi.
 
-**Sonuç.** Seed'li sentetik benchmark ~50 bin işlemi ~4 saniyede uzlaştırıyor: **7/7 enjekte edilmiş
-uyuşmazlık tipi tespit edildi, 0 yanlış eşleşme, 0 kaçırılmış eşleşme.** Bu kapsamda hiçbir kayıt
-sonuçtan sessizce kaybolmuyor; manuel inceleme izsiz bir kalandan değil, adı konmuş bir uyuşmazlık
-sınıfından başlıyor. *(Rakamlar üretim verisinden değil, açık kaynak sentetik veri setinden gelir ve
-kendiniz koşturabilirsiniz.)*
+**Sonuç.** Seed'li sentetik benchmark yaklaşık 50 bin işlemin mutabakatını yaklaşık 4 saniyede
+tamamlıyor: **enjekte edilmiş 7 uyuşmazlık tipinin 7'si de tespit edildi, 0 yanlış eşleşme, 0
+kaçırılmış eşleşme.** Bu kapsamda hiçbir kayıt sonuçtan sessizce kaybolmuyor; manuel inceleme, izi
+sürülemeyen bir bakiye kalanından değil, adı konmuş bir uyuşmazlık sınıfından başlıyor. *(Rakamlar
+üretim verisinden değil, herkese açık sentetik veri setinden gelir; kendiniz de çalıştırabilirsiniz.)*
 
 ```mermaid
 flowchart LR
@@ -150,8 +154,8 @@ flowchart LR
 
 ### 3. Bağımsız güvenlik incelemeleri
 
-Ödeme ve varlık taşıyan kod üzerinde, kendi kurallarına karşı bağımsız inceleme yaptığım iki iş.
-İkisi de aynı disiplini gösteriyor: kanıtlanamayan bulgu raporlanmaz.
+Para ve varlık taşıyan kodu, kendi belgelenmiş kurallarına karşı bağımsız olarak incelediğim iki
+çalışma. İkisi de aynı disipline dayanıyor: kanıtlanamayan bulgu raporlanmaz.
 
 **ERC-4337 EntryPoint v0.8 incelemesi** — yoğun denetlenmiş bir bileşende düşük şiddetli
 deterministik bir doğruluk kusuru, negatif kontrollü kanıtla ve digest ile sabitlenmiş ikinci bir
@@ -173,21 +177,21 @@ yerine ilk adımı ucuz ve geri dönülebilir yapıyorum:
   teşhis raporu: problem nerede, kök neden ne, hangi seçenekler var ve her birinin tahmini eforu.
   Devam etmemeye karar verseniz de rapor sizde kalır.
 - **Milestone bazlı ödeme.** Peşin toplu ödeme yok; her teslim parçası kendi ödemesini taşır.
-- **İlk milestone'da yazılı kabul kriteri.** Kriteri karşılamazsam o milestone için ödeme almam.
-  Bunu yazıyorum çünkü maliyeti bana ait; referans yerine geçen şey budur.
+- **İlk milestone'da yazılı kabul kriteri.** Kriteri karşılamazsam o milestone'u faturalamam. Bunu
+  yazmamın sebebi, maliyetinin bana ait olmasıdır; referansın yerini tutan da budur.
 
 Sonrasındaki akış:
 
-1. **Ön görüşme (ücretsiz).** Problemi, mevcut sistemi ve beklenen sonucu konuşuruz. Sizin
-   için doğru iş değilse bunu ilk görüşmede söylerim.
-2. **Yazılı kapsam.** Ne yapılacak, ne yapılmayacak, kabul kriterleri, süre ve sabit fiyat. Kapsam
-   dışını sonradan sürpriz olarak getirmem.
-3. **Artımlı teslim.** Parça parça çalışan sonuç; her adımda ne çalıştırıldığı ve ne döndüğü
-   yazılı olarak paylaşılır.
-4. **Doğrulama.** Testler, tekrar üretilebilir kontroller ve — uygun işlerde — kendi iddiamı
-   çürütmeye çalışan negatif kontroller.
-5. **Devir.** Dokümantasyon, runbook ve gerekli durumda ekibinize devir oturumu. İşin sonunda
-   bana bağımlı kalmanız gereken bir sistem bırakmam.
+1. **Ön görüşme (ücretsiz).** Problemi, mevcut sistemi ve beklenen sonucu birlikte konuşuruz. İş
+   sizin için doğru iş değilse bunu ilk görüşmede söylerim.
+2. **Yazılı kapsam.** Ne yapılacağı, ne yapılmayacağı, kabul kriterleri, süre ve sabit fiyat yazılı
+   olarak belirlenir. Kapsam dışı işleri sonradan sürpriz olarak önünüze getirmem.
+3. **Artımlı teslim.** Sonuç parça parça çalışır hâlde teslim edilir; her adımda hangi komutun
+   çalıştırıldığı ve ne döndürdüğü yazılı olarak paylaşılır.
+4. **Doğrulama.** Testler, tekrar üretilebilir kontroller ve uygun işlerde kendi iddiamı çürütmeyi
+   amaçlayan negatif kontroller uygulanır.
+5. **Devir.** Dokümantasyon, runbook ve gerektiğinde ekibinize devir oturumu sağlanır. Arkamda size
+   bağımlılık yaratan bir sistem bırakmam.
 
 **Gizlilik.** Müşteri işlerinde NDA ile çalışırım; müşteri kaynak kodu ve verisi hiçbir portföy
 belgesinde yer almaz. Bu depodaki ticari vaka çalışması ise kendi ürünüm; fikrî mülkiyet devre
