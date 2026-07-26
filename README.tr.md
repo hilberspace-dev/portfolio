@@ -16,12 +16,13 @@ gösteremiyor ve elle kapatılan her ay hem maliyet hem risk üretiyor.
 - **Bir ürünün tamamını tek başıma taşıdım.** Ödeme alan, kişisel veri işleyen ve GPU/ML workload'u
   koşan canlı, multi-tenant ticari bir SaaS'ın tek teknik sahibiydim: mimari, API, web, release
   süreci, KVKK dokümantasyonu ve handover paketi.
-- **Önde gelen firmaların denetlediği kodda gerçek bir kusur buldum.** ERC-4337 EntryPoint v0.8'de
-  deterministik bir doğruluk kusuru; biri negatif kontrollü kanıtla, diğeri bağımsız olarak
-  sabitlenmiş ikinci bir ortamda olmak üzere iki kez tekrar üretildi.
-- **~16,7M $'lık bir bulguyu, kendi kanıtım çürüttüğü için durdurdum.** ~45 milyon blokluk zincir
-  analizi ve sabit blokta bir kanıttan sonra en güçlü hipotez tutmadı. Hiçbir bildirim gönderilmedi.
-  Kulağa makul gelen bir "bir şey" yerine savunulabilir bir "hiçbir şey" raporlamayı tercih ederim.
+- **Başkalarının zaten incelediği para koduna hata bulurum.** ERC-4337 EntryPoint v0.8'de — işlem
+  doğrulayan ve ödemesini yapan, yoğun biçimde denetlenmiş bir bileşen — deterministik bir doğruluk
+  kusurunu iki kez tekrar ürettim: biri negatif kontrollü kanıtla, diğeri bağımsız olarak sabitlenmiş
+  ikinci bir ortamda. Bir mutabakat defterine ya da bir ödeme callback'ine de aynı yöntemle bakarım.
+- **Kanıt "dur" diyorsa dururum.** ~16,7M $'lık bir inceleme, kendi kanıtım en güçlü hipotezimi
+  çürüttüğü için yazılı bir NO-GO ile bitti. Hiçbir bildirim gönderilmedi. Sayılar umduğunuz sonucu
+  desteklemiyorsa, bunu ilk benden duyarsınız.
 
 Asıl işe alınması gereken üçüncüsü. Bu portföydeki her iddia kontrol edilebilir; kontrol
 edilemeyecek olanlar da öyle olduğu yazılarak işaretlenmiştir.
@@ -33,7 +34,7 @@ edilemeyecek olanlar da öyle olduğu yazılarak işaretlenmiştir.
 >
 > **[E-posta gönderin →](mailto:hilberspace@gmail.com)**
 
-📍 Türkiye · Türkçe yürütülen projeler, Türkçe dokümantasyon ·
+**atilgandev** · 📍 Türkiye · Türkçe yürütülen projeler, Türkçe dokümantasyon ·
 [GitHub profili](https://github.com/hilberspace-dev) ·
 [English portfolio](README.md)
 
