@@ -6,24 +6,24 @@
 >
 > | | |
 > |---|---|
-> | **Durum** | **Özel, ticari çalışma** — kaynak kod herkese açık değil ve yayımlanmayacak |
+> | **Durum** | **Özel, ticari — kendi ürünüm** — kaynak kod herkese açık değil ve yayımlanmayacak |
 > | **Ölçek** | Yaklaşık 800 commit; ürün, web uygulaması, API, ML/GPU iş yükleri ve operasyon araçları |
 > | **Ana yetenek** | **Yaklaşık 15 saniyelik telefon çekiminden** fotogerçekçi 3D kafa (3D Gaussian Splatting, standart bir GPU'da çevrimdışı yeniden yapılandırma) ve buna eşlik eden **tarayıcı içi anlık 2.5D önizleme** (ilk görüntü yaklaşık 0,4 saniye) |
 > | **Ölçülen kalite** | Yeniden yapılandırmaya dahil edilmeyen karelerde yaklaşık 27,9 dB PSNR / 0,88 SSIM; anlık ve çevrimdışı çıktılar arasında otomatik uyum kontrolleri |
 > | **Klinik dayanak** | Simülasyon değerleri fiziksel milimetre cinsinden; çıktılar yayımlanmış yüz antropometrisi normlarıyla kontrol edildi; klinik referans külliyatı **838 açık erişimli yayını** ve yaklaşık 2.000 önce/sonra görselini kapsıyor |
 > | **Mühendislik kontrolleri** | Tekrar üretilebilir iç ölçümler, çıktılar arası sapma testleri, ödeme yollarında property-based ve mutation testleri |
 >
-> **Gizlilik sınırı.** Uygulama ayrıntıları, müşteri kimliği ve ticari fikrî mülkiyet gizlidir. Bu
-> vaka çalışması yalnızca üstlendiğim sorumlulukları, mühendislik kapsamını ve hassas olmayan ölçümleri
-> belgeler.
+> **Gizlilik sınırı.** Bu benim kendi ürünüm. Tamamını ben yazdım ve fikrî mülkiyeti bende; devre
+> hazırlanıyor — uygulamanın kapalı kalmasının sebebi bu. Bu vaka çalışması yalnızca üstlendiğim
+> sorumlulukları, mühendislik kapsamını ve hassas olmayan ölçümleri belgeler.
 >
-> | Çalışmanın bağlamı | |
+> | Bağlam | |
 > |---|---|
-> | **Çalışma türü** | Özel ticari geliştirme |
+> | **Sahiplik** | Kendi ticari ürünüm — tek başıma yazıldı, fikrî mülkiyet bende ve devre hazırlanıyor |
 > | **Rol** | Tek mühendis / teknik sahip — ürün, frontend, backend, ML/GPU iş yükleri ve operasyon |
 > | **Teslim durumu** | Kliniğe hazır; sürüm betikleri, runbook'lar ve uyum belgelerini içeren kaynak kod teslim paketi hazırlandı |
 > | **Sunulabilen doğrulama** | Gizlilik koşuluyla mimari anlatım ve seçilmiş, gizli olmayan kanıtlar |
-> | **Gizli tutulanlar** | Müşteri kimliği, kaynak kod, ticari ayrıntılar, iç mimari, algoritmalar ve model/veri varlıkları |
+> | **Gizli tutulanlar** | Kaynak kod, ticari ayrıntılar, iç mimari, algoritmalar ve model/veri varlıkları |
 
 > **Teknik olmayan kısa anlatım.** Hasta, bir işleme karar vermeden önce kendi yüzü üzerinden
 > hazırlanmış gerçekçi bir önizleme görebiliyor. Konsültasyon sırasında hızlı sürüm tarayıcıda hemen
@@ -108,13 +108,13 @@ kapsamını barındırır. Dağıtım topolojisi ve ticari iş akışlarının a
 
 ## Bilinçli olarak açıklanmayanlar
 
-- Müşteri kimliği, fiyatlandırma ve ticari iş akışları
+- Fiyatlandırma ve ticari iş akışları
 - Kaynak kod, dağıtım topolojisi ve iç bileşen adları
 - Ürüne özgü algoritmaların, kontrol mantığının ve model/veri hazırlığının tamamı
 - Formüller, prompt'lar, iç sıralama ve uygulamaya özgü kanıtlar
 
 *Üst düzey mimari anlatım ve seçilmiş, gizli olmayan kanıtlar uygun bir gizlilik sözleşmesi altında
-özel olarak görüşülebilir. Kaynak kod ile müşteriye ait fikrî mülkiyet paylaşılmaz.*
+özel olarak görüşülebilir. Kaynak kod ve devre konu fikrî mülkiyet paylaşılmaz.*
 
 `3D Gaussian Splatting` `bilgisayarlı görü` `yüz antropometrisi` `klinik literatür doğrulaması`
 `veri kökeni` `uçtan uca ürün teslimi` `GPU iş yükleri` `otomatik testler` `KVKK`

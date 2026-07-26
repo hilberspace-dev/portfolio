@@ -104,13 +104,13 @@ kendiniz koşturabilirsiniz.
 **Durum.** Hastaya özel görsel simülasyon ile günlük klinik operasyonunu, hasta verisi işlemeyi
 zayıflatmadan tek bir ticari ürüne dönüştürmek.
 
-**Yaptığım.** Ürün, web uygulaması, API ve GPU/ML workload'larında tek başına teknik sahiplik.
-Multi-tenant mimari, ödeme akışı, KVKK kontrolleri, otomatik quality gate'ler, release ve deployment
-süreci.
+**Yaptığım.** Kendi ticari ürünüm, tek başıma yazdım: ürün, web uygulaması, API ve GPU/ML
+workload'larında tek teknik sahiplik — multi-tenant mimari, ödeme akışı, KVKK kontrolleri, otomatik
+quality gate'ler, release ve deployment süreci.
 
 **Sonuç.** Gizlilik kontrolleri ve operasyonel devir paketi bulunan, kliniğe hazır ticari ürün.
-Kaynak kod ve uygulamaya özgü müşteri fikrî mülkiyeti gizlidir; vaka çalışması yalnızca
-sorumlulukları ve hassas olmayan kanıtları belgeler.
+Varlık devre hazırlandığı için kaynak kod ve fikrî mülkiyet gizli tutuluyor; vaka çalışması
+yalnızca sorumlulukları ve hassas olmayan kanıtları belgeler.
 
 `TypeScript` `React` `Node.js` `multi-tenant SaaS` `ödeme` `KVKK` `GPU/ML` `otomatik test`
 
@@ -189,8 +189,9 @@ Sonrasındaki akış:
 5. **Devir.** Dokümantasyon, runbook ve gerekli durumda ekibinize devir oturumu. İşin sonunda
    bana bağımlı kalmanız gereken bir sistem bırakmam.
 
-**Gizlilik.** NDA ile çalışırım; müşteri kaynak kodu ve verisi hiçbir portföy belgesinde yer almaz. Bu depodaki ticari vaka çalışması da bu nedenle yalnızca sorumlulukları ve
-hassas olmayan kanıtları anlatır.
+**Gizlilik.** Müşteri işlerinde NDA ile çalışırım; müşteri kaynak kodu ve verisi hiçbir portföy
+belgesinde yer almaz. Bu depodaki ticari vaka çalışması ise kendi ürünüm; fikrî mülkiyet devre
+hazırlandığı için ayrıntıları kapalı tutuluyor.
 
 ---
 
