@@ -2,10 +2,12 @@
 
 # Teslim ve Quality Gate Metodolojisi
 
-Production'daki bir sistemi, bir değişiklik talebinden yayımlanmış bir release'e kadar, kimsenin
-dikkatli olmayı hatırlamasına bel bağlamadan taşıma yöntemimi anlatır. Yöntem stack'ten bağımsızdır;
-onu ortaya çıkaran uygulama ise GPU/ML workload'u taşıyan, veri koruma kısıtları altında işletilen ve
-çok küçük bir ekiple sürdürülen multi-tenant ticari bir platformdu.
+Bir değişikliğin, talep edildiği andan production'a çıktığı ana kadar izlediği yolu anlatır.
+Yöntemin dayandığı fikir basit: hiçbir adım, birinin dikkatli olmayı hatırlamasına bırakılmaz.
+
+Anlatılan yöntem stack'ten bağımsızdır. Onu ortaya çıkaran ürün ise multi-tenant ticari bir
+platformdu: GPU/ML workload'u koşan, veri koruma kısıtları altında işletilen ve çok küçük bir ekiple
+sürdürülen bir sistem.
 
 Bu belge, saldırgan bakış açılı incelemeyi ve defect kanıtlamayı anlatan
 [Güvenlik İncelemesi ve PoC Metodolojisi'nin](METHODOLOGY.tr.md) tamamlayıcısıdır. Bir işin nasıl
