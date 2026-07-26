@@ -108,13 +108,13 @@ loud.
 **Situation.** Turn patient-specific visual simulation and day-to-day clinic operations into one
 commercial product without weakening patient-adjacent data handling.
 
-**What I did.** Sole technical ownership across the product, web application, API and GPU/ML
-workloads: multi-tenant architecture, payment flow, privacy controls, automated quality gates, and
-the release and deployment process.
+**What I did.** My own commercial product, built solo: sole technical ownership across the product,
+web application, API and GPU/ML workloads — multi-tenant architecture, payment flow, privacy
+controls, automated quality gates, and the release and deployment process.
 
 **Outcome.** A clinic-ready commercial product with privacy controls and an operational handover
-package. Source and implementation-specific client IP remain private; the case study documents
-responsibilities and non-sensitive evidence only.
+package. The source and the IP stay private because the asset is being prepared for transfer; the
+case study documents responsibilities and non-sensitive evidence only.
 
 `TypeScript` `React` `Node.js` `multi-tenant SaaS` `payments` `privacy compliance` `GPU/ML` `automated testing`
 
@@ -196,9 +196,9 @@ After that:
 5. **Handover.** Documentation, runbooks and, where needed, a session with your team. I do not leave
    behind a system that depends on me.
 
-**Confidentiality.** I work under NDA. Client source code and data never appear in any portfolio
-document, which is why the commercial case study here describes responsibilities and non-sensitive
-evidence only.
+**Confidentiality.** I work under NDA on client engagements, and client source code and data never
+appear in any portfolio document. The commercial case study here is my own product; it is redacted
+because the IP is being prepared for transfer.
 
 ---
 

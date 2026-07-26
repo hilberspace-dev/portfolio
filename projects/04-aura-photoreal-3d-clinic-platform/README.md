@@ -6,24 +6,24 @@
 >
 > | | |
 > |---|---|
-> | **Status** | **Private, commercial work** — source is not public and will not be |
+> | **Status** | **Private, commercial — my own product** — source is not public and will not be |
 > | **Scale** | ~800 commits; product, web app, API, ML/GPU workloads and operations tooling |
 > | **Headline capability** | Photoreal 3D head from a **~15-second phone capture video** (3D Gaussian Splatting, reconstructed in an offline commodity-GPU job), alongside an **instant in-browser 2.5D preview** (~0.4 s first render) |
 > | **Measured quality** | Held-out-frame evaluation: ~27.9 dB PSNR / 0.88 SSIM; automated agreement checks between the instant and offline outputs |
 > | **Clinical grounding** | Simulation values expressed in physical millimetres; outputs checked against published facial-anthropometric norms; clinical-reference corpus covers **838 open-access publications** (~2,000 before/after figures) |
 > | **Engineering controls** | Reproducible internal measurements, cross-output drift tests, property-based and mutation testing on payment paths |
 >
-> **Confidentiality boundary.** Implementation details, client identity and commercial IP are
-> confidential. This case study documents my responsibilities, engineering scope and non-sensitive
-> measurements only.
+> **Confidentiality boundary.** This is my own product. I built all of it and I hold the IP, which
+> is being prepared for transfer — that is why the implementation stays closed. This case study
+> documents my responsibilities, engineering scope and non-sensitive measurements only.
 >
-> | Engagement context | |
+> | Context | |
 > |---|---|
-> | **Engagement type** | Private commercial development |
+> | **Ownership** | My own commercial product — built solo, IP held by me and being prepared for transfer |
 > | **Role** | Sole engineer / technical owner — product, frontend, backend, ML/GPU workloads and operations |
 > | **Delivery status** | Clinic-ready; source-code delivery package prepared, including release scripts, runbooks and compliance documentation |
 > | **Verification available** | Architecture walkthrough and selected non-confidential evidence, under confidentiality |
-> | **Confidential** | Client identity, source code, commercial details, internal architecture, algorithms and model/data assets |
+> | **Confidential** | Source code, commercial details, internal architecture, algorithms and model/data assets |
 
 > **In plain terms (for non-technical readers).** A patient can see a realistic preview based on
 > their own face before deciding on a procedure. A quick version appears in the browser during the
@@ -107,14 +107,14 @@ Exact topology and business flows are withheld.
 
 ## Intentionally not disclosed
 
-- Client identity, pricing and commercial workflows
+- Pricing and commercial workflows
 - Source code, deployment topology and internal component names
 - All proprietary algorithms, control logic and model/data preparation
 - Formulas, prompts, internal sequencing and implementation-specific evidence
 
 *A high-level architecture walkthrough and selected non-confidential evidence can be discussed
-privately under an appropriate confidentiality agreement. Source code and client IP remain
-unavailable.*
+privately under an appropriate confidentiality agreement. The source code and the transferable IP
+remain unavailable.*
 
 `3D Gaussian Splatting` `computer vision` `facial anthropometry` `clinical-literature validation`
 `data provenance` `full-stack product delivery` `GPU workloads` `automated testing` `KVKK`
