@@ -70,6 +70,13 @@ screenshots.
 | **Engagement** | Fixed scope, fixed price, one point of contact | Defined package, written acceptance criteria, NDA, documented process |
 | **What you get** | Working system, tests, and how to operate it | The above plus decision records, runbooks, a handover package and audit evidence |
 
+> ### Free diagnostic
+>
+> Send an anonymised reconciliation extract or a sample of your data and you get back a written
+> account of where records are being lost silently and what it would take to close it. No commitment
+> expected in return. It is the shortest way to show what I can do on your data rather than describe
+> it on mine.
+
 ---
 
 ## How I work, in writing
@@ -165,7 +172,20 @@ hypothesis was reproduced, then refuted by its own evidence. Nothing was submitt
 
 ## How we work together
 
-1. **Initial assessment (free).** We go through the problem, the current system and the outcome you
+**We start by keeping your risk small.** I do not expect you to read a reference list and trust me.
+I make the first step cheap and reversible instead:
+
+- **Paid discovery.** A few days, fixed fee, standing on its own. The deliverable is a written
+  diagnosis: where the problem is, what the root cause is, which options exist and roughly what each
+  costs. If you decide not to continue, the document is still yours.
+- **Milestone-based payment.** No large sum up front; each delivered piece carries its own payment.
+- **Written acceptance criteria on the first milestone.** If the work does not meet them, I do not
+  invoice that milestone. I put this in writing because the cost lands on me, and that is what
+  stands in for a reference list.
+
+After that:
+
+1. **Initial call (free).** We go through the problem, the current system and the outcome you
    need. If it is not the right job for me, you hear that on the first call.
 2. **Written scope.** What is included, what is not, the acceptance criteria, the timeline and a
    fixed price. Out-of-scope work does not arrive later as a surprise.

@@ -65,6 +65,12 @@ sistemler kurdum; bu, denetim sırasında ekran görüntüsü toplamakla arasın
 | **Çalışma biçimi** | Sabit kapsam, sabit fiyat, tek muhatap | Tanımlı iş paketi, yazılı kabul kriterleri, NDA, süreç dokümanı |
 | **Teslimde alınan** | Çalışan sistem + testler + nasıl işletileceği | Yukarıdakiler + ADR'ler, runbook, handover paketi, denetim kanıtı |
 
+> ### Ücretsiz teşhis
+>
+> Anonimleştirilmiş bir mutabakat ekstresi ya da örnek veri gönderin; sessiz kayıpların nerede
+> olduğunu ve nasıl kapatılacağını yazılı olarak geri göndereyim. Karşılığında bir taahhüt
+> beklemiyorum. Ne yapabildiğimi anlatmak yerine kendi verinizde göstermenin en kısa yolu bu.
+
 ---
 
 ## Nasıl çalıştığım — yazılı olarak
@@ -160,7 +166,19 @@ sonra kendi kanıtıyla çürütüldü. Bulgu gönderilmedi; abartılı iddia ye
 
 ## Nasıl çalışıyoruz
 
-1. **Ön değerlendirme (ücretsiz).** Problemi, mevcut sistemi ve beklenen sonucu konuşuruz. Sizin
+**Riski küçük tutarak başlıyoruz.** Bir referans listesi okuyup bana güvenmenizi beklemiyorum. Bunun
+yerine ilk adımı ucuz ve geri dönülebilir yapıyorum:
+
+- **Ücretli ön analiz.** Birkaç günlük, sabit ücretli, kendi başına duran bir iş. Çıktısı yazılı bir
+  teşhis raporu: problem nerede, kök neden ne, hangi seçenekler var ve her birinin tahmini eforu.
+  Devam etmemeye karar verseniz de rapor sizde kalır.
+- **Milestone bazlı ödeme.** Peşin toplu ödeme yok; her teslim parçası kendi ödemesini taşır.
+- **İlk milestone'da yazılı kabul kriteri.** Kriteri karşılamazsam o milestone için ödeme almam.
+  Bunu yazıyorum çünkü maliyeti bana ait; referans yerine geçen şey budur.
+
+Sonrasındaki akış:
+
+1. **Ön görüşme (ücretsiz).** Problemi, mevcut sistemi ve beklenen sonucu konuşuruz. Sizin
    için doğru iş değilse bunu ilk görüşmede söylerim.
 2. **Yazılı kapsam.** Ne yapılacak, ne yapılmayacak, kabul kriterleri, süre ve sabit fiyat. Kapsam
    dışını sonradan sürpriz olarak getirmem.
