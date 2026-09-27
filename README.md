@@ -15,9 +15,7 @@ exactly where, and every month closed by hand costs both money and risk.
 
 ### Three things that are hard to fake
 
-- **I have carried a whole product alone.** Sole technical ownership of a live, multi-tenant
-  commercial SaaS that takes payments, processes personal data and runs a GPU/ML workload —
-  architecture, API, web, release process, compliance documentation and the handover package.
+- **I have carried a whole product from research to a working prototype.** Technical ownership of a multi-tenant clinic platform with payment flows, personal-data handling and a computer-vision measurement pipeline — architecture, API, web, release process, compliance documentation and the handover package — designed, directed and reviewed by me, with AI coding agents writing most of the code under that direction, recorded per commit. It has no users yet, and its case study says so.
 - **I find defects in money-handling code that others have already reviewed.** In ERC-4337 EntryPoint
   v0.8 — a heavily audited component that validates and pays for transactions — I reproduced a
   deterministic correctness defect twice: once with a negative control, once on an independently
@@ -100,23 +98,18 @@ loud.
 
 ## Selected work
 
-### 1. Aura — Photoreal 3D Surgical-Preview & Clinic Platform *(private, commercial)*
+### 1. Aura — browser-based facial measurement and surgical-preview platform *(private, prototype)*
 
 [Case study](projects/04-aura-photoreal-3d-clinic-platform/) ·
 [**🇹🇷 Türkçe oku**](projects/04-aura-photoreal-3d-clinic-platform/README.tr.md)
 
-**Situation.** Turn patient-specific visual simulation and day-to-day clinic operations into one
-commercial product without weakening patient-adjacent data handling.
+**Situation.** Turn a phone photograph into a facial measurement a patient, a surgeon and an independent laboratory could all trust, and put the clinic's operations around it without weakening patient-adjacent data handling.
 
-**What I did.** My own commercial product, built solo: sole technical ownership across the product,
-web application, API and GPU/ML workloads — multi-tenant architecture, payment flow, privacy
-controls, automated quality gates, and the release and deployment process.
+**What I did.** My own project: I design, direct and review the product, web application, API and measurement programme; AI coding agents write most of the code under my direction, recorded per commit. Multi-tenant architecture, payment flows, privacy controls, a pre-registered measurement programme, automated quality gates, and the release process.
 
-**Outcome.** A clinic-ready commercial product with privacy controls and an operational handover
-package. The source and the IP stay private because the asset is being prepared for transfer; the
-case study documents responsibilities and non-sensitive evidence only.
+**Outcome.** A working prototype with a per-capture evidence certificate, privacy controls and an operational handover package; no users, no revenue and no accuracy claim until an independent validation exists. The source stays private while intellectual-property work is ongoing; the case study documents scope, method and status only.
 
-`TypeScript` `React` `Node.js` `multi-tenant SaaS` `payments` `privacy compliance` `GPU/ML` `automated testing`
+`TypeScript` `React` `Node.js` `multi-tenant` `payment flows` `privacy compliance` `computer vision` `automated testing`
 
 ### 2. ReconPilot — Deterministic payment reconciliation engine
 
@@ -197,8 +190,7 @@ After that:
    behind a system that depends on me.
 
 **Confidentiality.** I work under NDA on client engagements, and client source code and data never
-appear in any portfolio document. The commercial case study here is my own product; it is redacted
-because the IP is being prepared for transfer.
+appear in any portfolio document. The product case study here is my own project; its implementation is withheld while intellectual-property work is ongoing.
 
 ---
 
