@@ -26,9 +26,7 @@
 > | **Confidential** | Source code, internal architecture, algorithms, the mechanisms behind the certificate's decisions, and model/data assets |
 
 > **In plain terms (for non-technical readers).** A patient photographs their own face with their
-> phone, guided by the browser. The system builds a three-dimensional model on the device and shows the
-> change a physician has planned. Every result comes with a certificate that says which parts were
-> measured and which were assumed, and the system is built to say no when it cannot measure. The
+> phone, guided by the browser. In the patient preview the system builds a three-dimensional model on the device and shows the change a physician has planned. Every result is designed to come with a certificate that says which parts were measured and which were assumed, and the system is built to say no when it cannot measure. The
 > clinic's enquiries, appointments and consent records live around that experience in one system.
 
 ---
@@ -84,7 +82,7 @@ in the prior labelling is filed and will be published with it.
 
 ### Measurement run as an experiment
 
-Accuracy measurements are pre-registered before their result is seen: the metric, the bar, the rival
+Since September 2026 accuracy measurements are pre-registered before their result is seen: the metric, the bar, the rival
 hypothesis and the control arms are written first; the reference surface must score zero error and a
 shuffled-identity arm must score chance; results are reported by worst case and 95th percentile, never
 by a median alone; a bar that is missed is recorded as missed. So far the pipeline has been measured
