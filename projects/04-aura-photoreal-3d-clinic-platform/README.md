@@ -1,120 +1,128 @@
 [![Türkçe sürüm](https://img.shields.io/badge/Language-T%C3%BCrk%C3%A7e-E30A17?style=for-the-badge)](README.tr.md)
 
-# Case Study — Aura: Photoreal 3D Surgical-Preview & Clinic Platform (private, commercial)
+# Case Study — Aura: browser-based facial measurement and surgical-preview platform (private, prototype)
 
-> ### A computer-vision research problem turned into a clinic-ready product by one engineer
+> ### A computer-vision measurement problem taken from research to a working prototype, with the evidence discipline as the product
 >
 > | | |
 > |---|---|
-> | **Status** | **Private, commercial — my own product** — source is not public and will not be |
-> | **Scale** | ~800 commits; product, web app, API, ML/GPU workloads and operations tooling |
-> | **Headline capability** | Photoreal 3D head from a **~15-second phone capture video** (3D Gaussian Splatting, reconstructed in an offline commodity-GPU job), alongside an **instant in-browser 2.5D preview** (~0.4 s first render) |
-> | **Measured quality** | Held-out-frame evaluation: ~27.9 dB PSNR / 0.88 SSIM; automated agreement checks between the instant and offline outputs |
-> | **Clinical grounding** | Simulation values expressed in physical millimetres; outputs checked against published facial-anthropometric norms; clinical-reference corpus covers **838 open-access publications** (~2,000 before/after figures) |
-> | **Engineering controls** | Reproducible internal measurements, cross-output drift tests, property-based and mutation testing on payment paths |
+> | **Status** | **Private, my own project — prototype.** No users, no revenue, no clinic yet. The source is not public. |
+> | **Scale** | About 2,800 commits (September 2026): the patient-side web application, the clinic workflow, the API, the measurement programme and the operations tooling. |
+> | **What it does** | Turns guided phone photographs into a metric three-dimensional face inside the browser, is designed to state region by region what was measured and what was assumed, and to refuse when the evidence is insufficient. |
+> | **Accuracy** | **No accuracy figure is published**, on purpose: the measurements so far are against photogrammetric ground truth in research code, not against an independent scanner on living faces. An independent, pre-registered validation is the next milestone. |
+> | **Engineering controls** | Pre-registered measurements with control arms, worst-case and 95th-percentile reporting, independent falsification-first review of every pull request since September 2026, property-based and mutation testing on the payment paths. |
 >
-> **Confidentiality boundary.** This is my own product. I built all of it and I hold the IP, which
-> is being prepared for transfer — that is why the implementation stays closed. This case study
-> documents my responsibilities, engineering scope and non-sensitive measurements only.
+> **Authorship and confidentiality.** This is my own project. I design, direct and review every part
+> of it. The
+> implementation stays closed while intellectual-property work is ongoing. This case study documents
+> scope, method and status only, and no figure that has not been independently measured.
 >
 > | Context | |
 > |---|---|
-> | **Ownership** | My own commercial product — built solo, IP held by me and being prepared for transfer |
-> | **Role** | Sole engineer / technical owner — product, frontend, backend, ML/GPU workloads and operations |
-> | **Delivery status** | Clinic-ready; source-code delivery package prepared, including release scripts, runbooks and compliance documentation |
-> | **Verification available** | Architecture walkthrough and selected non-confidential evidence, under confidentiality |
-> | **Confidential** | Source code, commercial details, internal architecture, algorithms and model/data assets |
+> | **Ownership** | My own project, held by me |
+> | **Role** | Founder and technical owner — product, frontend, backend, measurement programme and operations |
+> | **Delivery status** | Working prototype in testing; a source-code delivery package with release scripts, runbooks and compliance documentation exists; zero users |
+> | **Verification available** | An architecture walkthrough and selected non-confidential evidence, under confidentiality |
+> | **Confidential** | Source code, internal architecture, algorithms, the mechanisms behind the certificate's decisions, and model/data assets |
 
-> **In plain terms (for non-technical readers).** A patient can see a realistic preview based on
-> their own face before deciding on a procedure. A quick version appears in the browser during the
-> consultation; a higher-fidelity 3D version is reconstructed offline from a short phone video. The
-> clinic's inquiries, appointments, payments and analytics live around that experience in one system.
+> **In plain terms (for non-technical readers).** A patient photographs their own face with their
+> phone, guided by the browser. The system builds a three-dimensional model on the device and shows the
+> change a physician has planned. Every result comes with a certificate that says which parts were
+> measured and which were assumed, and the system is built to say no when it cannot measure. The
+> clinic's enquiries, appointments and consent records live around that experience in one system.
 
 ---
 
 ## What this demonstrates
 
-Aura demonstrates **commercial product delivery end-to-end**, **full-stack technical ownership** and
-the productization of applied computer vision. The work covered the patient-facing experience, clinic
-operations, backend services, data protection, ML/GPU workloads, release packaging and operational
-handover. The implementation-specific techniques that differentiate the product are intentionally
-outside this public document.
+Aura demonstrates taking an applied computer-vision problem to a working, testable product surface,
+end to end: the patient-facing capture and preview, the clinic operations, the backend, data
+protection, a measurement programme run like an experiment, release packaging and an operational
+handover package. The techniques that make the certificate's decisions are intentionally outside
+this public document.
 
 ## Public system view
 
 ```mermaid
 flowchart LR
-    A["~15 s phone capture"]
-    F["Clinic operations<br/>inquiries · appointments · payments"]
-    E["Consultation output<br/>before / after"]
+    A["Guided phone photographs<br/>front + two sides"]
+    F["Clinic operations<br/>enquiries · appointments · consent records"]
+    E["Consultation output<br/>preview + certificate"]
 
     subgraph C["Confidential implementation boundary"]
-        B["Instant browser preview<br/>~0.4 s first render"]
-        C1["Offline photoreal reconstruction<br/>commodity GPU"]
-        D["Clinically bounded simulation<br/>physical millimetres"]
+        B["In-browser reconstruction<br/>landmarks · multi-view depth · shape prior · iris scale"]
+        D["Certificate<br/>measured vs prior · scale source · refusal"]
         B --> D
-        C1 --> D
     end
 
     A --> B
-    A --> C1
     D --> E
     F --> E
 ```
 
-This is a capability map, not a deployment or algorithm diagram. All internal algorithms,
-architecture, control logic and model/data assets remain confidential.
+This is a capability map, not an algorithm diagram. Internal algorithms, control logic and model/data
+assets remain confidential.
 
 ## Engineering outcomes
 
-### Photoreal reconstruction made operational
+### A reconstruction that runs where the patient is
 
-The higher-fidelity path accepts a short phone capture and runs unattended on commodity GPU hardware;
-it is deliberately separated from the instant browser experience. Quality is evaluated on video
-frames excluded from reconstruction, with an average of ~27.9 dB PSNR / 0.88 SSIM in the recorded
-evaluation. Each run produces reviewable outputs and measurement reports. Reconstruction internals
-and the editing mechanism are withheld.
+In the patient preview the reconstruction runs in the browser on the patient's own device, from
+landmarks in several views, side-view and silhouette depth, a statistical shape prior used only when
+it passes a shape gate, and metric scale from iris statistics or a named population fallback. In the
+patient preview, photographs reach the clinic only after the patient's explicit opt-in. A denser
+metric pipeline (a self-calibrating sparse bundle adjustment and dense photometric refinement) is
+measured in research code beside the product and is not yet in it.
 
-### Two speeds kept in measurable agreement
+### The certificate is the product
 
-The browser path returns its first preview in ~0.4 s while the photoreal result completes later in the
-consultation flow. Automated acceptance tests record **0.10–0.45 mm RMS** agreement across twelve
-supported procedure categories. No construction, alignment or transformation method is described.
+Every capture is designed to receive a certificate: which regions were measured from evidence and
+which were filled from the prior, how the metric scale was obtained, and how wide the uncertainty is.
+Where the evidence is insufficient the system is designed to refuse to render and ask for a new
+capture. Refusal is a feature and its rate is meant to be published beside the accuracy. One known gap
+in the prior labelling is filed and will be published with it.
 
-### Clinical references with traceable provenance
+### Measurement run as an experiment
 
-Simulation outputs are checked against published facial-anthropometric norms. The clinical-reference
-corpus contains **838 open-access publications** and roughly **2,000 before/after figures**, with each
-entry traceable by PMCID and screened for commercially compatible use. Dataset and model assets have
-a written provenance register, and ambiguous licensing fails closed. The underlying model choices,
-preparation steps and formulas are confidential.
+Accuracy measurements are pre-registered before their result is seen: the metric, the bar, the rival
+hypothesis and the control arms are written first; the reference surface must score zero error and a
+shuffled-identity arm must score chance; results are reported by worst case and 95th percentile, never
+by a median alone; a bar that is missed is recorded as missed. So far the pipeline has been measured
+against photogrammetric ground truth (rendered head scans) on held-out identities; on real
+scanner-rig photographs no bar is met yet, and the record says so. No figure appears here because none
+has been independently confirmed.
 
 ### Test discipline across research and money paths
 
-Internal evidence files pair performance measurements with reproduction commands and worst-case
-results. Automated tests guard agreement between fast and offline outputs. Payment-amount handling is
-covered by unit, property-based and mutation testing, so the tests themselves are challenged with
-deliberately injected faults.
+Automated tests run before every sizeable merge, and an end-to-end rehearsal of the patient flow runs
+on a seeded stack at acceptance checkpoints. Payment-amount handling is covered by unit, property-based
+and mutation testing. Every pull request since September 2026 has passed an independent review whose
+brief is to falsify the author's claims.
 
 ### Privacy, operations and handover
 
-Patient-adjacent data handling has documented KVKK controls and HIPAA-aligned safeguards, including
-consent and commercial-messaging controls. The delivery package includes operational configuration,
-release verification, runbooks, contract checks and end-to-end coverage with accessibility checks.
-Exact topology and business flows are withheld.
+Patient-adjacent data handling has documented KVKK controls, consent captured as evidence rather than
+as a policy promise, and commercial-messaging controls. The delivery package includes operational
+configuration, release verification, runbooks and contract checks.
 
 ---
 
+## What is not claimed
+
+- No accuracy figure, in millimetres or otherwise, until an independent reference has measured it.
+- No prediction of a surgical outcome: the preview shows a plan, not a result.
+- No certification of regions the photographs did not observe.
+- No clinical benefit, no conversion or revenue effect: none has been measured.
+- No users, no revenue, no clinic yet.
+
 ## Intentionally not disclosed
 
-- Pricing and commercial workflows
 - Source code, deployment topology and internal component names
-- All proprietary algorithms, control logic and model/data preparation
+- Proprietary algorithms, the mechanisms behind the certificate's decisions, control logic and model/data preparation
 - Formulas, prompts, internal sequencing and implementation-specific evidence
 
 *A high-level architecture walkthrough and selected non-confidential evidence can be discussed
-privately under an appropriate confidentiality agreement. The source code and the transferable IP
-remain unavailable.*
+privately under an appropriate confidentiality agreement.*
 
-`3D Gaussian Splatting` `computer vision` `facial anthropometry` `clinical-literature validation`
-`data provenance` `full-stack product delivery` `GPU workloads` `automated testing` `KVKK`
+`computer vision` `multi-view geometry` `facial measurement` `pre-registered validation`
+`data provenance` `full-stack product delivery` `automated testing` `KVKK`

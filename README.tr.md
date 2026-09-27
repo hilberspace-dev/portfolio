@@ -13,9 +13,7 @@ kaybolduğunu gösteremez ve elle kapatılan her ay hem maliyet hem risk üretir
 
 ### Taklit edilmesi zor üç şey
 
-- **Bir ürünün tamamını tek başıma taşıdım.** Canlı, multi-tenant bir ticari SaaS'ın tek teknik
-  sahibiydim. Ürün ödeme alıyor, kişisel veri işliyor ve GPU/ML workload'u çalıştırıyordu. Mimari,
-  API, web arayüzü, release süreci, KVKK dokümantasyonu ve handover paketi bana aitti.
+- **Bir ürünü araştırmadan çalışan bir prototipe kadar taşıdım.** Ödeme akışları, kişisel veri işleme ve bilgisayarlı görü ölçüm hattı olan multi-tenant bir klinik platformunun teknik sahibiyim: mimari, API, web, sürüm süreci, uyum belgeleri ve devir paketi. Tasarım, yönlendirme ve inceleme bende. Henüz kullanıcısı yok ve vaka çalışması bunu söylüyor.
 - **Başkalarının incelemiş olduğu para kodunda hata bulurum.** ERC-4337 EntryPoint v0.8, işlemleri
   doğrulayıp ödemesini yapan ve yoğun biçimde denetlenmiş bir bileşendir. Burada deterministik bir
   doğruluk kusurunu iki ayrı ortamda tekrar ürettim. İlkini negatif kontrollü bir kanıtla,
@@ -100,24 +98,26 @@ sayıyı kendiniz çalıştırarak doğrulayabilirsiniz.
 
 ## Referans işler
 
-### 1. Aura — Fotogerçekçi 3D Cerrahi Önizleme ve Klinik Platformu *(özel, ticari)*
+### 1. Aura — tarayıcı tabanlı yüz ölçümü ve cerrahi önizleme platformu *(özel, prototip)*
 
 [Vaka çalışması](projects/04-aura-photoreal-3d-clinic-platform/README.tr.md) ·
 [English](projects/04-aura-photoreal-3d-clinic-platform/)
 
-**Durum.** Hastaya özel görsel simülasyon ile günlük klinik operasyonu tek bir ticari üründe
-birleşmeliydi. Bunu yaparken hasta verisinin işlenmesinden ödün verilemezdi.
+**Durum.** Bir telefon fotoğrafını hastanın, cerrahın ve bağımsız bir laboratuvarın güvenebileceği bir
+yüz ölçümüne dönüştürmek ve kliniğin operasyonunu, hastaya yakın veri işlemeyi zayıflatmadan bunun
+çevresine kurmak.
 
-**Yaptığım.** Bu benim kendi ticari ürünüm; tamamını tek başıma yazdım. Ürünün, web uygulamasının,
-API'nin ve GPU/ML workload'larının teknik sahibi bendim. Multi-tenant mimari, ödeme akışı, KVKK
-kontrolleri ve otomatik quality gate'lerle işleyen release ve deployment süreci bu işin
-kapsamındaydı.
+**Yaptığım.** Kendi projem: ürünü, web uygulamasını, API'yi ve ölçüm programını ben tasarlıyor,
+yönlendiriyor ve inceliyorum.
+Multi-tenant mimari, ödeme akışları, gizlilik kontrolleri, ön kayıtlı bir
+ölçüm programı, otomatik kalite kapıları ve sürüm süreci.
 
-**Sonuç.** Gizlilik kontrolleri ve operasyonel devir paketiyle birlikte kliniğe hazır hâle gelmiş
-bir ticari ürün. Fikrî mülkiyet devir için hazırlandığından kaynak kod kapalı tutuluyor; vaka
-çalışması yalnızca üstlendiğim sorumlulukları ve hassas olmayan kanıtları belgeliyor.
+**Sonuç.** Çekim başına kanıt sertifikası, gizlilik kontrolleri ve operasyonel devir paketi olan
+çalışan bir prototip; bağımsız bir doğrulama olana kadar kullanıcı, gelir ve doğruluk iddiası yok.
+Fikrî mülkiyet çalışması sürdüğü için kaynak kod kapalı; vaka çalışması yalnızca kapsamı, yöntemi ve
+durumu belgeler.
 
-`TypeScript` `React` `Node.js` `multi-tenant SaaS` `ödeme` `KVKK` `GPU/ML` `otomatik test`
+`TypeScript` `React` `Node.js` `multi-tenant` `ödeme akışları` `KVKK` `bilgisayarlı görü` `otomatik test`
 
 ### 2. ReconPilot — Deterministik ödeme mutabakat motoru
 
