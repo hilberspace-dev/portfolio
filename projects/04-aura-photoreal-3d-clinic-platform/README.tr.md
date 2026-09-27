@@ -26,9 +26,7 @@
 > | **Gizli tutulanlar** | Kaynak kod, iç mimari, algoritmalar, sertifikanın kararlarının arkasındaki mekanizmalar ve model/veri varlıkları |
 
 > **Teknik olmayan kısa anlatım.** Hasta, tarayıcının yönlendirmesiyle kendi yüzünü telefonuyla
-> fotoğraflar. Sistem üç boyutlu modeli cihazın üzerinde kurar ve hekimin planladığı değişikliği
-> gösterir. Her sonuç, hangi bölgelerin ölçüldüğünü, hangilerinin varsayıldığını söyleyen bir
-> sertifikayla gelir; sistem ölçemediğinde hayır demek üzere kurulmuştur. Kliniğin talepleri,
+> fotoğraflar. Hasta önizlemesinde sistem üç boyutlu modeli cihazın üzerinde kurar ve hekimin planladığı değişikliği gösterir. Her sonuç, hangi bölgelerin ölçüldüğünü, hangilerinin varsayıldığını söyleyen bir sertifikayla gelmek üzere tasarlanmıştır; sistem ölçemediğinde hayır demek üzere kurulmuştur. Kliniğin talepleri,
 > randevuları ve onam kayıtları bu deneyimin çevresinde aynı sistemde yönetilir.
 
 ---
@@ -83,7 +81,7 @@ birlikte yayımlanacaktır.
 
 ### Deney gibi yürütülen ölçüm
 
-Doğruluk ölçümleri, sonucu görülmeden önce ön kayda alınır: ölçüt, çıta, rakip hipotez ve kontrol
+Eylül 2026'dan bu yana doğruluk ölçümleri, sonucu görülmeden önce ön kayda alınır: ölçüt, çıta, rakip hipotez ve kontrol
 kolları önce yazılır; referans yüzey sıfır hata, kimlikleri karıştırılmış kol şans düzeyi okumalıdır;
 sonuçlar en kötü durum ve yüzde doksan beşinci yüzdelikle bildirilir, hiçbir zaman tek başına
 medyanla değil; tutmayan çıta tutmadı diye kaydedilir. Hat bugüne kadar held-out kimliklerde

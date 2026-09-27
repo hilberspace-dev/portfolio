@@ -197,8 +197,7 @@ Sonrasındaki akış:
    bağımlılık yaratan bir sistem bırakmam.
 
 **Gizlilik.** Müşteri işlerinde NDA ile çalışırım; müşteri kaynak kodu ve verisi hiçbir portföy
-belgesinde yer almaz. Bu depodaki ticari vaka çalışması ise kendi ürünüm; fikrî mülkiyet devre
-hazırlandığı için ayrıntıları kapalı tutuluyor.
+belgesinde yer almaz. Bu depodaki ürün vaka çalışması kendi projem; fikrî mülkiyet çalışması sürdüğü için uygulaması kapalı tutuluyor.
 
 ---
 
