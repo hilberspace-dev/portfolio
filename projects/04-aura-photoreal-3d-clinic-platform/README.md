@@ -10,7 +10,7 @@
 > | **Scale** | About 2,800 commits (September 2026): the patient-side web application, the clinic workflow, the API, the measurement programme and the operations tooling. |
 > | **What it does** | Turns guided phone photographs into a metric three-dimensional face inside the browser, is designed to state region by region what was measured and what was assumed, and to refuse when the evidence is insufficient. |
 > | **Accuracy** | **No accuracy figure is published**, on purpose: the measurements so far are against photogrammetric ground truth in research code, not against an independent scanner on living faces. An independent, pre-registered validation is the next milestone. |
-> | **Engineering controls** | Pre-registered measurements with control arms, worst-case and 95th-percentile reporting, independent falsification-first review of every pull request since September 2026, property-based and mutation testing on the payment paths. |
+> | **Engineering controls** | Pre-registered measurements with control arms, worst-case and 95th-percentile reporting, an independent falsification-first review rule for every pull request since September 2026 (a heuristic count on 4 October 2026 finds a recorded review on about 80 to 90 % of merged pull requests), property-based and mutation testing on the payment paths. |
 >
 > **Authorship and confidentiality.** This is my own project. I design, direct and review every part
 > of it. The
@@ -94,8 +94,9 @@ has been independently confirmed.
 
 Automated tests run before every sizeable merge, and an end-to-end rehearsal of the patient flow runs
 on a seeded stack at acceptance checkpoints. Payment-amount handling is covered by unit, property-based
-and mutation testing. Every pull request since September 2026 has passed an independent review whose
-brief is to falsify the author's claims.
+and mutation testing. Since September 2026 the rule is an independent review before every merge, whose
+brief is to falsify the author's claims; a heuristic count on 4 October 2026 finds a recorded review on about
+80 to 90 % of merged pull requests.
 
 ### Privacy, operations and handover
 
