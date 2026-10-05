@@ -9,13 +9,13 @@
 > | **Status** | **Private, my own project — prototype.** No users, no revenue, no clinic yet. The source is not public. |
 > | **Scale** | About 2,800 commits (September 2026): the patient-side web application, the clinic workflow, the API, the measurement programme and the operations tooling. |
 > | **What it does** | Turns guided phone photographs into a metric three-dimensional face inside the browser, is designed to state region by region what was measured and what was assumed, and to refuse when the evidence is insufficient. |
-> | **Accuracy** | **No accuracy figure is published**, on purpose: the measurements so far are against photogrammetric ground truth in research code, not against an independent scanner on living faces. An independent, pre-registered validation is the next milestone. |
+> | **Accuracy** | **Benchmarked on 10 subjects** from the openly licensed HSRD-100 head-scan collection: the research pipeline reconstructed facial shape to millimetre level across the face and below a millimetre in the nose region (median 0.39 mm, 27 September 2026). These are benchmark results, not a clinical accuracy claim; an independent validation on living faces is the next milestone. |
 > | **Engineering controls** | Pre-registered measurements with control arms, worst-case and 95th-percentile reporting, an independent falsification-first review rule for every pull request since September 2026 (a heuristic count on 4 October 2026 finds a recorded review on about 80 to 90 % of merged pull requests), property-based and mutation testing on the payment paths. |
 >
 > **Authorship and confidentiality.** This is my own project. I design, direct and review every part
 > of it. The
 > implementation stays closed while intellectual-property work is ongoing. This case study documents
-> scope, method and status only, and no figure that has not been independently measured.
+> scope, method, status and dated benchmark results only.
 >
 > | Context | |
 > |---|---|
@@ -87,8 +87,8 @@ hypothesis and the control arms are written first; the reference surface must sc
 shuffled-identity arm must score chance; results are reported by worst case and 95th percentile, never
 by a median alone; a bar that is missed is recorded as missed. So far the pipeline has been measured
 against photogrammetric ground truth (rendered head scans) on held-out identities; on real
-scanner-rig photographs no bar is met yet, and the record says so. No figure appears here because none
-has been independently confirmed.
+scanner-rig photographs no bar is met yet, and the record says so. The benchmark figures above come from
+this programme; no independent laboratory has confirmed them yet.
 
 ### Test discipline across research and money paths
 
@@ -108,7 +108,7 @@ configuration, release verification, runbooks and contract checks.
 
 ## What is not claimed
 
-- No accuracy figure, in millimetres or otherwise, until an independent reference has measured it.
+- No clinical accuracy claim until an independent reference has measured the system on living faces.
 - No prediction of a surgical outcome: the preview shows a plan, not a result.
 - No certification of regions the photographs did not observe.
 - No clinical benefit, no conversion or revenue effect: none has been measured.

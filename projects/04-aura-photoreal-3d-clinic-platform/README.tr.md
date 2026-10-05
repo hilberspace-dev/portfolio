@@ -9,13 +9,12 @@
 > | **Durum** | **Özel, kendi projem — prototip.** Henüz kullanıcı, gelir ve klinik yok. Kaynak kod herkese açık değil. |
 > | **Ölçek** | Yaklaşık 2.800 commit (Eylül 2026): hasta tarafındaki web uygulaması, klinik iş akışı, API, ölçüm programı ve operasyon araçları. |
 > | **Ne yapar** | Rehberli telefon fotoğraflarını tarayıcı içinde metrik bir üç boyutlu yüze dönüştürür; bölge bölge neyin ölçüldüğünü, neyin varsayıldığını söylemek ve kanıt yetersizse reddetmek üzere tasarlanmıştır. |
-> | **Doğruluk** | **Hiçbir doğruluk değeri yayımlanmıyor**, bilinçli olarak: bugüne kadarki ölçümler araştırma kodunda, fotogrametrik referansa karşıdır; yaşayan yüzlerde bağımsız bir tarayıcıya karşı değil. Bağımsız, ön kayıtlı bir doğrulama bir sonraki kilometre taşıdır. |
+> | **Doğruluk** | **10 kişi üzerinde ölçüldü**: açık lisanslı HSRD-100 kafa taraması koleksiyonundaki 10 kişide araştırma hattı yüz şeklini yüzün genelinde milimetre düzeyinde, burun bölgesinde milimetrenin altında kurdu (medyan 0,39 mm, 27 Eylül 2026). Bunlar karşılaştırma ölçümleridir, klinik doğruluk iddiası değildir; yaşayan yüzlerde bağımsız doğrulama bir sonraki kilometre taşıdır. |
 > | **Mühendislik kontrolleri** | Kontrol kollu ön kayıtlı ölçümler; en kötü durum ve yüzde doksan beşinci yüzdelikle raporlama; Eylül 2026'dan bu yana her pull request'te bağımsız, yanlışlamaya odaklı inceleme; ödeme yollarında property-based ve mutation testleri. |
 >
 > **Yazarlık ve gizlilik.** Bu benim kendi projem. Her parçasını ben tasarlıyor, yönlendiriyor ve
 > inceliyorum. Fikrî mülkiyet çalışması sürdüğü için uygulama kapalı tutuluyor. Bu vaka
-> çalışması yalnızca kapsamı, yöntemi ve durumu belgeler; bağımsız olarak ölçülmemiş hiçbir değer
-> içermez.
+> çalışması yalnızca kapsamı, yöntemi, durumu ve tarihli karşılaştırma sonuçlarını belgeler.
 >
 > | Bağlam | |
 > |---|---|
@@ -86,8 +85,8 @@ kolları önce yazılır; referans yüzey sıfır hata, kimlikleri karıştırı
 sonuçlar en kötü durum ve yüzde doksan beşinci yüzdelikle bildirilir, hiçbir zaman tek başına
 medyanla değil; tutmayan çıta tutmadı diye kaydedilir. Hat bugüne kadar held-out kimliklerde
 fotogrametrik referansa (taranmış kafaların render'ları) karşı ölçülmüştür; gerçek tarayıcı rig'i
-fotoğraflarında henüz hiçbir çıta tutmamıştır ve kayıt bunu söyler. Bağımsız olarak doğrulanmış bir
-değer olmadığı için burada hiçbir değer yer almaz.
+fotoğraflarında henüz hiçbir çıta tutmamıştır ve kayıt bunu söyler. Yukarıdaki karşılaştırma değerleri
+bu programdan gelir; bağımsız bir laboratuvar onları henüz doğrulamadı.
 
 ### Araştırma ve para yollarında test disiplini
 
@@ -106,7 +105,7 @@ doğrulamasını, runbook'ları ve sözleşme kontrollerini içerir.
 
 ## İddia edilmeyenler
 
-- Bağımsız bir referans ölçmeden, milimetre ya da başka bir birimde hiçbir doğruluk değeri.
+- Bağımsız bir referans sistemi yaşayan yüzlerde ölçmeden hiçbir klinik doğruluk iddiası.
 - Cerrahi sonuç tahmini yok: önizleme bir planı gösterir, bir sonucu değil.
 - Fotoğrafların gözlemlemediği bölgeler için sertifika yok.
 - Klinik fayda, dönüşüm ya da gelir etkisi iddiası yok: hiçbiri ölçülmedi.
