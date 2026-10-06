@@ -1,6 +1,6 @@
 [![English version](https://img.shields.io/badge/Dil-English-1F6FEB?style=for-the-badge)](README.md)
 
-# Vaka Çalışması — Aura: tarayıcı tabanlı yüz ölçümü ve cerrahi önizleme platformu *(özel, prototip)*
+# Vaka Çalışması — AURA: tarayıcı tabanlı yüz ölçümü ve cerrahi önizleme platformu *(özel, prototip)*
 
 > ### Bir bilgisayarlı görü ölçüm probleminin araştırmadan çalışan bir prototipe taşınması; ürün, kanıt disiplininin kendisidir
 >
@@ -32,7 +32,7 @@
 
 ## Bu çalışma neyi gösteriyor?
 
-Aura, uygulamalı bir bilgisayarlı görü probleminin çalışan ve test edilebilir bir ürün yüzeyine uçtan
+AURA, uygulamalı bir bilgisayarlı görü probleminin çalışan ve test edilebilir bir ürün yüzeyine uçtan
 uca taşınmasını gösterir: hastanın kullandığı çekim ve önizleme, klinik operasyonları, backend, veri
 koruma, deney gibi yürütülen bir ölçüm programı, sürüm paketi ve operasyonel devir paketi.
 Sertifikanın kararlarını veren yöntemler bilinçli olarak bu herkese açık belgenin dışındadır.

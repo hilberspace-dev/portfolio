@@ -98,7 +98,7 @@ sayıyı kendiniz çalıştırarak doğrulayabilirsiniz.
 
 ## Referans işler
 
-### 1. Aura — tarayıcı tabanlı yüz ölçümü ve cerrahi önizleme platformu *(özel, prototip)*
+### 1. AURA — tarayıcı tabanlı yüz ölçümü ve cerrahi önizleme platformu *(özel, prototip)*
 
 [Vaka çalışması](projects/04-aura-photoreal-3d-clinic-platform/README.tr.md) ·
 [English](projects/04-aura-photoreal-3d-clinic-platform/)

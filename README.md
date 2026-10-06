@@ -98,7 +98,7 @@ loud.
 
 ## Selected work
 
-### 1. Aura — browser-based facial measurement and surgical-preview platform *(private, prototype)*
+### 1. AURA — browser-based facial measurement and surgical-preview platform *(private, prototype)*
 
 [Case study](projects/04-aura-photoreal-3d-clinic-platform/) ·
 [**🇹🇷 Türkçe oku**](projects/04-aura-photoreal-3d-clinic-platform/README.tr.md)

@@ -1,6 +1,6 @@
 [![Türkçe sürüm](https://img.shields.io/badge/Language-T%C3%BCrk%C3%A7e-E30A17?style=for-the-badge)](README.tr.md)
 
-# Case Study — Aura: browser-based facial measurement and surgical-preview platform (private, prototype)
+# Case Study — AURA: browser-based facial measurement and surgical-preview platform (private, prototype)
 
 > ### A computer-vision measurement problem taken from research to a working prototype, with the evidence discipline as the product
 >
@@ -33,7 +33,7 @@
 
 ## What this demonstrates
 
-Aura demonstrates taking an applied computer-vision problem to a working, testable product surface,
+AURA demonstrates taking an applied computer-vision problem to a working, testable product surface,
 end to end: the patient-facing capture and preview, the clinic operations, the backend, data
 protection, a measurement programme run like an experiment, release packaging and an operational
 handover package. The techniques that make the certificate's decisions are intentionally outside
