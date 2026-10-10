@@ -2,7 +2,7 @@
 
 # Case Study — AURA: browser-based facial measurement and surgical-preview platform (private, prototype)
 
-> ### A computer-vision measurement problem taken from research to a working prototype, with the evidence discipline as the product
+> ### Research prototype for browser-based facial measurement and surgical preview
 >
 > | | |
 > |---|---|
@@ -12,10 +12,9 @@
 > | **Accuracy** | **Benchmarked on 10 subjects** from the openly licensed HSRD-100 head-scan collection: the research pipeline reconstructed facial shape to millimetre level across the face and below a millimetre in the nose region (median 0.29 mm, 27 September 2026). These are benchmark results, not a clinical accuracy claim; an independent validation on living faces is the next milestone. |
 > | **Engineering controls** | Pre-registered measurements with control arms, worst-case and 95th-percentile reporting, an independent falsification-first review rule for every pull request since September 2026 (a heuristic count on 4 October 2026 finds a recorded review on about 80 to 90 % of merged pull requests), property-based and mutation testing on the payment paths. |
 >
-> **Authorship and confidentiality.** This is my own project. I design, direct and review every part
-> of it. The
-> implementation stays closed while intellectual-property work is ongoing. This case study documents
-> scope, method, status and dated benchmark results only.
+> **Project scope and confidentiality.** This is my own project. I am responsible for technical
+> direction, architecture and review. The implementation remains private while intellectual-property
+> work is ongoing. This case study describes scope, methods, status and dated benchmark results.
 >
 > | Context | |
 > |---|---|
@@ -118,7 +117,7 @@ configuration, release verification, runbooks and contract checks.
 
 - Source code, deployment topology and internal component names
 - Proprietary algorithms, the mechanisms behind the certificate's decisions, control logic and model/data preparation
-- Formulas, prompts, internal sequencing and implementation-specific evidence
+- Formulas, internal sequencing and implementation-specific evidence
 
 *A high-level architecture walkthrough and selected non-confidential evidence can be discussed
 privately under an appropriate confidentiality agreement.*

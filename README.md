@@ -13,9 +13,9 @@ exactly where, and every month closed by hand costs both money and risk.
 
 🇹🇷 **Türkiye'deki şirketler için:** [Türkçe portföy →](README.tr.md)
 
-### Three things that are hard to fake
+### Selected experience
 
-- **I have carried a whole product from research to a working prototype.** Technical ownership of a multi-tenant clinic platform with payment flows, personal-data handling and a computer-vision measurement pipeline — architecture, API, web, release process, compliance documentation and the handover package — designed, directed and reviewed by me. It has no users yet, and its case study says so.
+- **I lead the development of an applied-research prototype.** AURA combines a multi-tenant clinic workflow, payment and privacy controls, and a browser-based facial measurement pipeline. I am responsible for the technical direction, architecture and review process. It has no users or revenue yet.
 - **I find defects in money-handling code that others have already reviewed.** In ERC-4337 EntryPoint
   v0.8 — a heavily audited component that validates and pays for transactions — I reproduced a
   deterministic correctness defect twice: once with a negative control, once on an independently
@@ -25,8 +25,8 @@ exactly where, and every month closed by hand costs both money and risk.
   own proof refuted my leading hypothesis. Nothing was submitted. If your numbers do not support the
   conclusion you were hoping for, you will hear it from me first.
 
-The third one is the one worth hiring for. Everything I claim in this portfolio can be checked, and
-the parts that cannot be checked are labelled as such.
+The case studies distinguish reproducible results from work that remains private or has not
+been independently validated.
 
 > ### Available for fixed-scope engagements
 >
@@ -79,9 +79,8 @@ screenshots.
 
 ## How I work, in writing
 
-Two methodology documents live in this repository. They are not marketing pages; they are the
-standards I actually hold myself to, and they are the fastest way to judge whether I am the right
-person for your work.
+Two methodology documents describe the test, review and release processes behind these
+projects.
 
 - **[Delivery & Quality-Gate Methodology](DELIVERY-METHODOLOGY.md)** — how a change reaches
   production: the gate ladder, how legacy debt is frozen and forced downward, tests that detect
@@ -105,7 +104,7 @@ loud.
 
 **Situation.** Turn a phone photograph into a facial measurement a patient, a surgeon and an independent laboratory could all trust, and put the clinic's operations around it without weakening patient-adjacent data handling.
 
-**What I did.** My own project: I design, direct and review the product, web application, API and measurement programme. Multi-tenant architecture, payment flows, privacy controls, a pre-registered measurement programme, automated quality gates, and the release process.
+**Scope.** I lead technical design and review across the web application, API and measurement programme. The prototype includes multi-tenant architecture, payment flows, privacy controls, pre-registered measurements and automated release checks.
 
 **Outcome.** A working prototype with a per-capture evidence certificate, privacy controls and an operational handover package; no users, no revenue and no accuracy claim until an independent validation exists. The source stays private while intellectual-property work is ongoing; the case study documents scope, method and status only.
 

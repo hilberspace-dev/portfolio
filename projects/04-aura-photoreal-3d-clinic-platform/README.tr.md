@@ -2,19 +2,19 @@
 
 # Vaka Çalışması — AURA: tarayıcı tabanlı yüz ölçümü ve cerrahi önizleme platformu *(özel, prototip)*
 
-> ### Bir bilgisayarlı görü ölçüm probleminin araştırmadan çalışan bir prototipe taşınması; ürün, kanıt disiplininin kendisidir
+> ### Tarayıcıda yüz ölçümü ve cerrahi önizleme için araştırma prototipi
 >
 > | | |
 > |---|---|
 > | **Durum** | **Özel, kendi projem — prototip.** Henüz kullanıcı, gelir ve klinik yok. Kaynak kod herkese açık değil. |
 > | **Ölçek** | Yaklaşık 2.800 commit (Eylül 2026): hasta tarafındaki web uygulaması, klinik iş akışı, API, ölçüm programı ve operasyon araçları. |
 > | **Ne yapar** | Rehberli telefon fotoğraflarını tarayıcı içinde metrik bir üç boyutlu yüze dönüştürür; bölge bölge neyin ölçüldüğünü, neyin varsayıldığını söylemek ve kanıt yetersizse reddetmek üzere tasarlanmıştır. |
-> | **Doğruluk** | **10 kişi üzerinde ölçüldü**: açık lisanslı HSRD-100 kafa taraması koleksiyonundaki 10 kişide araştırma hattı yüz şeklini yüzün genelinde milimetre düzeyinde, burun bölgesinde milimetrenin altında kurdu (medyan 0,39 mm, 27 Eylül 2026). Bunlar karşılaştırma ölçümleridir, klinik doğruluk iddiası değildir; yaşayan yüzlerde bağımsız doğrulama bir sonraki kilometre taşıdır. |
-> | **Mühendislik kontrolleri** | Kontrol kollu ön kayıtlı ölçümler; en kötü durum ve yüzde doksan beşinci yüzdelikle raporlama; Eylül 2026'dan bu yana her pull request'te bağımsız, yanlışlamaya odaklı inceleme; ödeme yollarında property-based ve mutation testleri. |
+> | **Doğruluk** | **10 kişi üzerinde ölçüldü**: açık lisanslı HSRD-100 kafa taraması koleksiyonundaki 10 kişide araştırma hattı yüz şeklini yüzün genelinde milimetre düzeyinde, burun bölgesinde milimetrenin altında kurdu (medyan 0,29 mm, 27 Eylül 2026). Bunlar karşılaştırma ölçümleridir, klinik doğruluk iddiası değildir; yaşayan yüzlerde bağımsız doğrulama bir sonraki kilometre taşıdır. |
+> | **Mühendislik kontrolleri** | Kontrol kollu ön kayıtlı ölçümler; en kötü durum ve yüzde doksan beşinci yüzdelikle raporlama; Eylül 2026'dan bu yana bağımsız inceleme kuralı (4 Ekim 2026 sayımında birleştirilen PR'ların yaklaşık %80–90'ında kaydedilmiş inceleme); ödeme yollarında property-based ve mutation testleri. |
 >
-> **Yazarlık ve gizlilik.** Bu benim kendi projem. Her parçasını ben tasarlıyor, yönlendiriyor ve
-> inceliyorum. Fikrî mülkiyet çalışması sürdüğü için uygulama kapalı tutuluyor. Bu vaka
-> çalışması yalnızca kapsamı, yöntemi, durumu ve tarihli karşılaştırma sonuçlarını belgeler.
+> **Proje kapsamı ve gizlilik.** Bu benim kendi projem. Teknik yön, mimari ve inceleme sürecinden
+> sorumluyum. Fikrî mülkiyet çalışması sürdüğü için uygulama kapalı tutuluyor. Bu vaka çalışmasında
+> kapsam, yöntem, mevcut durum ve tarihli ölçüm sonuçları yer alıyor.
 >
 > | Bağlam | |
 > |---|---|
@@ -92,8 +92,8 @@ bu programdan gelir; bağımsız bir laboratuvar onları henüz doğrulamadı.
 
 Otomatik testler her büyük birleştirmeden önce koşar; hasta akışının uçtan uca provası kabul
 noktalarında tohumlanmış bir yığın üzerinde yürütülür. Ödeme tutarı işleme birim, property-based ve
-mutation testleriyle kapsanır. Eylül 2026'dan bu yana her pull request, görevi yazarın iddialarını
-yanlışlamak olan bağımsız bir incelemeden geçer.
+mutation testleriyle kapsanır. Eylül 2026'da bağımsız inceleme kuralı getirildi; 4 Ekim 2026
+sayımında birleştirilen PR'ların yaklaşık %80–90'ında inceleme kaydı bulundu.
 
 ### Gizlilik, operasyon ve devir
 

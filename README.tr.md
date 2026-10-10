@@ -11,9 +11,9 @@ toparlanması**
 işlerin ortak paydası şudur: bir yerde para ya da kayıt kaybolur, kimse tam olarak nerede
 kaybolduğunu gösteremez ve elle kapatılan her ay hem maliyet hem risk üretir.
 
-### Taklit edilmesi zor üç şey
+### Deneyim ve örnek çalışmalar
 
-- **Bir ürünü araştırmadan çalışan bir prototipe kadar taşıdım.** Ödeme akışları, kişisel veri işleme ve bilgisayarlı görü ölçüm hattı olan multi-tenant bir klinik platformunun teknik sahibiyim: mimari, API, web, sürüm süreci, uyum belgeleri ve devir paketi. Tasarım, yönlendirme ve inceleme bende. Henüz kullanıcısı yok ve vaka çalışması bunu söylüyor.
+- **Araştırma prototipinin teknik geliştirmesini yönetiyorum.** AURA; çok kiracılı klinik iş akışını, ödeme ve gizlilik kontrollerini, tarayıcıda yüz ölçümü yapan bir araştırma hattını bir araya getiriyor. Teknik kapsam, mimari kararlar ve inceleme sürecinden sorumluyum. Henüz kullanıcısı ve geliri yok.
 - **Başkalarının incelemiş olduğu para kodunda hata bulurum.** ERC-4337 EntryPoint v0.8, işlemleri
   doğrulayıp ödemesini yapan ve yoğun biçimde denetlenmiş bir bileşendir. Burada deterministik bir
   doğruluk kusurunu iki ayrı ortamda tekrar ürettim. İlkini negatif kontrollü bir kanıtla,
@@ -23,8 +23,8 @@ kaybolduğunu gösteremez ve elle kapatılan her ay hem maliyet hem risk üretir
   güçlü hipotezimi çürüttüğü için çalışmayı yazılı bir NO-GO ile bitirdim; hiçbir bildirim
   göndermedim. Sayılar umduğunuz sonucu desteklemiyorsa bunu ilk benden duyarsınız.
 
-Asıl önemli olan üçüncüsüdür. Bu portföydeki her iddia doğrulanabilir. Doğrulanamayanları ise
-açıkça belirttim.
+Aşağıdaki çalışmalarda tekrar üretilebilen sonuçlarla henüz bağımsız doğrulaması olmayan
+iddiaları birbirinden ayırıyorum.
 
 > ### Sabit kapsamlı iş alıyorum
 >
@@ -77,8 +77,8 @@ görüntüsü toplamak arasındaki fark budur.
 
 ## Nasıl çalıştığım — yazılı olarak
 
-Bu depoda iki metodoloji belgesi var. Bunlar pazarlama metni değil, fiilen kendime uyguladığım
-standartlar. Aradığınız kişi miyim, en hızlı buradan görürsünüz.
+Depodaki iki metodoloji belgesi test, inceleme ve sürüm süreçlerinin nasıl yürütüldüğünü
+açıklıyor.
 
 - **[Teslim ve Quality Gate Metodolojisi](DELIVERY-METHODOLOGY.tr.md)** — bir değişikliğin
   production'a nasıl çıktığı: gate merdiveni, eski debt'in nasıl dondurulup aşağı zorlandığı,
@@ -107,10 +107,9 @@ sayıyı kendiniz çalıştırarak doğrulayabilirsiniz.
 yüz ölçümüne dönüştürmek ve kliniğin operasyonunu, hastaya yakın veri işlemeyi zayıflatmadan bunun
 çevresine kurmak.
 
-**Yaptığım.** Kendi projem: ürünü, web uygulamasını, API'yi ve ölçüm programını ben tasarlıyor,
-yönlendiriyor ve inceliyorum.
-Multi-tenant mimari, ödeme akışları, gizlilik kontrolleri, ön kayıtlı bir
-ölçüm programı, otomatik kalite kapıları ve sürüm süreci.
+**Kapsam.** Ürünün teknik tasarımını ve inceleme sürecini yönetiyorum. Web uygulaması, API ve
+ölçüm programı; çok kiracılı mimari, ödeme akışları, gizlilik kontrolleri, ön kayıtlı ölçümler
+ve otomatik sürüm kontrolleriyle birlikte ele alınıyor.
 
 **Sonuç.** Çekim başına kanıt sertifikası, gizlilik kontrolleri ve operasyonel devir paketi olan
 çalışan bir prototip; bağımsız bir doğrulama olana kadar kullanıcı, gelir ve doğruluk iddiası yok.
