@@ -1,41 +1,40 @@
 [![English version](https://img.shields.io/badge/Dil-English-1F6FEB?style=for-the-badge)](README.md)
 
-# Vaka Çalışması — AURA: tarayıcı tabanlı yüz ölçümü ve cerrahi önizleme platformu *(özel, prototip)*
+# Vaka çalışması: AURA, tarayıcı tabanlı yüz ölçümü ve cerrahi önizleme platformu (özel, prototip)
 
-> ### Tarayıcıda yüz ölçümü ve cerrahi önizleme için araştırma prototipi
->
 > | | |
 > |---|---|
-> | **Durum** | **Özel, kendi projem — prototip.** Henüz kullanıcı, gelir ve klinik yok. Kaynak kod herkese açık değil. |
-> | **Ölçek** | Yaklaşık 2.800 commit (Eylül 2026): hasta tarafındaki web uygulaması, klinik iş akışı, API, ölçüm programı ve operasyon araçları. |
-> | **Ne yapar** | Rehberli telefon fotoğraflarını tarayıcı içinde metrik bir üç boyutlu yüze dönüştürür; bölge bölge neyin ölçüldüğünü, neyin varsayıldığını söylemek ve kanıt yetersizse reddetmek üzere tasarlanmıştır. |
-> | **Doğruluk** | **10 kişi üzerinde ölçüldü**: açık lisanslı HSRD-100 kafa taraması koleksiyonundaki 10 kişide araştırma hattı yüz şeklini yüzün genelinde milimetre düzeyinde, burun bölgesinde milimetrenin altında kurdu (medyan 0,29 mm, 27 Eylül 2026). Bunlar karşılaştırma ölçümleridir, klinik doğruluk iddiası değildir; yaşayan yüzlerde bağımsız doğrulama bir sonraki kilometre taşıdır. |
-> | **Mühendislik kontrolleri** | Kontrol kollu ön kayıtlı ölçümler; en kötü durum ve yüzde doksan beşinci yüzdelikle raporlama; Eylül 2026'dan bu yana bağımsız inceleme kuralı (4 Ekim 2026 sayımında birleştirilen PR'ların yaklaşık %80–90'ında kaydedilmiş inceleme); ödeme yollarında property-based ve mutation testleri. |
+> | Durum | Özel bir araştırma prototipi, kendi projem. Henüz kullanıcı, gelir ve klinik yok. Kaynak kod herkese açık değil. |
+> | Ölçek | Yaklaşık 2.800 commit (Eylül 2026): hasta tarafındaki web uygulaması, klinik iş akışı, API, ölçüm programı ve operasyon araçları. |
+> | Ne yapar | Rehberli telefon fotoğraflarını tarayıcı içinde metrik bir üç boyutlu yüze dönüştürür. Bölge bölge neyin ölçüldüğünü, neyin varsayıldığını söylemek ve kanıt yetersizse reddetmek üzere tasarlandı. |
+> | Doğruluk | Açık lisanslı HSRD-100 kafa taraması koleksiyonunun held-out beş kimliğinde (iki kimlik daha ayar için kullanıldı; üç kimlik reddedildi ve başarısız sayıldı), ön kayda alınmış yedi koldan iki çıtayı da karşılayan tek kol burun bölgesinde %81 kapsamla 0,29 mm medyana ve 1,8 mm 95. yüzdeliğe, yüzün tamamında ise %75 kapsamla 1,5 mm 95. yüzdeliğe ulaştı (27 Eylül 2026). Girdiler render edilmiş taramalardı ve ölçek referansa fit edildi. Bunlar karşılaştırma ölçümleri; klinik doğruluk iddiası taşımıyor. Yaşayan yüzlerde bağımsız doğrulama bir sonraki kilometre taşı. |
+> | Mühendislik kontrolleri | Kontrol kollu ön kayıtlı ölçümler; en kötü durum ve 95. yüzdelikle raporlama; Eylül 2026'dan bu yana her pull request için inceleme kuralı (4 Ekim 2026'daki sezgisel bir sayımda birleştirilen PR'ların yaklaşık %80–90'ında kaydedilmiş inceleme bulundu); ödeme yollarında property-based ve mutation testleri. |
 >
-> **Proje kapsamı ve gizlilik.** Bu benim kendi projem. Teknik yön, mimari ve inceleme sürecinden
-> sorumluyum. Fikrî mülkiyet çalışması sürdüğü için uygulama kapalı tutuluyor. Bu vaka çalışmasında
-> kapsam, yöntem, mevcut durum ve tarihli ölçüm sonuçları yer alıyor.
+> Proje kapsamı ve gizlilik: Bu benim kendi projem; teknik yön, mimari ve inceleme benim
+> sorumluluğumda. Fikrî mülkiyet çalışması sürdüğü için uygulama kapalı tutuluyor. Bu vaka çalışması
+> kapsamı, yöntemleri, mevcut durumu ve tarihli ölçüm sonuçlarını anlatıyor.
 >
 > | Bağlam | |
 > |---|---|
-> | **Sahiplik** | Kendi projem, bende |
-> | **Rol** | Kurucu ve teknik sahip — ürün, frontend, backend, ölçüm programı ve operasyon |
-> | **Teslim durumu** | Testte çalışan bir prototip; sürüm betikleri, runbook'lar ve uyum belgelerini içeren bir kaynak kod teslim paketi mevcut; sıfır kullanıcı |
-> | **Sunulabilen doğrulama** | Gizlilik koşuluyla mimari anlatım ve seçilmiş, gizli olmayan kanıtlar |
-> | **Gizli tutulanlar** | Kaynak kod, iç mimari, algoritmalar, sertifikanın kararlarının arkasındaki mekanizmalar ve model/veri varlıkları |
+> | Sahiplik | Kendi projem, bende |
+> | Rol | Kurucu ve teknik sahip: ürün, frontend, backend, ölçüm programı ve operasyon |
+> | Teslim durumu | Testte çalışan bir prototip; sürüm betikleri, runbook'lar ve uyum belgelerini içeren bir kaynak kod teslim paketi mevcut; sıfır kullanıcı |
+> | Sunulabilen doğrulama | Gizlilik koşuluyla mimari anlatım ve seçilmiş, gizli olmayan kanıtlar |
+> | Gizli tutulanlar | Kaynak kod, iç mimari, algoritmalar, sertifikanın kararlarının arkasındaki mekanizmalar ve model/veri varlıkları |
 
-> **Teknik olmayan kısa anlatım.** Hasta, tarayıcının yönlendirmesiyle kendi yüzünü telefonuyla
-> fotoğraflar. Hasta önizlemesinde sistem üç boyutlu modeli cihazın üzerinde kurar ve hekimin planladığı değişikliği gösterir. Her sonuç, hangi bölgelerin ölçüldüğünü, hangilerinin varsayıldığını söyleyen bir sertifikayla gelmek üzere tasarlanmıştır; sistem ölçemediğinde hayır demek üzere kurulmuştur. Kliniğin talepleri,
-> randevuları ve onam kayıtları bu deneyimin çevresinde aynı sistemde yönetilir.
+> Teknik olmayan okurlar için kısaca: Hasta, tarayıcının yönlendirmesiyle kendi yüzünü telefonuyla
+> fotoğraflar. Hasta önizlemesinde sistem üç boyutlu modeli cihazın üzerinde kurar ve hekimin
+> planladığı değişikliği gösterir. Her sonuç, hangi bölgelerin ölçüldüğünü, hangilerinin
+> varsayıldığını söyleyen bir sertifikayla gelecek şekilde tasarlandı; sistem ölçemediğinde hayır
+> diyecek şekilde kuruldu. Kliniğin talepleri, randevuları ve onam kayıtları da bu deneyimin
+> çevresinde, aynı sistemde yönetilir.
 
----
+## Proje neleri kapsıyor?
 
-## Bu çalışma neyi gösteriyor?
-
-AURA, uygulamalı bir bilgisayarlı görü probleminin çalışan ve test edilebilir bir ürün yüzeyine uçtan
-uca taşınmasını gösterir: hastanın kullandığı çekim ve önizleme, klinik operasyonları, backend, veri
+AURA, uygulamalı bir bilgisayarlı görü problemini uçtan uca, çalışan ve test edilebilir bir ürün
+yüzeyine kadar taşıyor: hastanın kullandığı çekim ve önizleme, klinik operasyonları, backend, veri
 koruma, deney gibi yürütülen bir ölçüm programı, sürüm paketi ve operasyonel devir paketi.
-Sertifikanın kararlarını veren yöntemler bilinçli olarak bu herkese açık belgenin dışındadır.
+Sertifikanın kararlarını veren yöntemler bu herkese açık belgenin dışında bırakıldı.
 
 ## Herkese açık sistem görünümü
 
@@ -56,66 +55,65 @@ flowchart LR
     F --> E
 ```
 
-Bu bir yetenek haritasıdır, algoritma şeması değildir. İç algoritmalar, kontrol mantığı ve model/veri
-varlıkları gizlidir.
+Şema yalnızca yetenekleri gösteriyor. İç algoritmalar, kontrol mantığı ve model/veri varlıkları
+gizli.
 
 ## Mühendislik sonuçları
 
 ### Hastanın olduğu yerde çalışan bir rekonstrüksiyon
 
-Hasta önizlemesinde rekonstrüksiyon, hastanın kendi cihazında, tarayıcıda çalışır: birden çok
-görünüşten landmark'lar, yan görünüş ve silüet derinliği, yalnızca şekil kapısını geçtiğinde kullanılan
-istatistiksel bir şekil prior'ı ve iris istatistiğinden ya da adı yazılan bir nüfus tabanlı yedekten
-gelen metrik ölçek. Hasta önizlemesinde fotoğraflar kliniğe yalnızca hastanın açık onayından sonra
+Hasta önizlemesinde rekonstrüksiyon, hastanın kendi cihazında, tarayıcıda çalışır. Birden çok
+görünüşten landmark'lar, yan görünüş ve silüet derinliği, istatistiksel bir şekil prior'ı (yalnızca
+şekil kapısını geçtiğinde) ve iris istatistiğinden ya da adı yazılan bir nüfus tabanlı yedekten gelen
+metrik ölçek kullanır. Hasta önizlemesinde fotoğraflar kliniğe yalnızca hastanın açık onayından sonra
 ulaşır. Daha yoğun bir metrik hat (kendini kalibre eden seyrek bundle adjustment ve yoğun fotometrik
-iyileştirme) ürünün yanında araştırma kodunda ölçülmektedir ve henüz üründe değildir.
+iyileştirme) ürünün yanında, araştırma kodunda ölçülüyor; henüz üründe yok.
 
-### Ürün sertifikadır
+### Sertifika
 
-Her çekim bir sertifika almak üzere tasarlanmıştır: hangi bölgeler kanıttan ölçüldü, hangileri
+Her çekim bir sertifika alacak şekilde tasarlandı: hangi bölgeler kanıttan ölçüldü, hangileri
 prior'dan dolduruldu, metrik ölçek nasıl elde edildi ve belirsizlik ne kadar geniş. Kanıt yetersizse
-sistem göstermeyi reddetmek ve yeni bir çekim istemek üzere tasarlanmıştır. Ret bir özelliktir ve oranı
-doğrulukla birlikte yayımlanacaktır. Prior etiketlemesindeki bilinen bir boşluk kayıtlıdır ve onunla
-birlikte yayımlanacaktır.
+sistem göstermeyi reddedecek ve yeni bir çekim isteyecek şekilde tasarlandı. Ret oranının doğrulukla
+birlikte yayımlanması amaçlanıyor. Prior etiketlemesindeki bilinen bir boşluk kayıtlı ve onunla
+birlikte yayımlanacak.
 
 ### Deney gibi yürütülen ölçüm
 
-Eylül 2026'dan bu yana doğruluk ölçümleri, sonucu görülmeden önce ön kayda alınır: ölçüt, çıta, rakip hipotez ve kontrol
-kolları önce yazılır; referans yüzey sıfır hata, kimlikleri karıştırılmış kol şans düzeyi okumalıdır;
-sonuçlar en kötü durum ve yüzde doksan beşinci yüzdelikle bildirilir, hiçbir zaman tek başına
-medyanla değil; tutmayan çıta tutmadı diye kaydedilir. Hat bugüne kadar held-out kimliklerde
-fotogrametrik referansa (taranmış kafaların render'ları) karşı ölçülmüştür; gerçek tarayıcı rig'i
-fotoğraflarında henüz hiçbir çıta tutmamıştır ve kayıt bunu söyler. Yukarıdaki karşılaştırma değerleri
-bu programdan gelir; bağımsız bir laboratuvar onları henüz doğrulamadı.
+Eylül 2026'dan bu yana doğruluk ölçümleri, sonucu görülmeden önce ön kayda alınıyor. Ölçüt, çıta,
+rakip hipotez ve kontrol kolları önce yazılır; referans yüzey sıfır hata, kimlikleri karıştırılmış kol
+ise şans düzeyi vermelidir. Sonuçlar en kötü durum ve 95. yüzdelikle bildirilir, medyan hiçbir zaman
+tek başına verilmez; tutmayan çıta "tutmadı" diye kaydedilir. Hat bugüne kadar held-out kimliklerde
+fotogrametrik referansa (taranmış kafaların render'ları) karşı ölçüldü. Gerçek tarama düzeneği
+fotoğraflarında henüz hiçbir çıta tutmadı ve kayıt bunu söylüyor. Yukarıdaki karşılaştırma değerleri
+bu programdan geliyor; bağımsız bir laboratuvar onları henüz doğrulamadı.
 
 ### Araştırma ve para yollarında test disiplini
 
 Otomatik testler her büyük birleştirmeden önce koşar; hasta akışının uçtan uca provası kabul
-noktalarında tohumlanmış bir yığın üzerinde yürütülür. Ödeme tutarı işleme birim, property-based ve
-mutation testleriyle kapsanır. Eylül 2026'da bağımsız inceleme kuralı getirildi; 4 Ekim 2026
-sayımında birleştirilen PR'ların yaklaşık %80–90'ında inceleme kaydı bulundu.
+noktalarında seed'li bir ortamda yürütülür. Ödeme tutarlarını işleyen kod birim, property-based ve
+mutation testleriyle sınanıyor. Eylül 2026'dan bu yana her birleştirmenin kayıtlı bir
+incelemesi olması hedefleniyor; 4 Ekim 2026'daki sezgisel bir sayımda birleştirilen PR'ların yaklaşık
+%80–90'ında inceleme kaydı bulundu.
 
 ### Gizlilik, operasyon ve devir
 
-Hastaya yakın veri işleme belgelenmiş KVKK kontrolleri, politika vaadi olarak değil kanıt olarak
-alınan onam ve ticari ileti kontrolleri taşır. Teslim paketi operasyonel yapılandırmayı, sürüm
-doğrulamasını, runbook'ları ve sözleşme kontrollerini içerir.
-
----
+Hastaya yakın veri işlemede belgelenmiş KVKK kontrolleri ve ticari ileti kontrolleri var; onam kanıt
+olarak kaydediliyor. Teslim paketi operasyonel yapılandırmayı, sürüm doğrulamasını, runbook'ları ve
+sözleşme kontrollerini içeriyor.
 
 ## İddia edilmeyenler
 
-- Bağımsız bir referans sistemi yaşayan yüzlerde ölçmeden hiçbir klinik doğruluk iddiası.
-- Cerrahi sonuç tahmini yok: önizleme bir planı gösterir, bir sonucu değil.
+- Bağımsız bir referans sistemi yaşayan yüzlerde ölçene kadar klinik doğruluk iddiası yok.
+- Cerrahi sonuç tahmini yok. Önizleme bir planı gösterir, sonucu tahmin etmez.
 - Fotoğrafların gözlemlemediği bölgeler için sertifika yok.
-- Klinik fayda, dönüşüm ya da gelir etkisi iddiası yok: hiçbiri ölçülmedi.
+- Klinik fayda, dönüşüm ve gelir etkisi ölçülmedi; bu yüzden hiçbiri iddia edilmiyor.
 - Henüz kullanıcı, gelir ve klinik yok.
 
-## Bilinçli olarak açıklanmayanlar
+## Açıklanmayanlar
 
 - Kaynak kod, dağıtım topolojisi ve iç bileşen adları
 - Özel algoritmalar, sertifikanın kararlarının arkasındaki mekanizmalar, kontrol mantığı ve model/veri hazırlığı
-- Formüller, istemler, iç sıralama ve uygulamaya özgü kanıtlar
+- Formüller, iç sıralama ve uygulamaya özgü kanıtlar
 
 *Üst düzey bir mimari anlatım ve seçilmiş, gizli olmayan kanıtlar uygun bir gizlilik sözleşmesi
 altında özel olarak görüşülebilir.*

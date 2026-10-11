@@ -1,7 +1,7 @@
-# Reproducibility Evidence
+# Reproducibility evidence
 
-Every claim in this case study is pinned to a fixed block, a fixed toolchain, and verified bytecode.
-This document is the freeze record.
+This file records the block, the toolchain and the bytecode checks that every claim in the case study
+depends on.
 
 ## Chain state pin
 
@@ -14,11 +14,10 @@ block time   : 2026-07-21T09:52:22Z  (unix 1784627542)
 access mode  : read-only JSON-RPC (eth_call / eth_getCode / eth_getStorageAt / eth_getLogs)
 ```
 
-**Archive-node caveat, recorded honestly.** The default public endpoint serves only pruned state and
-returned `missing trie node` / `metadata is not found` for historical reads at this block. Two
-endpoints were tested and confirmed to serve full archive state at the exact block before being used.
-This was verified rather than assumed — a fork against a pruned endpoint silently produces meaningless
-results.
+The default public endpoint serves only pruned state, and it returned `missing trie node` /
+`metadata is not found` for historical reads at this block. Two endpoints were tested and confirmed to
+serve full archive state at the exact block before they were used. A fork against a pruned endpoint
+silently produces meaningless results, which is why this was checked first.
 
 ## Toolchain freeze
 
@@ -33,20 +32,20 @@ host                 : Windows 11, Node.js v24.13.0, Git 2.52.0
 
 ## Deployed-bytecode verification
 
-Source was taken from verified on-chain sources, not from a similarly-named public repository. The
-keccak256 of each deployed runtime was recorded during analysis and then **re-verified at the pinned
-block inside the fork** before any test result was trusted:
+The source came from the verified on-chain sources; a similarly-named public repository was not used.
+The keccak256 of each deployed runtime was recorded during analysis and checked again at the pinned
+block inside the fork before any test result was trusted:
 
 | Contract | keccak256(runtime) | Verified |
 |---|---|---|
-| Factory | `0x2b4a7a0d4ed306d36ffa362ff70b55983bc529fc3abcf8b764fc357c91f6eae0` | ✅ match |
-| Settlement engine | `0x2695326e79ba8e85f80f440b42e74ed2285531f7502919850cc3ada70f8d51d0` | ✅ match |
-| Pool implementation | `0xfc4b3765a3d394c77bbb9a52f160880894f762bd92cf4a89d9c95c8b253a2fa4` | ✅ match |
+| Factory | `0x2b4a7a0d4ed306d36ffa362ff70b55983bc529fc3abcf8b764fc357c91f6eae0` | match |
+| Settlement engine | `0x2695326e79ba8e85f80f440b42e74ed2285531f7502919850cc3ada70f8d51d0` | match |
+| Pool implementation | `0xfc4b3765a3d394c77bbb9a52f160880894f762bd92cf4a89d9c95c8b253a2fa4` | match |
 
-Source-to-bytecode correspondence was established by an independent verifier that recompiled from the
-published Standard-JSON input: two contracts reproduced **exactly** (runtime + creation), the third
-matched at runtime **modulo the trailing metadata hash** — a distinction recorded explicitly rather than
-rounded up to "verified".
+The source was also recompiled from the published Standard-JSON input and compared with the
+deployed bytecode. Two contracts reproduced exactly (runtime + creation). The third matched at
+runtime except for the trailing metadata hash; the record states that difference and does not call
+the third one "verified".
 
 All 38,485 deployed clones were confirmed byte-for-byte as EIP-1167 minimal proxies delegating to the
 verified implementation:
@@ -72,14 +71,16 @@ Ran 3 tests for test/ForkPoC.t.sol
 Suite result: ok. 3 passed; 0 failed; 0 skipped; finished in 4.47s
 ```
 
-**Reading the result correctly.** The tests pass — and that is precisely what *disproves* the
-hypothesis. Test 3 establishes the effect exists, then establishes that the protocol operator reverses
-it within the same transaction, so no honest party is durably affected. Test 2 is the negative control:
-without the attacker's action the same operation succeeds, proving the effect came from the claimed root
-cause and not the harness. Test 1 bounds the attacker's minimum cost.
+### Reading the result
 
-A passing test proves a behaviour exists. It does not prove that behaviour is worth money — severity was
-assessed separately, and the conclusion was that it is not reportable.
+The tests pass, and that is what disproves the hypothesis. Test 3 shows that the effect exists, then
+shows the protocol operator reversing it within the same transaction, so no honest party is durably
+affected. Test 2 is the negative control: without the attacker's action the same operation succeeds,
+so the effect comes from the claimed root cause and the harness alone does not produce it. Test 1
+bounds the attacker's minimum cost.
+
+A passing test shows that a behaviour exists. Whether that behaviour is worth money is a separate
+question: severity was assessed on its own, and the conclusion was that it is not reportable.
 
 ## Integrity of the work product
 

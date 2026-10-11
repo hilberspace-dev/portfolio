@@ -1,196 +1,190 @@
 [![English version](https://img.shields.io/badge/Dil-English-1F6FEB?style=for-the-badge)](METHODOLOGY.md)
 
-# Güvenlik İncelemesi ve Kavram Kanıtı (PoC) Metodolojisi
+# Güvenlik incelemesi ve kavram kanıtı (PoC) metodolojisi
 
-Bu belge, bir kod tabanını denetlerken, kusuru kanıtlarken ve raporu inceleyen kişinin ek soru sormadan
-harekete geçebileceği bir kanıt paketi hazırlarken kullandığım standardı tanımlar. Standart protokolden
-bağımsızdır; bu yöntemi ortaya çıkaran ilk kapsamlı uygulama bir ERC-4337 EntryPoint incelemesiydi.
+Bir kod tabanını denetlerken, bir kusuru kanıtlarken ve bulguyu, inceleyen kişinin ek soru sormadan
+işleme alabileceği bir pakete dönüştürürken uyduğum kanıt standardı budur. Yöntem bir ERC-4337
+EntryPoint incelemesinden çıktı, ama içinde o protokole özgü bir şey yok.
 
-Bu belge bilinçli olarak genel teslim sürecimden daha dardır: saldırgan bakış açılı incelemeyi,
-kusurun kanıtlanmasını ve değerlendirmeye hazır paketlenmesini anlatır. Bir değişikliğin production'a
-nasıl çıktığı — gate merdiveni, ratchet'lenmiş debt baseline'ları, çalıştıran değil yakalayan
-testler, release verification ve rollback — için
-[Teslim ve Quality Gate Metodolojisi](DELIVERY-METHODOLOGY.tr.md) belgesine bakın.
+Kapsam, genel teslim sürecimden daha dar: saldırgan gözüyle inceleme, kusuru kanıtlama ve raporu
+değerlendirmeye hazır hâle getirme. Bir değişikliğin production'a nasıl çıktığını (gate
+merdiveni, ratchet'lenmiş debt baseline'ları, ne yakaladıklarına göre değerlendirilen testler, release
+verification ve rollback) [teslim ve quality gate metodolojisi](DELIVERY-METHODOLOGY.tr.md) anlatıyor.
 
-**Temel ilke: iddiadan önce kanıt.** Bir bulgu, ancak çalışan bir kanıt saldırganın kontrol ettiği
-girdiyi dürüst bir taraf üzerinde ölçülmüş etkisi olan ihlal edilmiş bir invariant'a bağlıyorsa, kök
-neden kapsam içindeyse ve bulgu mükerrer değilse raporlanmaya değerdir.
+Hepsinin altındaki kural şu: önce kanıt, sonra iddia. Bir bulguyu ancak çalışan bir kanıt,
+saldırganın kontrol ettiği bir girdiyi dürüst bir taraf üzerindeki etkisi ölçülmüş bir invariant
+ihlaline bağlıyorsa raporlarım. Kök nedenin kapsam içinde olması ve bulgunun mükerrer olmaması da
+şarttır.
 
----
+## 0. Temel kurallar
 
-## 0. Değişmez kurallar
+1. Bir komutun başarılı olduğuna, çıktısı okunmadan karar verilmez. Komutu saran aracın 0 exit
+   code'u döndürmesi, alttaki aracın geçtiğini göstermez; stdout, stderr ve gerçek exit code okunur.
+   Bu gerçekten yaşandı: bir test komutu 0 döndürdü, oysa test runner hiç başlamamıştı.
+2. Bulgu uydurulmaz. Yoğun biçimde denetlenmiş bir kod tabanında boş sonuç, doğru ve beklenen
+   sonuçtur. Sıfır gerçek bulgu, kulağa makul gelen ama yanlış olan yirmi bulgudan iyidir.
+3. Abartılı bir iddia açıkça düzeltilir. Sonraki analiz önceki bir iddiayı zayıflatıyorsa iddia
+   gönderimden önce daraltılır ve bu değişiklik yazılır; bunu raporu inceleyen kişi bulmamalı.
+4. Göndermeden önce hiçbir şey ifşa edilmez. Herkese açık issue açılmaz, public remote'a push
+   yapılmaz, kanıt dosyası yayımlanmaz. Bulgular doğru kanaldan gönderilene kadar yerelde kalır.
+5. Tekrar üretilebilirlik de bir iddiadır ve kanıt ister. Commit, toolchain ve harici istemciler
+   değişmez kimlikleriyle sabitlenir (istemci image'ı için bu kimlik digest'tir; tag değişebilir).
+   Tekrar üretilemeyen bir şey iddia edilmez.
 
-1. **Çıktısını okumadığın bir komutun başarılı olduğunu asla söyleme.** Komutu saran aracın exit
-   code'unun 0 olması, alttaki aracın gerçekten başarılı olduğu anlamına gelmez. stdout/stderr'i ve gerçek
-   exit code'unu oku. Gerçek bir örnekte test komutu 0 döndüğü hâlde test runner hiç başlamamıştı.
-2. **Bulgu üretmeye çalışma.** Yoğun biçimde denetlenmiş bir kod tabanında doğru ve beklenen sonuç,
-   hiçbir gerçek bulgunun çıkmaması olabilir. Sıfır gerçek bulgu, kulağa makul gelen yirmi yanlış
-   bulgudan iyidir.
-3. **Kendi abartılı iddianı açıkça düzelt.** Sonraki analiz önceki iddiayı zayıflatıyorsa, bunu
-   raporu inceleyen kişi fark etmeden önce söyle ve iddiayı daralt.
-4. **Göndermeden önce ifşa etme.** Herkese açık issue açma, public remote'a push yapma veya kanıt
-   dosyalarını yayımlama. Bulgular doğru bildirim kanalından gönderilene kadar yerelde kalır.
-5. **Tekrar üretilebilirlik de kanıtlanması gereken bir iddiadır.** Commit'i, toolchain'i ve harici
-   istemcileri değişmez kimlikleriyle sabitle; örneğin değişken tag yerine image digest kullan.
-   Kendin tekrar üretemiyorsan bu iddiayı kurma.
+## 1. Önce ortamı ve başlangıç durumunu hazırla
 
-## 1. Ortam ve başlangıç durumu
+Kapsam commit'ini sabitle ve `git rev-parse HEAD` çıktısının onunla eşleştiğini kontrol et. Projenin
+CI'da kullandığı toolchain'i kullan: CI ayarlarında sabitlenmiş runtime'ı bul, yerelde aynısını kur ve
+gerçekte hangi sürümlerin çözüldüğüne bak (`node --version`, `which node`, derleyici sürümü ve
+konfigürasyondaki EVM hedefi). Sonra bağımlılıkları kur, derle ve çıktıyı oku. Çıktıda "N dosya
+başarıyla derlendi" mesajı olmalı, derleme çıktıları da gerçekten oluşmuş olmalı.
 
-Kapsam commit'ini sabitle ve `git rev-parse HEAD` çıktısının onunla eşleştiğini doğrula. Projenin CI
-toolchain'ini kullan: CI ayarlarında sabitlenen runtime'ı bul, aynı ortamı yerelde kur ve gerçekte
-hangi sürümlerin çözüldüğünü kontrol et (`node --version`, `which node`, derleyici sürümü ve
-konfigürasyondaki EVM hedefi). Bağımlılıkları kur, derle ve **çıktıyı oku**: “N dosya başarıyla
-derlendi” mesajını ve derleme çıktılarının gerçekten oluştuğunu doğrula.
+Başlangıç test sonucunu olduğu gibi kaydet: tam komut, toplam/geçen/başarısız/atlanmış test sayıları
+ve exit code. Her hatayı üç gruptan birine koy ve hangisine ait olduğunu kanıtla: (a) gerçek kusur,
+(b) host ya da işletim sistemi kaynaklı sorun, (c) eksik bağımlılık. Başlangıç sonucu yeterince temiz
+değilse yeni bir testin geçmesi hiçbir şey ifade etmez.
 
-Başlangıç test sonucunu değiştirmeden kaydet: tam komut, toplam/geçen/başarısız/atlanmış test sayıları ve
-exit code. **Her hatayı şu üç sınıftan birine yerleştir ve sınıflandırmayı kanıtla:** (a) gerçek kusur,
-(b) host/işletim sistemi kaynaklı sorun veya (c) eksik bağımlılık. Yeni eklenen testin geçmesinin
-anlamlı olabilmesi için yeterince temiz bir başlangıç sonucu gerekir.
-
-Çalıştırma ortamının sınırını bil. Yerel simülatörler çoğu zaman daha eski bir hardfork'ta kalır ve
-yeni semantiği çalıştıramaz. Bu sınırı kanıtın ortasında keşfetmek yerine baştan kaydet.
+Çalıştırma ortamının sınırını bil. Yerel simülatörler çoğu zaman eski bir hardfork'ta kalır ve yeni
+semantiği çalıştıramaz. Bu sınırı en başta yaz ki kanıtın ortasında karşına çıkmasın.
 
 ## 2. Önce bilinen/mükerrer bulgu duvarını kur
 
-“Reponun denetim PDF'lerinde yok” demek, bulgunun yeni olduğunu kanıtlamaz. Bilinen konuları şu
-kaynakların tamamından çıkar: bütün denetim raporları, bilinçli tasarım kararlarını anlatan kod
-yorumları, mevcut testler (bir davranışı özellikle doğrulayan test, o davranışın amaçlandığını
-gösterir), upstream issue ve pull request'ler, sürüm notları, protokol şartnamesi ve herkese açık
-ifşalar.
+Reponun denetim PDF'lerinde geçmeyen bir bulgu yine de biliniyor olabilir. Bilinen konular listesini
+şu kaynakların hepsinden çıkar: bütün denetim raporları, bilinçli tasarım kararlarını anlatan kod
+yorumları, mevcut testler (bir davranışı assert eden test, o davranışın kasıtlı olduğunu gösterir),
+upstream issue'lar *ve* pull request'ler, sürüm notları, protokol şartnamesi ve herkese açık ifşalar.
 
-İki ayrı liste tut: **bilinen ve hâlâ mevcut konular** (mükerrerlik riski en yüksek olanlar; yeni
-görünürler ama değildirler) ve **hata gibi görünen tasarım kararları** (yanlış pozitif üreten
-durumlar). Sonraki her analizde iki listeyi de kullan.
+İki ayrı liste tut. Birincisi *bilinen ve hâlâ duran konular*. Yeni gibi görünüp yeni olmadıkları için
+mükerrerlik riski en yüksek olanlar bunlardır. İkincisi *hata gibi görünen tasarım kararları*; yanlış
+pozitifler buradan çıkar. Sonraki her analize iki liste de girer.
 
-Yenilik iddiasını daima şu sınırla kur: *“Herkese açık kaynaklarda aynı bulguya veya önceki çalışmaya
-rastlanmadı. Özel raporlar gözlemlenemiyor.”* Bir bulgunun kesinlikle mükerrer olmadığını söyleme.
+Yenilik ifadesi her zaman şöyledir: *"Herkese açık kaynaklarda aynı bulguya veya önceki çalışmaya
+rastlanmadı. Özel raporlar gözlemlenemiyor."* Bir bulgunun mükerrer olmadığını kesin bir dille söyleme.
 
 ## 3. Doğru cevabın ölçütü invariant şartnamesidir
 
-Kapsamdaki her dosyayı bütünüyle oku, ardından güvenlik invariant'larını yaz: saldırganın varlık çalmak
-veya sistemi çalışamaz hâle getirmek için bozması gereken koşullar. Sık rastlanan sınıflar şunlardır:
-ödeme gücü ve varlıkların korunumu, ödeme tutarlarının korunumu, tekrar oynatma/benzersizlik, kaynak
+Kapsamdaki her dosyayı baştan sona oku, sonra güvenlik invariant'larını yaz: saldırganın varlık çalmak
+ya da sistemi işlemez hâle getirmek için bozması gereken koşullar. Sık görülen sınıflar şunlar: ödeme
+gücü ve varlıkların korunumu, ödeme tutarlarının korunumu, tekrar oynatma/benzersizlik, kaynak
 muhasebesi, işlemler arası yalıtım, elle yazılmış assembly'de bellek güvenliği, doğrulama ile
 çalıştırmanın ayrılması ve reentrancy kapsamı.
 
-Her invariant için bir kimlik, biçimsel koşul, koşulu uygulayan tam `dosya:satır` konumu, varsayımlar
-ve tehdit modeli altında kırılabileceği en olası yolu kaydet. Bu kırılma hipotezleri, incelemenin
-hedefidir; bu adım olmadan yapılan kod okuması yönsüzdür.
+Her invariant için bir kimlik, biçimsel koşul, onu uygulayan kodun tam `dosya:satır` konumu,
+varsayımlar ve tehdit modeli altında kırılabileceği en olası yol kaydedilir. Bu kırılma hipotezleri
+avın hedefidir. Bu adım atlanırsa geriye yönsüz bir kod okuması kalır.
 
-## 4. Saldırgan bakış açılı inceleme
+## 4. Saldırgan gözüyle inceleme
 
-Her seferinde tek bir saldırı yüzeyine odaklan; tehdit modelini, invariant şartnamesini ve bilinen
-konular listesini önünde tut. Kod parçaları yerine gerçek kaynak dosyaları oku, assembly'yi kelime
-kelime simüle et, gas/değer/offset hesaplarını somut sayılarla yap ve `unchecked` aritmetiği
-taşırabilecek erişilebilir girdiyi bul. Bir turdan sonuç çıkmaması geçerli bir sonuçtur.
+İnceleme her seferinde tek bir saldırı yüzeyine bakar; tehdit modeli, invariant şartnamesi ve
+bilinen konular listesi el altındadır. Kod parçalarıyla yetinilmez, gerçek kaynak dosyalar okunur.
+Assembly kelime kelime simüle edilir, gas/değer/offset hesapları somut sayılarla yapılır ve
+`unchecked` aritmetiği taşırabilecek erişilebilir girdi aranır. Hiçbir şey çıkmayan bir yüzey de
+geçerli bir sonuçtur.
 
-Ayakta kalan her adayı, birbirinden bağımsız en az üç şüpheci açıdan sorgula ve çoğunluğa dayanmadan,
-yalnızca kanıtla doğrulananları koru:
+Buradan çıkan her aday ardından üç şüpheci açıdan sınanır:
 
-- **Çürütme:** Kontrol akışını kaynaktan yeniden çıkar; hipotezi engelleyen guard'ı, tür sınırını
-  veya daha erken revert'i bul.
-- **Mükerrerlik / niyet:** Adayı bilinen konular listesiyle, kod yorumlarıyla, testlerle ve
-  şartnameyle karşılaştır.
-- **Etki:** Gerçekte kimin parası veya erişilebilirliği etkileniyor ve ne kadar? Sonuç yalnızca
-  saldırganın kendisine zarar vermesi mi? Mağdurun zaten bozuk veya kötü niyetli olması mı gerekiyor?
+- Çürütülebilir mi? Kontrol akışı kaynaktan yeniden çıkarılır; adayı engelleyen guard, tür sınırı
+  veya daha erken bir revert aranır.
+- Zaten biliniyor mu, ya da kasıtlı mı? Aday bilinen konular listesiyle, kod yorumlarıyla, testlerle
+  ve şartnameyle karşılaştırılır.
+- Etkisi ne? Gerçekte kimin parası ya da erişilebilirliği etkileniyor, ne kadar? Saldırgan yalnızca
+  kendine mi zarar veriyor? Mağdurun zaten bozuk olması mı gerekiyor?
 
-Belirsiz durumda varsayılan karar “çürütüldü” olmalıdır. Oy sayısı tek başına hiçbir şeyi kanıtlamaz;
-yalnızca kapsam içindeki kök nedeni ve ölçülmüş etkiyi gösteren çalışan kanıt değerlidir. Turun
-sonunda kapsam eleştirisi yap: hangi saldırı yüzeyi, invariant veya saldırgan rolü yeterince
-incelenmedi? Sonraki tur buradan başlar.
+Hâlâ şüpheli olan aday çürütülmüş sayılır. Bu sınamalardan geçmek tek başına hiçbir şey kanıtlamaz;
+bunu ancak kök nedeni kapsam içinde olan ve etkisi ölçülmüş çalışan bir kanıt yapar. Her tur kapsama
+bir kez daha bakılarak biter: hangi saldırı yüzeyi, invariant ya da saldırgan rolü yeterince
+incelenmedi? Sonraki tur oradan başlar.
 
-Uzun bir incelemenin baştan yapılmak yerine kaldığı yerden sürdürülebilmesi için ara sonuçları
-düzenli olarak diske kaydet.
+Notlar ve ara sonuçlar inceleme boyunca dosyalara yazılır.
 
-## 5. Beş halkalı zorunlu kanıt zinciri
+## 5. Beş halkalı kanıt zinciri
 
-Bir adayı yalnızca aşağıdaki beş koşulun tamamı sağlanıyorsa raporla. Halkalardan biri eksikse adayı
-ele.
+Bir aday ancak beş halkanın beşi de sağlanıyorsa raporlanır. Biri bile eksikse aday elenir.
 
-1. **Saldırganın kontrol ettiği girdi:** Saldırganın belirlediği tam byte'lar, alanlar veya değerler.
-2. **Erişilebilir yol:** Her adım için `dosya:satır` verilen somut çağrı zinciri ve hiçbir önceki
-   require/revert'in yolu neden kapatmadığı.
-3. **İhlal edilen invariant:** Şartnamedeki kimliğine bağlanan kesin koşul.
-4. **Ölçülmüş etki:** Çalınan değer, kaybedilen gas, yetkisiz çalıştırma sayısı veya doğrulanabilir
-   DoS maliyeti. “Kötü olabilir” yeterli değildir.
-5. **Tekrar üretilebilir kanıt:** Kapsam commit'indeki gerçek sözleşmelere karşı çalışan test.
+1. Saldırganın kontrol ettiği girdi, tam olarak: saldırganın belirlediği byte'lar, alanlar veya
+   değerler.
+2. Erişilebilir bir yol, yani her adım için `dosya:satır` verilmiş somut çağrı zinciri ve daha önceki
+   hiçbir require/revert'in bu yolu neden kapatmadığı.
+3. İhlal edilen invariant; şartnamedeki kimliğine bağlanmış kesin bir koşul olarak yazılır.
+4. Sayıyla ölçülmüş etki: çalınan değer, kaybedilen gas, yetkisiz çalıştırma sayısı veya
+   doğrulanabilir bir DoS maliyeti. "Kötü olabilir" yetmez.
+5. Tekrar üretilebilir kanıt, yani kapsam commit'indeki gerçek sözleşmelere karşı çalışan bir test.
 
-Şunlar açıkça reddedilir: gas/stil optimizasyonları, merkeziyetçilik veya yönetici riski, somut
-exploit olmadan “sıfır adres kontrolü eksik” iddiası, erişilemeyen teorik overflow ve mağdurun zaten
+Şunlar doğrudan reddedilir: gas/stil optimizasyonları, merkeziyetçilik veya yönetici riski, somut
+exploit olmadan "sıfır adres kontrolü eksik" iddiası, erişilemeyen teorik overflow ve mağdurun zaten
 kötü niyetli ya da bozuk olmasını gerektiren her durum.
 
 ## 6. Güvenilmeyen bileşenler için kapsam kapısı
 
-Birçok protokolde bazı bileşenler güven sınırının dışında kalır. **Saldırganın bu tür kötü niyetli
-bir sözleşmeyi kendisinin deploy etmesi geçerli bir saldırı aracıdır**; bu durum tek başına bulguyu
-kapsam dışına çıkarmaz. Kusur, kapsam içindeki çekirdek kodun bu güvenilmeyen davranışı yanlış ele
-almasından kaynaklanmalıdır.
+Birçok protokolde bazı bileşenler güven sınırının dışında durur. Saldırganın bu türden kötü niyetli
+bir sözleşmeyi kendisinin deploy etmesi geçerli bir saldırı aracıdır ve bu tek başına bulguyu kapsam
+dışına çıkarmaz. Kusur, kapsam içindeki çekirdek kodun bu güvenilmeyen davranışı *yanlış ele
+almasında* olmalıdır.
 
-Yalnızca şu durumlarda adayı reddet: kök neden bütünüyle harici bileşenin kendi kodundaysa; saldırı
-dürüst bir karşı tarafın standarda aykırı davranmasını gerektiriyorsa; standartlara uygun bir simülasyon
-zaten işlemi reddedecekse; sonuç yalnızca saldırganın kendisine zarar veriyorsa veya dürüst bir
-işlem, yatırılmış varlık, invariant ya da erişilebilirlik özelliği etkilenmiyorsa.
+Adayı yalnızca şu durumlarda reddet: kök neden tamamen o bileşenin kendi kodundaysa; saldırı *dürüst*
+bir karşı tarafın standarda aykırı davranmasını gerektiriyorsa; standarda uygun bir simülasyon işlemi
+zaten reddedecekse; saldırgan yalnızca kendine zarar veriyorsa; ya da dürüst hiçbir işlem, yatırılmış
+varlık, invariant veya erişilebilirlik özelliği etkilenmiyorsa.
 
-**Aşamaları karıştırma:** Doğrulama aşamasının kuralları, execution veya callback aşamalarına
-otomatik olarak uygulanmaz. Execution aşamasındaki saldırıyı doğrulama kurallarına uymadığı
-gerekçesiyle doğrudan eleme.
+Aşamaları ayrı tut. Doğrulama aşamasının kuralları execution ve callback aşamalarına uygulanmaz;
+execution aşamasındaki bir saldırıyı doğrulama kurallarına uymuyor diye otomatik olarak eleme.
 
 ## 7. Proof-of-concept kuralları
 
-- **Kök neden kapsam içinde olmalı.** Hangi klasörlerin kapsamda olduğunu kesinleştir. Arayüz ve
-  dokümantasyon dosyaları referans olarak kullanılabilir ancak “yalnızca referans, kapsam dışı” diye
+- Kök neden kapsam içinde olmalı. Hangi klasörlerin kapsamda olduğunu kesinleştir. Arayüz ve
+  dokümantasyon dosyalarına *referans* verilebilir, ama bunlar "yalnızca referans, kapsam dışı" diye
   işaretlenir.
-- **Gerçek akışı kolaylaştıran mock kullanma.** Saldırgan sözleşmesi özel olabilir ancak test gerçek
-  entry point'i, gerçek muhasebeyi ve gerçek revert/callback davranışını çalıştırmalıdır. Durum
-  enjekte eden yardımcılar yalnızca saldırganın kontrol ettiği state'i yerleştirmek veya kapsam
-  içindeki dala ulaşmak için kullanılabilir; çekirdeğin kendi mantığını kısaltmak için kullanılamaz.
-  Böyle bir yardımcı kullanılıyorsa test dosyasının başında açıkça belirtilmelidir.
-- **Negatif kontrol zorunludur.** Saldırgan girdisi kaldırıldığında etkinin de kaybolduğunu doğrula;
-  böylece sonucun test düzeneğinden değil, iddia edilen kök nedenden geldiğini göster.
-- **Invariant'ı somut biçimde doğrula:** testin düzeltilmiş kodda başarısız, zafiyetli kodda başarılı
-  olacağı şekilde önce/sonra bakiyeleri, çalıştırma sayısını veya hatalı alanın tam değerini denetle.
-- **Projenin kendi test yardımcılarını kullan.** Yenilerini yazmadan önce mevcut testleri incele.
-- Kanıtı önce **tek başına**, ardından mevcut test paketiyle birlikte çalıştır; kanıtın önceden var olan
-  hataların arkasına saklanmasına izin verme.
+- Gerçek akışı kolaylaştıran bir mock kullanılmaz. Saldırganın sözleşmesi özel yazılmış olabilir, ama
+  test gerçek entry point'ten, gerçek muhasebeden ve gerçek revert/callback davranışından geçmelidir.
+  Durum enjekte eden bir yardımcı *yalnızca* saldırganın kontrol ettiği state'i yerleştirmek veya
+  kapsam içindeki dala ulaşmak için kullanılabilir (çekirdeğin kendi mantığını kısaltmak için asla) ve
+  test dosyasının başında açıkça belirtilir.
+- Negatif kontrol zorunludur. Saldırgan girdisi kaldırılınca etkinin de kaybolduğunu assert et;
+  böylece etkinin test düzeneğinden gelmediği, iddia edilen kök nedenden geldiği kanıtlanır.
+- Invariant'ı somut değerlerle doğrula (önce/sonra bakiyeleri, çalıştırma sayıları, hatalı alanın tam
+  değeri). Test düzeltilmiş kodda düşmeli, zafiyetli kodda geçmelidir.
+- Projenin kendi test yardımcılarını kullan. Önce mevcut testleri incele, aynılarını yeniden yazma.
+- Kanıtı önce tek başına, sonra mevcut test paketiyle birlikte çalıştır. Böylece önceden var olan
+  hataların arkasına saklanamaz.
 
 ## 8. Çalıştırma semantiğinde titizlik
 
-Yerel simülatörde geçen test, gerçek istemci davranışını tek başına kanıtlamaz. Belirli bir
-hardfork'un execution semantiğine veya istemciye özgü davranışa bağlı her durum, doğru hardfork'taki
-gerçek istemcide tekrar üretilmelidir. Yerel ağ, özelliği çalıştıramıyorsa kontrol akışındaki kusuru
-gösteren bir *yaklaşım* kullanılabilir; ancak bunun yaklaşık kanıt olduğu açıkça yazılmalı ve gerçek
-istemcide ikinci bir kanıt hazırlanmalıdır.
+Yerel simülatörde geçen bir test, gerçek bir istemcinin nasıl davrandığının kanıtı değildir. Belirli
+bir hardfork'un execution semantiğine ya da tek bir istemciye özgü davranışa dayanan her şey, doğru
+hardfork'taki gerçek bir istemcide tekrar üretilmelidir. Yerel ağ özelliği çalıştıramıyorsa kontrol
+akışındaki kusuru gösteren bir *yaklaşık kanıt* kabul edilebilir. Yalnız bunun yaklaşık olduğu açıkça
+yazılır ve gerçek bir istemcide ikinci bir kanıt hazırlanır.
 
-Harici istemcileri tag ile değil **digest ile** sabitle; image adını, digest'i, istemci sürümünü ve commit'i,
-chain konfigürasyonunu ve tam çalıştırma komutunu kaydet. İstemciye erişilemediğinde test kendini
-atlıyorsa, atlanmış sonuç **kanıt değildir**; başarılı tekrar üretim beklenen test sayısının geçtiğini
-göstermelidir.
+Harici istemcileri digest ile sabitle, çünkü tag değişebilir. Image adını, digest'i, istemci sürümünü
+ve commit'i, chain konfigürasyonunu ve tam çalıştırma komutunu kaydet. Bazı testler istemciye
+erişemeyince kendini atlar ve atlanmış bir sonuç kanıt değildir. Başarılı bir tekrar üretim, beklenen
+sayıda testin geçtiğini göstermelidir.
 
 ## 9. Rapor paketi
 
-Sıralama şöyledir: Başlık; Özet; Şiddet; Etkilenen commit ve kapsam içindeki dosyalar (destek
-dosyaları açıkça kapsam dışı işaretli); Hatalı kod ve varsa doğru paralel yol ile kök neden; Beklenen
-ve gerçekleşen davranış; Gözlenebilir kusur; Protokol düzeyinde etki (birincil etki kapsam içindeki
-doğruluk veya varlık kusurudur; ikincil etkiler kesinlik değil olasılık belirten dille yazılır);
-Erişilebilirlik ve dürüst sınırlamalar; Ortam sabitleme; Üretim kodunda değişiklik olmadığının kanıtı;
-Doğru dosya konumlarıyla tekrar üretme adımları; Tam komutlar ve değiştirilmemiş çıktı; Negatif
-kontrol; Kaynaklar; Mükerrer bulgu araması; Somut düzeltme önerisi.
+Rapor şu bölümlerden, bu sırayla oluşur: Başlık; Özet; Şiddet; Etkilenen commit ve kapsam içindeki
+dosyalar (destek dosyaları açıkça kapsam dışı işaretli); Hatalı kod ve varsa doğru paralel yol ile kök
+neden; Beklenen ve gerçekleşen davranış; Gözlenebilir kusur; Protokol düzeyinde etki (birincil etki
+kapsam içindeki doğruluk veya varlık kusurudur; ikincil etkiler "-ebilir" diliyle yazılır, kesin bir
+dille ileri sürülmez); Erişilebilirlik ve dürüst sınırlamalar; Ortam sabitleme; Üretim kodunda
+değişiklik olmadığının kanıtı; Doğru dosya konumlarıyla tekrar üretme adımları; Tam komutlar ve
+değiştirilmemiş çıktı; Negatif kontrol; Kaynaklar; Mükerrer bulgu araması; Somut düzeltme önerisi.
 
-**Üretim kodu diff kanıtı:** PoC yalnızca test dosyaları eklemelidir. Kapsam içindeki klasörlerde
-`git diff` çıktısının boş olduğunu göster ve her dosyanın SHA-256 değerini kaydet. **Her düzenlemeden
-sonra hash'leri yeniden hesapla**; eski hash kullanmak ciddi bir güven sorunudur.
+Üretim kodu diff kanıtında PoC yalnızca test dosyası ekler. Kapsam içindeki klasörlerde `git diff`
+çıktısının boş olduğunu göster ve her dosyanın SHA-256 değerini kaydet. Her düzenlemeden sonra bütün
+hash'leri yeniden hesapla; eski bir hash ciddi bir güven sorunudur.
 
-**Şiddet değerlendirmesi, testin geçip geçmemesinden ayrıdır.** Geçen test yalnızca davranışın var
-olduğunu kanıtlar. High şiddet için ayrıca dürüst bir mağdurun varlığı, gerçek ekonomik kayıp
-veya yetkisiz çalıştırma, saldırgan maliyeti, ölçeklenebilirlik, mevcut önlemler ve etkinin tek işlemle
-sınırlı mı yoksa tekrarlanabilir mi olduğu gösterilmelidir. **Savunulabilir bir Low, tartışmalı bir Medium'dan
-iyidir.**
+Şiddet, testin geçip geçmemesinden ayrı değerlendirilir. Geçen bir test yalnızca davranışın var
+olduğunu kanıtlar, fazlasını değil. High şiddet için ayrıca şunlar gösterilmelidir: dürüst bir mağdur,
+gerçek ekonomik kayıp veya yetkisiz çalıştırma, saldırganın maliyeti, ölçeklenebilirlik, mevcut
+önlemler ve etkinin tek bir işlemle mi sınırlı kaldığı, yoksa tekrarlanabilir mi olduğu. Savunulabilir
+bir Low, tartışmalı bir Medium'dan iyidir.
 
 ## 10. Paketleme disiplini
 
-Sağlam bir bulguyu daha büyük bir bulgu beklentisiyle elde tutma; sonraki çalışmaları yeni ve mükerrer raporlar
-olarak değil, mevcut başlığa ek bilgi olarak gönder. Arşivde repo içindeki dizin yapısını aynen koru;
-dosyaları düzleştirmek relative import'ları bozar ve inceleyen kişiye gerçekte olmayan derleme
-hataları gösterir. Tüm repoyu, bağımlılık klasörlerini, sürüm kontrolü metadata'sını, anahtarları,
-token'ları veya gizli seed değerlerini pakete koyma. Rapor tek başına okunabilir olmalı; arşiv, açık anlatımın
-yerine geçen bir dosya yığını değil, eksiksiz kanıt paketidir.
+Sağlam bir bulguyu, daha büyüğü çıkar diye bekletme; hazır olduğunda gönder. Sonraki çalışmaları
+mevcut başlığa ek olarak gönder, aynı konuda ikinci bir rapor açma. Arşivde reponun dizin yapısını
+aynen koru. Dosyaları düzleştirirsen relative import'lar bozulur ve inceleyen kişi aslında olmayan
+derleme hataları görür. Tüm repoyu, bağımlılık klasörlerini, sürüm kontrolü metadata'sını,
+anahtarları, token'ları veya gizli seed değerlerini pakete koyma. Rapor tek başına anlaşılır olmalı;
+arşiv eksiksiz kanıtı taşır, ama açık bir anlatımın yerini tutmaz.

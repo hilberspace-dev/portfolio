@@ -1,231 +1,70 @@
-[![English version](https://img.shields.io/badge/Dil-English-1F6FEB?style=for-the-badge)](README.md)
-[![Teslim ve Quality Gate Metodolojisi](https://img.shields.io/badge/Metodoloji-Teslim%20ve%20Quality%20Gate-0A5C36?style=for-the-badge)](DELIVERY-METHODOLOGY.tr.md)
-[![Güvenlik İncelemesi ve PoC Metodolojisi](https://img.shields.io/badge/Metodoloji-G%C3%BCvenlik%20%C4%B0ncelemesi-1F3A5F?style=for-the-badge)](METHODOLOGY.tr.md)
+# Serhat Atılgan | Backend geliştirme
 
-# Para ve kayıt doğruluğunun kritik olduğu backend sistemleri
+[English](README.md) · [GitHub](https://github.com/hilberspace-dev)
 
-**Mutabakat · ödeme ve banka entegrasyonları · KVKK uyumlu veri işleme · devralınan sistemlerin
-toparlanması**
+Go, PostgreSQL ve TypeScript ile backend geliştiriyorum. İşlerimin çoğu ödeme
+mutabakatı ve API entegrasyonu; mevcut uygulamaların bakımını da üstleniyorum.
+Türkiye'de yaşıyorum, Türkçe ve İngilizce çalışıyorum.
 
-Ödemenin, faturanın ve kaydın birbirini tutması gereken yerlerde backend geliştiriyorum. Çalıştığım
-işlerin ortak paydası şudur: bir yerde para ya da kayıt kaybolur, kimse tam olarak nerede
-kaybolduğunu gösteremez ve elle kapatılan her ay hem maliyet hem risk üretir.
+## Projeler
 
-### Deneyim ve örnek çalışmalar
+### ReconPilot
 
-- **Araştırma prototipinin teknik geliştirmesini yönetiyorum.** AURA; çok kiracılı klinik iş akışını, ödeme ve gizlilik kontrollerini, tarayıcıda yüz ölçümü yapan bir araştırma hattını bir araya getiriyor. Teknik kapsam, mimari kararlar ve inceleme sürecinden sorumluyum. Henüz kullanıcısı ve geliri yok.
-- **Başkalarının incelemiş olduğu para kodunda hata bulurum.** ERC-4337 EntryPoint v0.8, işlemleri
-  doğrulayıp ödemesini yapan ve yoğun biçimde denetlenmiş bir bileşendir. Burada deterministik bir
-  doğruluk kusurunu iki ayrı ortamda tekrar ürettim. İlkini negatif kontrollü bir kanıtla,
-  ikincisini digest ile sabitlenmiş bağımsız bir ortamda doğruladım. Bir mutabakat defterine ya da
-  bir ödeme callback'ine de aynı yöntemle bakarım.
-- **Kanıt "dur" diyorsa dururum.** Yaklaşık 16,7 milyon dolarlık bir incelemede kendi kanıtım en
-  güçlü hipotezimi çürüttüğü için çalışmayı yazılı bir NO-GO ile bitirdim; hiçbir bildirim
-  göndermedim. Sayılar umduğunuz sonucu desteklemiyorsa bunu ilk benden duyarsınız.
+PSP raporlarını, banka ekstrelerini ve pazaryeri hakedişlerini içeri alan bir
+Go/PostgreSQL uygulaması. Kesin, toleranslı ve grup eşleştirmesinden sonra kalan
+kayıtları sınıflandırır. Bir girdiyi sonuç dışında bırakan veya aynı işlemi
+birden fazla gruba yerleştiren sonuçlar çalışma anındaki kontrollerden geçemez.
 
-Aşağıdaki çalışmalarda tekrar üretilebilen sonuçlarla henüz bağımsız doğrulaması olmayan
-iddiaları birbirinden ayırıyorum.
+Açık depoda komut satırı aracı, HTTP servisi, HTML raporu, testler ve sentetik
+benchmark bulunuyor. Benchmark, eşleşmeleri veri üreticisinin amaçladığı
+gruplarla karşılaştırır. Müşteri verisiyle hiç çalıştırılmadı, dolayısıyla oradaki
+doğruluk hakkında bir şey söylemiyor.
 
-> ### Sabit kapsamlı iş alıyorum
->
-> Problemi, mevcut sistemi ve beklediğiniz sonucu yazın; kapsamı, süreyi ve teslim edilecekleri
-> yazılı olarak geri göndereyim. İlk görüşme ve ön değerlendirme ücretsizdir.
->
-> **[E-posta →](mailto:hilberspace@gmail.com)** · **[WhatsApp →](https://wa.me/905431064025)** ·
-> **[+90 543 106 40 25](tel:+905431064025)**
+[Kaynak kod ve çalıştırma talimatları](https://github.com/hilberspace-dev/reconpilot) ·
+[Vaka çalışması](projects/03-reconpilot-payment-reconciliation/README.tr.md)
 
-**atilgandev** · 📍 Türkiye · Türkçe yürütülen projeler, Türkçe dokümantasyon ·
-[GitHub profili](https://github.com/hilberspace-dev) ·
-[English portfolio](README.md)
+### AURA
 
----
+Tarayıcıda yüz ölçümü ve cerrahi önizlemeyi klinik iş akışlarıyla birleştiren
+kendi araştırma prototipim. Web uygulaması, API ve araştırma kodunun teknik
+tasarımını ve inceleme sürecini yönetiyorum. Henüz kullanıcısı ve geliri yok.
+Canlı yüzlerde henüz bağımsız bir doğrulama yapılmadı. Önizleme önerilen bir
+planı gösterir; ameliyat sonucunu tahmin etmez.
 
-## Hangi problemleri çözüyorum
+[Projenin kapsamı ve mevcut sınırları](projects/04-aura-photoreal-3d-clinic-platform/README.tr.md)
 
-**"PSP raporu, banka ekstresi ve pazaryeri hakedişi birbirini tutmuyor."**
-Üç kaynak aynı parayı farklı biçimde anlatır. Elle yapılan mutabakat iki sessiz risk taşır:
-tesadüfen eşleşen yanlış kayıtlar ve kalan listesinden düşerek kaybolan işlemler. Bu işi üç ilke
-üzerine kurulu sistemlerle çözüyorum: eşleştirme deterministiktir, eşleşmeyen her kayıt adı konmuş
-bir sınıfa düşer ve bir doğruluk kuralı ihlal edildiğinde sistem sonuç üretmek yerine durur.
+## Güvenlik incelemeleri
 
-**"Sistemi yazan ekip gitti, kimse dokunmaya cesaret edemiyor."**
-Testi olmayan, dokümante edilmemiş ve her değişiklikte başka bir yeri kıran sistemlerden söz
-ediyoruz. Böyle bir işte önce davranışı sabitlerim: mevcut davranışı kayıt altına alan testler ve
-açıkça yazılmış invariant'lar. Kontrollü değişiklik ancak ondan sonra başlar. Devrederken yalnızca
-çalışan bir sistem değil, **devralınabilir** bir sistem bırakırım.
+- [ERC-4337 EntryPoint](projects/02-erc4337-entrypoint-review/README.tr.md):
+  kendi değerlendirmemde düşük önem derecesi verdiğim bir doğruluk bulgusu.
+  Yerel ortamda ve ayrı bir istemcide tekrar üretim kayıtları var. Ödül programına
+  gönderilmedi, bağımsız doğrulama almadı. Tam mekanizma ve kanıt kodları kapalı.
+- [Akıllı sözleşme araştırması](projects/01-smart-contract-security-audit/README.tr.md):
+  sabit bloktaki yerel fork üzerinde sınanan hipotez, operatörün gözlenen durumdan
+  kurtulabilmesi nedeniyle reddedildi. Bulgu gönderilmedi. Açık kod kesiti testin
+  nasıl kurulduğunu gösteriyor ama tekrar üretim için çalıştırılamaz.
 
-**"KVKK ve denetim tarafında kanıt üretemiyoruz."**
-Kişisel veriye dokunan ürünlerde saklama, rıza, silme ve erişim kontrollerinin yalnızca yazılı
-olması yetmez; **çalıştırılabilir** olması gerekir. Uyum kontrollerini otomatik çalıştıran ve kendi
-kanıtını üreten sistemler kurdum. Denetim sırasında bir komut çalıştırmakla haftalarca ekran
-görüntüsü toplamak arasındaki fark budur.
+## Birlikte çalışma
 
-| | KOBİ ve büyüyen ürün şirketleri | Kurumsal ve holding yapıları |
-| --- | --- | --- |
-| **Tipik ihtiyaç** | Tek bir kritik problemin hızlı ve kalıcı çözümü; iç ekibi büyütmeden ilerlemek | Mevcut sisteme dokunan, denetlenebilir ve devredilebilir bir iş paketi |
-| **Çalışma biçimi** | Sabit kapsam, sabit fiyat, tek muhatap | Tanımlı iş paketi, yazılı kabul kriterleri, NDA, süreç dokümanı |
-| **Teslimde alınan** | Çalışan sistem + testler + nasıl işletileceği | Yukarıdakiler + ADR'ler, runbook, handover paketi, denetim kanıtı |
+Sabit kapsamlı işler alıyorum. İlk görüşme ve ön değerlendirme ücretsiz.
+Önce araştırılması gereken bir sorunda işe ücretli bir ön analizle başlıyorum;
+bu aşama, uygulamaya geçmeden önce bir teşhis ve kapsam önerisiyle biter.
+Kapsamda teslimatlar, kabul kriterleri ve takvim yer alır. Ödeme teslim
+aşamalarına göre; ilk aşama kararlaştırılan kriterleri karşılamazsa o aşamayı
+faturalamıyorum.
 
-> ### Ücretsiz teşhis
->
-> Anonimleştirilmiş bir mutabakat ekstresi ya da örnek veri gönderin; sessiz kayıpların nerede
-> oluştuğunu ve bunların nasıl kapatılacağını yazılı olarak geri göndereyim. Karşılığında herhangi
-> bir taahhüt beklemiyorum. Ne yapabildiğimi anlatmak yerine kendi verinizin üzerinde göstermenin en
-> kısa yolu budur.
+Devirde kaynak kod, testler, işletme talimatları ve kararlaştırılmışsa ekibinizle
+devir oturumu bulunur. Müşteri işleri gizlilik koşullarıyla yürütülür; müşteri
+kodu ve verisi bu portföyde yayımlanmaz.
 
----
-
-## Nasıl çalıştığım — yazılı olarak
-
-Depodaki iki metodoloji belgesi test, inceleme ve sürüm süreçlerinin nasıl yürütüldüğünü
-açıklıyor.
-
-- **[Teslim ve Quality Gate Metodolojisi](DELIVERY-METHODOLOGY.tr.md)** — bir değişikliğin
-  production'a nasıl çıktığı: gate merdiveni, eski debt'in nasıl dondurulup aşağı zorlandığı,
-  çalıştıran değil yakalayan testler, contract disiplini, release verification ve rollback.
-- **[Güvenlik İncelemesi ve PoC Metodolojisi](METHODOLOGY.tr.md)** — bir defect'in nasıl
-  kanıtlandığı: invariant şartnamesi, çok açılı saldırgan inceleme, bir bulgunun sağlaması gereken
-  beş halkalı zincir ve değerlendirmeye hazır paketleme.
-
-İkisinin de dayandığı ilke aynı: **iddiadan önce kanıt.** Çalıştırılan komut, çıktısı ve exit code'u
-olmadan hiçbir şeye "düzeldi", "geçiyor" veya "bitti" denmez. Çalıştırılmayan her şey açıkça
-belirtilir.
-
-Ayrıca mutabakat motorunun kaynak kodu, testleri ve benchmark'ı herkese açıktır; iddia ettiğim
-sayıyı kendiniz çalıştırarak doğrulayabilirsiniz.
-
----
-
-## Referans işler
-
-### 1. AURA — tarayıcı tabanlı yüz ölçümü ve cerrahi önizleme platformu *(özel, prototip)*
-
-[Vaka çalışması](projects/04-aura-photoreal-3d-clinic-platform/README.tr.md) ·
-[English](projects/04-aura-photoreal-3d-clinic-platform/)
-
-**Durum.** Bir telefon fotoğrafını hastanın, cerrahın ve bağımsız bir laboratuvarın güvenebileceği bir
-yüz ölçümüne dönüştürmek ve kliniğin operasyonunu, hastaya yakın veri işlemeyi zayıflatmadan bunun
-çevresine kurmak.
-
-**Kapsam.** Ürünün teknik tasarımını ve inceleme sürecini yönetiyorum. Web uygulaması, API ve
-ölçüm programı; çok kiracılı mimari, ödeme akışları, gizlilik kontrolleri, ön kayıtlı ölçümler
-ve otomatik sürüm kontrolleriyle birlikte ele alınıyor.
-
-**Sonuç.** Çekim başına kanıt sertifikası, gizlilik kontrolleri ve operasyonel devir paketi olan
-çalışan bir prototip; bağımsız bir doğrulama olana kadar kullanıcı, gelir ve doğruluk iddiası yok.
-Fikrî mülkiyet çalışması sürdüğü için kaynak kod kapalı; vaka çalışması yalnızca kapsamı, yöntemi ve
-durumu belgeler.
-
-`TypeScript` `React` `Node.js` `multi-tenant` `ödeme akışları` `KVKK` `bilgisayarlı görü` `otomatik test`
-
-### 2. ReconPilot — Deterministik ödeme mutabakat motoru
-
-[Vaka çalışması](projects/03-reconpilot-payment-reconciliation/README.tr.md) ·
-[English](projects/03-reconpilot-payment-reconciliation/) ·
-[Açık kaynak, testler ve benchmark](https://github.com/hilberspace-dev/reconpilot) ·
-[![ReconPilot CI](https://github.com/hilberspace-dev/reconpilot/actions/workflows/ci.yml/badge.svg)](https://github.com/hilberspace-dev/reconpilot/actions/workflows/ci.yml)
-
-**Durum.** PSP raporları, banka ekstreleri ve pazaryeri hakedişleri aynı parayı farklı biçimlerde
-anlatır; elle mutabakat yanlış eşleşme ve sessiz kayıp üretir.
-
-**Yaptığım.** Go ve PostgreSQL ile bir mutabakat servisi yazdım. Servis üç kaynağı içeri alıp
-tekilleştirir, kesin → toleranslı → grup eşleştirme zincirini deterministik biçimde uygular ve
-eşleşmeyen her kaydı sınıflandırır. Bir correctness invariant'ı ihlal edilirse sessizce devam etmez,
-durur.
-
-**Sonuç.** Seed'li sentetik benchmark yaklaşık 50 bin işlemin mutabakatını yaklaşık 4 saniyede
-tamamlıyor: **enjekte edilmiş 7 uyuşmazlık tipinin 7'si de tespit edildi, 0 yanlış eşleşme, 0
-kaçırılmış eşleşme.** Bu kapsamda hiçbir kayıt sonuçtan sessizce kaybolmuyor; manuel inceleme, izi
-sürülemeyen bir bakiye kalanından değil, adı konmuş bir uyuşmazlık sınıfından başlıyor. *(Rakamlar
-üretim verisinden değil, herkese açık sentetik veri setinden gelir; kendiniz de
-çalıştırabilirsiniz.)*
-
-```mermaid
-flowchart LR
-    A["PSP · banka · pazaryeri"] --> B["İçe aktar + tekilleştir"]
-    B --> C["Deterministik eşleştirme"]
-    C --> D["Eşleşme veya adı konmuş uyuşmazlık"]
-    D --> E["REST · HTML rapor · metrikler"]
-```
-
-[![ReconPilot altın veri seti HTML mutabakat raporu](https://raw.githubusercontent.com/hilberspace-dev/reconpilot/main/docs/report-screenshot.png)](https://github.com/hilberspace-dev/reconpilot/blob/main/docs/report-screenshot.png)
-
-*Altın veri seti HTML raporu — tam boyut için görsele tıklayın.*
-
-`Go` `PostgreSQL` `REST` `Prometheus` `Docker Compose` `property-based test` `CI`
-
-### 3. Bağımsız güvenlik incelemeleri
-
-Para ve varlık taşıyan kodu, kendi belgelenmiş kurallarına göre bağımsız olarak incelediğim iki
-çalışma var. İkisi de aynı disipline dayanıyor: kanıtlanamayan bulgu raporlanmaz.
-
-**ERC-4337 EntryPoint v0.8 incelemesi** — yoğun denetlenmiş bir bileşende düşük şiddetli,
-deterministik bir doğruluk kusuru buldum. Kusuru iki kez tekrar ürettim: önce negatif kontrollü bir
-kanıtla, sonra digest ile sabitlenmiş ikinci bir ortamda.
-[Vaka çalışması](projects/02-erc4337-entrypoint-review/README.tr.md)
-
-**Canlı protokol denetimi (~16,7M $) — disiplinli NO-GO** — en güçlü hipotez önce tekrar üretildi,
-sonra kendi kanıtıyla çürütüldü. Bulgu gönderilmedi; abartılı iddia yerine durma kararı verildi.
-[Vaka çalışması](projects/01-smart-contract-security-audit/README.tr.md)
-
----
-
-## Nasıl çalışıyoruz
-
-**Riski küçük tutarak başlıyoruz.** Bir referans listesi okuyup bana güvenmenizi beklemiyorum. Bunun
-yerine ilk adımı ucuz ve geri dönülebilir yapıyorum:
-
-- **Ücretli ön analiz.** Birkaç günlük, sabit ücretli, kendi başına duran bir iş. Çıktısı yazılı bir
-  teşhis raporu: problem nerede, kök neden ne, hangi seçenekler var ve her birinin tahmini eforu.
-  Devam etmemeye karar verseniz de rapor sizde kalır.
-- **Milestone bazlı ödeme.** Peşin toplu ödeme yok; her teslim parçası kendi ödemesini taşır.
-- **İlk milestone'da yazılı kabul kriteri.** Kriteri karşılamazsam o milestone'u faturalamam. Bunu
-  yazıyorum çünkü maliyeti bana kalıyor. Referans listesinin yerini tutan da bu.
-
-Sonrasındaki akış:
-
-1. **Ön görüşme (ücretsiz).** Problemi, mevcut sistemi ve beklenen sonucu birlikte konuşuruz. İş
-   sizin için doğru iş değilse bunu ilk görüşmede söylerim.
-2. **Yazılı kapsam.** Ne yapılacağı, ne yapılmayacağı, kabul kriterleri, süre ve sabit fiyat yazılı
-   olarak belirlenir. Kapsam dışı işleri sonradan sürpriz olarak önünüze getirmem.
-3. **Artımlı teslim.** Sonuç parça parça çalışır hâlde teslim edilir; her adımda hangi komutun
-   çalıştırıldığı ve ne döndürdüğü yazılı olarak paylaşılır.
-4. **Doğrulama.** Testler, tekrar üretilebilir kontroller ve uygun işlerde kendi iddiamı çürütmeyi
-   amaçlayan negatif kontroller uygulanır.
-5. **Devir.** Dokümantasyon, runbook ve gerektiğinde ekibinize devir oturumu sağlanır. Arkamda size
-   bağımlılık yaratan bir sistem bırakmam.
-
-**Gizlilik.** Müşteri işlerinde NDA ile çalışırım; müşteri kaynak kodu ve verisi hiçbir portföy
-belgesinde yer almaz. Bu depodaki ürün vaka çalışması kendi projem; fikrî mülkiyet çalışması sürdüğü için uygulaması kapalı tutuluyor.
-
----
-
-## Teknik kapsam
-
-**Ana alanlar:** Go · PostgreSQL · Node.js / TypeScript · backend mimarisi · ödeme ve işlem
-sistemleri · mutabakat · API entegrasyonları · otomatik test ve CI · Docker · observability
-
-**Ek deneyim:** React · .NET · bilgisayarlı görü ve GPU iş yükleri · Solidity / EVM
-
-**Çalışma dili.** Projeler Türkçe yürütülür. Şartname, dokümantasyon ve kod incelemesi Türkçe veya
-İngilizce olarak, ekibinizin tercihine göre hazırlanır.
-
----
+[Teslim süreci](DELIVERY-METHODOLOGY.tr.md) ·
+[Güvenlik inceleme yöntemi](METHODOLOGY.tr.md)
 
 ## İletişim
 
-**Telefon / WhatsApp:** [+90 543 106 40 25](tel:+905431064025) ·
-**E-posta:** [hilberspace@gmail.com](mailto:hilberspace@gmail.com)
+[hilberspace@gmail.com](mailto:hilberspace@gmail.com) ·
+[WhatsApp](https://wa.me/905431064025) · [+90 543 106 40 25](tel:+905431064025)
 
-Şunları paylaşırsanız ilk dönüşte kapsam ve süre tahmini verebilirim:
-
-- çözülmesi gereken problem ve bugün nasıl idare edildiği
-- mevcut sistem ve teknoloji yığını
-- beklenen teslimat
-- hedef zaman planı
-- erişim kısıtları (repo, ortam, NDA)
-
----
-
-*Bu portföy, işler tamamlandıktan sonra derlenip yayımlandı. Commit tarihleri geliştirme takvimini
-değil, yayımlama ve dokümantasyon geçmişini gösterir.*
+Problemi, mevcut teknolojileri, beklenen teslimatı, zaman planını ve erişim
+kısıtlarını yazabilirsiniz. İlk veri incelemesi için anonimleştirilmiş örnekler
+kullanın.

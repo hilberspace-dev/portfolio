@@ -1,224 +1,69 @@
-[![Türkçe sürüm](https://img.shields.io/badge/T%C3%BCrk%C3%A7e%20s%C3%BCr%C3%BCm-oku-E30A17?style=for-the-badge)](README.tr.md)
-[![Delivery & Quality-Gate Methodology](https://img.shields.io/badge/Methodology-Delivery%20%26%20Quality%20Gates-0A5C36?style=for-the-badge)](DELIVERY-METHODOLOGY.md)
-[![Security Review & PoC Methodology](https://img.shields.io/badge/Methodology-Security%20Review%20%26%20PoC-1F3A5F?style=for-the-badge)](METHODOLOGY.md)
+# Serhat Atılgan | Backend engineering
 
-# Backend systems where money and records have to stay correct
+[Türkçe](README.tr.md) · [GitHub](https://github.com/hilberspace-dev)
 
-**Reconciliation · payment and bank integrations · privacy-compliant data handling · rescuing
-inherited systems**
+I build backend systems in Go, PostgreSQL and TypeScript. Most of my work is
+payment reconciliation and API integration, and I also take over the maintenance
+of existing applications. I live in Türkiye and work in Turkish and English.
 
-I build backend systems for the places where the payment, the invoice and the record have to agree.
-The work has a common shape: money or records are going missing somewhere, nobody can point at
-exactly where, and every month closed by hand costs both money and risk.
+## Projects
 
-🇹🇷 **Türkiye'deki şirketler için:** [Türkçe portföy →](README.tr.md)
+### ReconPilot
 
-### Selected experience
+A Go/PostgreSQL application that imports PSP reports, bank statements and
+marketplace settlements. It applies exact, tolerant and group matching, then
+classifies the remaining records. Runtime checks reject results that leave an
+input unaccounted for or assign a transaction to multiple match groups.
 
-- **I lead the development of an applied-research prototype.** AURA combines a multi-tenant clinic workflow, payment and privacy controls, and a browser-based facial measurement pipeline. I am responsible for the technical direction, architecture and review process. It has no users or revenue yet.
-- **I find defects in money-handling code that others have already reviewed.** In ERC-4337 EntryPoint
-  v0.8 — a heavily audited component that validates and pays for transactions — I reproduced a
-  deterministic correctness defect twice: once with a negative control, once on an independently
-  pinned second environment. That is the same method I point at a reconciliation ledger or a payment
-  callback.
-- **I stop when the evidence says stop.** A ~$16.7M investigation ended in a written NO-GO after my
-  own proof refuted my leading hypothesis. Nothing was submitted. If your numbers do not support the
-  conclusion you were hoping for, you will hear it from me first.
+The public repository includes the CLI, HTTP service, HTML report, tests and a
+seeded synthetic benchmark. The benchmark compares matches with the groups the
+generator intended. It has never run on customer data, so it says nothing about
+accuracy there.
 
-The case studies distinguish reproducible results from work that remains private or has not
-been independently validated.
+[Source and run instructions](https://github.com/hilberspace-dev/reconpilot) ·
+[Case study](projects/03-reconpilot-payment-reconciliation/)
 
-> ### Available for fixed-scope engagements
->
-> Send the problem, the current system and the outcome you expect. You get the scope, the timeline
-> and the deliverables back in writing. The first call and the initial assessment are free.
->
-> **[Email →](mailto:hilberspace@gmail.com)** · **[WhatsApp →](https://wa.me/905431064025)** ·
-> **[+90 543 106 40 25](tel:+905431064025)**
+### AURA
 
-**atilgandev** · 📍 Türkiye · working with companies in Türkiye and internationally ·
-[GitHub profile](https://github.com/hilberspace-dev) ·
-[**🇹🇷 Türkçe portföy**](README.tr.md)
+My private research prototype combines browser-based facial measurement and
+surgical preview with clinic workflows. I lead technical design and review across
+the web application, API and research code. It has no users or revenue yet.
+Nobody independent has validated it on living faces yet. The preview shows a
+proposed plan; it does not predict the result of surgery.
 
----
+[Project scope and current limits](projects/04-aura-photoreal-3d-clinic-platform/)
 
-## Problems I solve
+## Security reviews
 
-**"The PSP report, the bank statement and the marketplace settlement do not agree."**
-Three sources describe the same money in different ways. Manual reconciliation carries two silent
-risks: records that match by coincidence, and records that fall out of the remainder and disappear.
-I build systems around deterministic matching, where every unmatched record lands in a named
-category and the run stops rather than producing a result when a correctness invariant is violated.
+- [ERC-4337 EntryPoint](projects/02-erc4337-entrypoint-review/): an internally
+  assessed Low-severity correctness finding, with recorded local and client-based
+  reproductions. It has not been submitted to a bounty programme or independently
+  validated. The full mechanism and proofs remain private.
+- [Smart-contract investigation](projects/01-smart-contract-security-audit/):
+  a hypothesis tested against a pinned local fork and rejected because the operator
+  could recover from the observed condition. No finding was submitted. The public
+  excerpt shows how the test is built, but you cannot run it as a reproduction.
 
-**"The team that wrote it left, and nobody dares touch it."**
-Systems with no tests, no documentation, and a breakage somewhere on every change. The first job is
-to pin the behaviour: tests that capture what it does today, explicit invariants, and only then
-controlled change. What I hand back is not a system that runs — it is a system somebody else can
-take over.
+## Working together
 
-**"We cannot produce evidence for a privacy or compliance audit."**
-Where a product touches personal data, retention, consent, erasure and access controls have to be
-executable, not merely written down. I have built compliance checks that run automatically and
-produce their own evidence, which is the difference between an audit and a week spent collecting
-screenshots.
+I take fixed-scope engagements. The initial call and assessment are free.
+When a problem needs investigating first, a paid discovery phase ends with a
+diagnosis and a proposed scope before any implementation starts. The scope
+includes deliverables, acceptance criteria and a timeline. Payment follows
+delivery milestones; I do not invoice the first milestone if it fails the agreed
+criteria.
 
-| | Product companies and scale-ups | Enterprise and group structures |
-| --- | --- | --- |
-| **Typical need** | One critical problem solved quickly and permanently, without growing the internal team | A defined work package that touches existing systems and stays auditable and transferable |
-| **Engagement** | Fixed scope, fixed price, one point of contact | Defined package, written acceptance criteria, NDA, documented process |
-| **What you get** | Working system, tests, and how to operate it | The above plus decision records, runbooks, a handover package and audit evidence |
+Handover includes source, tests, operating instructions and any agreed session
+with the receiving team. Client work is subject to confidentiality; client source
+and data are excluded from this portfolio.
 
-> ### Free diagnostic
->
-> Send an anonymised reconciliation extract or a sample of your data and you get back a written
-> account of where records are being lost silently and what it would take to close it. No commitment
-> expected in return. It is the shortest way to show what I can do on your data rather than describe
-> it on mine.
-
----
-
-## How I work, in writing
-
-Two methodology documents describe the test, review and release processes behind these
-projects.
-
-- **[Delivery & Quality-Gate Methodology](DELIVERY-METHODOLOGY.md)** — how a change reaches
-  production: the gate ladder, how legacy debt is frozen and forced downward, tests that detect
-  rather than tests that merely execute, contract discipline, release verification and rollback.
-- **[Security Review & Proof-of-Concept Methodology](METHODOLOGY.md)** — how a defect is proven:
-  invariant specification, adversarial review from multiple angles, the five-link chain a finding
-  must satisfy, and triager-ready packaging.
-
-Both rest on the same principle: **evidence before assertions.** Nothing is called fixed, passing or
-done without the command, its output and its exit code — and anything that was not run gets said out
-loud.
-
----
-
-## Selected work
-
-### 1. AURA — browser-based facial measurement and surgical-preview platform *(private, prototype)*
-
-[Case study](projects/04-aura-photoreal-3d-clinic-platform/) ·
-[**🇹🇷 Türkçe oku**](projects/04-aura-photoreal-3d-clinic-platform/README.tr.md)
-
-**Situation.** Turn a phone photograph into a facial measurement a patient, a surgeon and an independent laboratory could all trust, and put the clinic's operations around it without weakening patient-adjacent data handling.
-
-**Scope.** I lead technical design and review across the web application, API and measurement programme. The prototype includes multi-tenant architecture, payment flows, privacy controls, pre-registered measurements and automated release checks.
-
-**Outcome.** A working prototype with a per-capture evidence certificate, privacy controls and an operational handover package; no users, no revenue and no accuracy claim until an independent validation exists. The source stays private while intellectual-property work is ongoing; the case study documents scope, method and status only.
-
-`TypeScript` `React` `Node.js` `multi-tenant` `payment flows` `privacy compliance` `computer vision` `automated testing`
-
-### 2. ReconPilot — Deterministic payment reconciliation engine
-
-[Case study](projects/03-reconpilot-payment-reconciliation/) ·
-[**🇹🇷 Türkçe oku**](projects/03-reconpilot-payment-reconciliation/README.tr.md) ·
-[Public source, tests and benchmark](https://github.com/hilberspace-dev/reconpilot) ·
-[![ReconPilot CI](https://github.com/hilberspace-dev/reconpilot/actions/workflows/ci.yml/badge.svg)](https://github.com/hilberspace-dev/reconpilot/actions/workflows/ci.yml)
-
-**Situation.** PSP reports, bank statements and marketplace settlements describe the same money in
-different ways, and manual reconciliation produces both false matches and silent losses.
-
-**What I did.** A Go/PostgreSQL service that ingests and deduplicates all three sources, applies a
-deterministic exact → tolerant → group matching chain, classifies every unmatched record, and
-hard-fails instead of continuing quietly when its correctness invariants are violated.
-
-**Outcome.** Its seeded synthetic benchmark reconciles ~50K transactions in ~4 seconds: **7/7
-injected discrepancy types detected, 0 false matches, 0 intended pairs or groups missed.** Within
-that scope no record silently disappears, and manual investigation starts from a named discrepancy
-category rather than an untraceable remainder. *(The figures come from an open synthetic dataset,
-not production data, and you can reproduce them yourself.)*
-
-```mermaid
-flowchart LR
-    A["PSP · bank · marketplace"] --> B["Ingest + deduplicate"]
-    B --> C["Deterministic matching"]
-    C --> D["Match or named discrepancy"]
-    D --> E["REST · HTML report · metrics"]
-```
-
-[![ReconPilot HTML reconciliation report from the golden dataset](https://raw.githubusercontent.com/hilberspace-dev/reconpilot/main/docs/report-screenshot.png)](https://github.com/hilberspace-dev/reconpilot/blob/main/docs/report-screenshot.png)
-
-*Golden-dataset HTML report — click to inspect the full-size image.*
-
-`Go` `PostgreSQL` `REST` `Prometheus` `Docker Compose` `property-based testing` `CI`
-
-### 3. Independent security reviews
-
-Two reviews of code that moves money or assets, each checked against its own documented rules. Both
-show the same discipline: a finding that cannot be proven does not get reported.
-
-**ERC-4337 EntryPoint v0.8 review** — a Low-severity deterministic correctness defect in a heavily
-audited component, reproduced twice: once with a negative-controlled proof, once on a digest-pinned
-second environment. It was not submitted or externally validated; the mechanism remains withheld
-while unfixed upstream.
-[Case study](projects/02-erc4337-entrypoint-review/)
-
-**Live-protocol audit (~$16.7M) — a disciplined NO-GO** — on-chain forensics across ~45M blocks,
-deployed-bytecode verification, a 14-invariant specification and a pinned-block proof. The leading
-hypothesis was reproduced, then refuted by its own evidence. Nothing was submitted.
-[Case study](projects/01-smart-contract-security-audit/)
-
----
-
-## How we work together
-
-**We start by keeping your risk small.** I do not expect you to read a reference list and trust me.
-I make the first step cheap and reversible instead:
-
-- **Paid discovery.** A few days, fixed fee, standing on its own. The deliverable is a written
-  diagnosis: where the problem is, what the root cause is, which options exist and roughly what each
-  costs. If you decide not to continue, the document is still yours.
-- **Milestone-based payment.** No large sum up front; each delivered piece carries its own payment.
-- **Written acceptance criteria on the first milestone.** If the work does not meet them, I do not
-  invoice that milestone. I put this in writing because the cost lands on me, and that is what
-  stands in for a reference list.
-
-After that:
-
-1. **Initial call (free).** We go through the problem, the current system and the outcome you
-   need. If it is not the right job for me, you hear that on the first call.
-2. **Written scope.** What is included, what is not, the acceptance criteria, the timeline and a
-   fixed price. Out-of-scope work does not arrive later as a surprise.
-3. **Incremental delivery.** Working results in pieces, with what was run and what it returned
-   shared in writing at every step.
-4. **Verification.** Tests, reproducible checks and — where the work calls for it — negative
-   controls that try to refute my own claim.
-5. **Handover.** Documentation, runbooks and, where needed, a session with your team. I do not leave
-   behind a system that depends on me.
-
-**Confidentiality.** I work under NDA on client engagements, and client source code and data never
-appear in any portfolio document. The product case study here is my own project; its implementation is withheld while intellectual-property work is ongoing.
-
----
-
-## Technical scope
-
-**Core:** Go · PostgreSQL · Node.js / TypeScript · backend architecture · payment and transaction
-systems · reconciliation · API integrations · automated testing and CI · Docker · observability
-
-**Additional experience:** React · .NET · computer vision and GPU workloads · Solidity / EVM
-
-**Working language.** Turkish for projects in Türkiye; professional written English for
-specifications, tickets, documentation and code review. Async-first collaboration.
-
----
+[Delivery process](DELIVERY-METHODOLOGY.md) ·
+[Security review method](METHODOLOGY.md)
 
 ## Contact
 
-**Phone / WhatsApp:** [+90 543 106 40 25](tel:+905431064025) ·
-**Email:** [hilberspace@gmail.com](mailto:hilberspace@gmail.com)
+[hilberspace@gmail.com](mailto:hilberspace@gmail.com) ·
+[WhatsApp](https://wa.me/905431064025) · [+90 543 106 40 25](tel:+905431064025)
 
-Include these and you get a scope and timeline estimate on the first reply:
-
-- the problem, and how it is being handled today
-- the current system and stack
-- the expected deliverable
-- the target timeline
-- access constraints (repository, environments, NDA)
-
----
-
-*This is a curated portfolio published after the underlying work was completed. Commit dates reflect
-publication and documentation history, not the original development timeline.*
+Please include the problem, current stack, expected deliverable, timeline and
+access constraints. Use anonymised samples for an initial data review.

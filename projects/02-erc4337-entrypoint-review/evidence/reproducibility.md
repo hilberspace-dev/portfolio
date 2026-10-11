@@ -1,7 +1,8 @@
-# Reproducibility Evidence — ERC-4337 EntryPoint v0.8 Review
+# Reproducibility evidence: ERC-4337 EntryPoint v0.8 review
 
-Redacted: the defect's file, function and mechanism are withheld (see the case study's disclosure note).
-What follows is the verification discipline applied, which is reproducible independently of the finding.
+The defect's file, function and mechanism are withheld (see the disclosure note in the case study).
+This file records how the work was verified, and that part can be reproduced without knowing the
+finding.
 
 ## Scope pin
 
@@ -22,16 +23,16 @@ npx hardhat --ver -> 2.22.17      (solc 0.8.28, evmVersion cancun)
 OS                -> Windows 11 (win32)
 ```
 
-The toolchain was matched to the project's own CI configuration rather than to whatever happened to be
-installed. On Windows the repository's shell wrappers cannot spawn, so tools were invoked directly
-(`npx hardhat compile`, not the wrapper script) — a difference worth recording, because a wrapper
-returning exit code 0 while the underlying runner never started is a real and easy trap.
+The toolchain versions were taken from the project's own CI configuration. On Windows the
+repository's shell wrappers cannot spawn, so the tools were invoked directly, for example
+`npx hardhat compile` without the wrapper script. That is worth writing down: a wrapper can return
+exit code 0 while the runner underneath never started, and it is an easy trap to fall into.
 
-## External client, pinned by digest (not by tag)
+## External client, pinned by digest
 
 The second proof required an EVM revision the local toolchain does not implement, so it ran against a
-real client. A mutable `:latest` / `:master` tag would make "fully reproducible" a false claim, so the
-client is cited by **immutable digest**:
+real client. With a mutable `:latest` / `:master` tag, "fully reproducible" would be a false claim, so
+the client is cited by its immutable digest:
 
 ```
 image  -> ethpandaops/geth@sha256:ddde359a5e9b54b4cd02d8eee29e7d44e42a9a681effc356d1437a81aee414ef
@@ -42,21 +43,21 @@ run    -> docker run --rm -p 8545:8545 \
 chain  -> --dev (chainId 1337); target EVM feature confirmed live before the proof was trusted
 ```
 
-Practical notes recorded during the run: client flags change across versions (one previously-required
-flag had been removed), and `--dev` returns a transient *"transaction indexing is in progress"* error,
-so receipts are polled rather than awaited once.
+Two notes from the run. Client flags change across versions (one previously-required flag had been
+removed). And `--dev` returns a transient "transaction indexing is in progress" error, so receipts are
+polled until they arrive.
 
 ## Why two proofs
 
 | | Proof 1 (local, Cancun) | Proof 2 (real client, Prague) |
 |---|---|---|
 | Proves | the in-scope control-flow defect | the same result under genuine EVM semantics |
-| Limitation | the EVM revision **cannot execute** the delegation feature; the failure is induced by an equivalent stand-in | none for this purpose |
-| Labelled as | **approximation** — stated explicitly, not glossed over | authoritative |
+| Limitation | the EVM revision cannot execute the delegation feature; the failure is induced by an equivalent stand-in | none for this purpose |
+| Labelled as | approximation (stated explicitly) | authoritative |
 
-Proof 2 asserts on a **unique inner marker** — the deployed helper's own revert string — which
-machine-proves the delegated code actually executed, rather than the test reaching the same branch for
-an unrelated reason.
+Proof 2 asserts on a unique inner marker: the deployed helper's own revert string. That marker
+machine-proves that the delegated code actually executed and that the test did not reach the same
+branch for an unrelated reason.
 
 ## Results
 
@@ -72,9 +73,9 @@ Proof 2 (real Prague client, pinned digest):
   2 passing (4s)      EXIT_CODE=0
 ```
 
-Proof 2 self-skips when the client is unreachable, so it can never silently break the baseline suite.
-Recorded explicitly in the report: **a skipped or pending result is NOT evidence — a successful
-reproduction must report the expected pass count.**
+Proof 2 skips itself when the client is unreachable, so it can never silently break the baseline
+suite. The report states that a skipped or pending result is not evidence: a successful reproduction
+has to report the expected pass count.
 
 ## Baseline discipline
 
@@ -90,8 +91,8 @@ Excluding the two client-dependent files    -> 109 passing, exit 0
 Proof run alongside the main EntryPoint suite -> 73 passing
 ```
 
-That last line matters: the proof was run **in isolation first, then alongside the existing suite**, so
-it cannot hide behind pre-existing environmental failures.
+The last line is there because the proof was run in isolation first and then alongside the existing
+suite, so it cannot hide behind environmental failures that were already present.
 
 ## Production-code diff evidence
 
@@ -108,14 +109,14 @@ $ git status --short
 ?? test/<proof-2>.test.ts
 ```
 
-SHA-256 is recorded for every proof file and **recomputed after any edit** — stale hashes in a report
-are a red flag a reviewer will catch.
+SHA-256 is recorded for every proof file and recomputed after any edit, because a reviewer will spot
+stale hashes in a report.
 
 ## Integrity
 
 - No transaction was broadcast to any public network; the external client ran locally in `--dev` mode.
-- State-injection helpers were used **only** to reach the in-scope branch, never to shortcut the
-  contract's own logic, and that use is disclosed in each test's header comment.
-- The finding's severity was assessed **separately** from whether the tests pass. A passing test proves
-  a behaviour exists; it does not prove that behaviour is worth money. This one is a Low, and is
+- State-injection helpers were used only to reach the in-scope branch, never to shortcut the
+  contract's own logic. Each test's header comment discloses that use.
+- Severity was assessed separately from whether the tests pass. A passing test shows that a behaviour
+  exists; whether that behaviour is worth money is a different question. This one is a Low, and is
   reported as a Low.
