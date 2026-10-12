@@ -2,34 +2,34 @@
 
 # Vaka çalışması: ReconPilot, deterministik ödeme mutabakat motoru
 
-> ### İddia: yaklaşık 49 bin işlem (`-n 50000`) · 3 kaynak · enjekte edilmiş 7 uyuşmazlık tipi: 7/7 tespit, 0 yanlış eşleşme, amaçlanan eşleşme/gruplarda 0 kayıp
+> ### İddia: yaklaşık 50 bin işlem (`-n 50000`) · 3 kaynak · enjekte edilmiş 8 uyuşmazlık tipi: 8/8 tespit, 0 yanlış eşleşme, amaçlanan eşleşme/gruplarda 0 kayıp
+> ### Gerçek veri: kamuya açık 5 veri seti · motorun eşleşmelerinin %99,93 ile %100'ü yayıncının kendi bağlarıyla doğrulanıyor
 >
 > | | |
 > |---|---|
 > | Repo | [Açık kaynak kod, testler ve benchmark](https://github.com/hilberspace-dev/reconpilot) |
 > | Benchmark | Sabit seed ile deterministik: `go run ./cmd/benchmark` veri setini yeniden üretir ve her makinede aynı kontrolleri çalıştırır |
 > | "0 yanlış eşleşme" | Üretilen her eşleşmenin üyeleri, veri üretecinin bilinen doğru eşleme kümesiyle tek tek karşılaştırılır; benchmark 0 yanlış eşleşme raporlar |
+> | Gerçek veri | İki taraf arasındaki bağları kaydın kendisinde bulunan [kamuya açık beş veri seti](https://github.com/hilberspace-dev/reconpilot/blob/main/docs/real-data.md); her setin kesinliği aşağıda |
 > | CI | Her push'ta PostgreSQL entegrasyon testleri, mimari ve zafiyet kontrolleri, sabit seed'li Compose API smoke testi ve benchmark çalışır |
 > | Servis yüzeyi | Sürümlü REST uç noktası, HTML rapor, health/readiness, Prometheus metrikleri ve tek komutla seed'li Docker Compose ortamı |
 > | Teknoloji | Go 1.26 + PostgreSQL; tek modül; servis tek bir statik binary (`recon`), benchmark panelini ise ikinci küçük bir binary (`verify`) sunar; standart kütüphane öncelikli (çalışma zamanındaki tek bağımlılık: `pgx`) |
 >
-> Benchmark verisi sentetik. Uyuşmazlıklar bu veriye enjekte ediliyor ve veri üreteci repoda.
-> Benchmark motorun deterministik davranışını sınıyor; gerçek müşteri verisiyle hiç
-> çalıştırılmadı. Doğru cevap kümesinin tek anlamlı olması da sentetik veride bilerek seçilmiş bir
-> tasarım. Enjekte edilen bir uyuşmazlığın açık satırları, aynı satıcının enjekte edilmiş başka bir
-> siparişinin açık satırlarıyla hiçbir zaman aynı tolerans penceresine düşmez (temiz siparişler önce
-> birebir eşleşir). Grup hâlinde ödeme alan bir satıcıya en fazla iki ödeme yapılır. İkinci grup 35
-> gün sonraya kaydırıldığı için iki ödemenin 14 günlük pencereleri hiç çakışmaz (iki ödeme tarihi
-> arasındaki fark 16 ile 54 gün). Ama gerçek defterlerde, toleranslı ya da grup eşleştiricinin
-> birbirine bağlayacağı, aynı satıcıya ait belirsiz satırlar bulunabilir.
+> Benchmark verisi sentetik. Uyuşmazlıklar bu veriye enjekte ediliyor ve veri üreteci repoda. Üreteç
+> zor durumları da bilerek kuruyor: eşit tutarlar, referansı olmayan satırlar, başka bir siparişi
+> gösteren referans, geç takas edilen çekler. Motor bunlardan birini tahminle eşleştirirse benchmark
+> düşüyor. Motoru ayrıca kamuya açık beş gerçek veri setinde çalıştırdım. Bunlar bir satıcının kendi
+> defterleri değil; müşteri verisiyle henüz çalıştırmadım.
 
 > Teknik olmayan okurlar için kısaca: Bir e-ticaret işletmesi aynı anda kart ödeme kuruluşundan,
 > pazaryerlerinden ve banka hesabından para alır. Her biri "aynı" parayı farklı biçimde raporlar.
 > Finans ekibinden birinin bu üç kaydı birbirine uydurması gerekir. Bu iş çoğunlukla Excel'de elle
 > yapılır; hatalar hem sessiz hem pahalıdır. ReconPilot on binlerce işlemin mutabakatını saniyeler
-> içinde otomatik yapıyor ve her farkı adı belli bir kategoriye koyuyor. Tek komut, yaklaşık 49 bin
-> işlemlik benchmark'ı yeniden çalıştırıp her kararı bilinen doğru cevaplarla karşılaştırıyor. Bu
-> koşuda yanlış eşleştirme sıfır. Bir girdi ne eşleşmiş ne de sınıflandırılmışsa, ya da işlem
+> içinde otomatik yapıyor ve her farkı adı belli bir kategoriye koyuyor. İki kayıt aynı ölçüde
+> uyuyorsa birini seçmiyor, kararı bir kişiye bırakıyor. Tek komut, yaklaşık 50 bin işlemlik
+> benchmark'ı yeniden çalıştırıp her kararı bilinen doğru cevaplarla karşılaştırıyor; bu koşuda
+> yanlış eşleştirme sıfır. Kamuya açık gerçek kayıtlarda kurduğu eşleşmelerin %99,93 ile %100'ü
+> yayıncının kendi bağlarıyla doğrulanıyor. Bir girdi ne eşleşmiş ne de sınıflandırılmışsa, ya da işlem
 > düzeyindeki bir uyuşmazlık farkı kendi türünün para kurallarını çiğniyorsa, sistem sonuç
 > döndürmeyi reddediyor.
 
@@ -57,7 +57,7 @@ flowchart LR
     M["Pazaryeri hakedişi"] --> I
     I --> DB[("PostgreSQL<br/>şema kısıtları")]
     DB --> S["CLI / REST servisi"]
-    S --> E["Deterministik motor<br/>kesin → toleranslı → grup"]
+    S --> E["Deterministik motor<br/>kesin → bölünmüş → toleranslı → grup"]
     E --> V["Sınıflandırma + çalışma zamanı kontrolleri 1–3"]
     V --> DB
     V --> O["JSON özet / HTML rapor"]
@@ -66,11 +66,17 @@ flowchart LR
 
 ## Mühendislik
 
-- Eşleştirme deterministik ve açıklanabilir üç aşamadan oluşuyor. Önce kesin eşleştirme (referans +
-  tutar + yön, ±3 günlük pencere), sonra toleranslı eşleştirme (±%0,5, yalnızca banka satırları), en
-  son da hakedişler için sınırlı çoktan-bire grup eşleştirme (hakediş = Σ siparişler − komisyon).
+- Eşleştirme deterministik ve açıklanabilir dört aşamadan oluşuyor. Önce kesin eşleştirme
+  (referans + tutar + yön, ±3 günlük pencere), sonra bölünmüş ödeme (bir siparişin, referansını
+  taşıyan birkaç banka satırıyla ödenmesi), sonra toleranslı eşleştirme (yalnızca banka satırları),
+  en son da hakedişler için sınırlı çoktan-bire grup eşleştirme (hakediş = Σ siparişler − komisyon).
   Alt küme araması başlamadan önce sınırlanır: karşı taraf + 14 günlük pencere, en fazla 20 aday.
   Sınır aşılırsa sistem tahmin yürütmez, açıkça `unknown` sonucu üretir.
+- Bir eşleşme için kanıtın tek bir eşi göstermesi gerekiyor. Boş referans hiçbir şeyle uyuşmuyor,
+  başka bir kaydı gösteren referans eşleşmeyi engelliyor; referans yoksa tutar birebir aynı olmalı
+  ve 30 gün içinde aynı karşı taraf ile aynı tutarda başka bir satır bulunmamalı. İki eş aynı ölçüde
+  uyuyorsa ya da iki sipariş kümesi aynı hakedişi tutturuyorsa satırlar tahmin edilmiyor,
+  `ambiguous` olarak sınıflanıyor.
 - Çalışma zamanında üç değişmez var. Biri ihlal edilirse işlem durur: her girdi ya eşleşir ya
   sınıflandırılır; hiçbir işlem iki eşleşme grubunda yer alamaz; işlem düzeyindeki her uyuşmazlık
   farkı kendi türünün para semantiğine uyar. Dördüncü bir garanti de içe aktarma aşamasında: aynı
@@ -101,36 +107,37 @@ yığını eklenmeden çalıştırılabilir bir servis olarak da ayakta.
 Doğrulama paneli (`go run ./cmd/verify`) seed 1 için puanlanmış koşuyu gösteriyor. Koşunun
 sınırlarını anlatan paragrafıyla birlikte tam sayfa, depoda `docs/verification-panel.png` dosyasında:
 
-![ReconPilot doğrulama paneli, seed 1: enjekte edilen 7 tipin 7'si tespit edildi, 0 yanlış eşleşme, amaçlanan eşleşme ve gruplarda 0 kayıp](https://raw.githubusercontent.com/hilberspace-dev/reconpilot/main/docs/verification-panel-top.png)
+![ReconPilot doğrulama paneli, seed 1: enjekte edilen 8 tipin 8'i tespit edildi, 0 yanlış eşleşme, amaçlanan eşleşme ve gruplarda 0 kayıp](https://raw.githubusercontent.com/hilberspace-dev/reconpilot/main/docs/verification-panel-top.png)
 
 Property-based testler değişmezleri, her çalışmada üretilen 100 rastgele işlem defteri üzerinde
 sınıyor; hata bulunduğunda örnek en küçük hâline indirgeniyor (shrinking). Entegrasyon testleri
-testcontainers ile gerçek PostgreSQL üzerinde koşuyor. Arada mock yok. Benchmark yaklaşık 49 bin
-işlem (`-n 50000`) üretiyor ve bilinen konumlara yedi uyuşmazlık türü enjekte ediyor. Sonra her
+testcontainers ile gerçek PostgreSQL üzerinde koşuyor. Arada mock yok. Benchmark yaklaşık 50 bin
+işlem (`-n 50000`) üretiyor ve bilinen konumlara sekiz uyuşmazlık türü enjekte ediyor. Sonra her
 enjekte kaydın kendi türünü alıp almadığına ve motorun defterde karşılığı olmayan bir kayıt üretip
 üretmediğine bakıyor. Bulunan her eşleşmeyi de veri üretecinin amaçladığı eşleme kümesiyle
 karşılaştırıyor:
 
 ```text
-reconpilot benchmark: n=49003 seed=1
-elapsed: 906.7748ms
+reconpilot benchmark: n=50359 seed=1
+elapsed: 340.7435ms
 
 type           injected   detected    emitted   expected
-commission          193        193       2036       2036  ok
+commission          193        193       1954       1954  ok
 refund              386        386        386        386  ok
-partial             193        193        386        386  ok
-timing              193        193        386        386  ok
+partial             386        386        772        772  ok
+timing              386        386        772        772  ok
 duplicate           193        193        193        193  ok
-missing             193        193        193        193  ok
+missing             386        386        386        386  ok
+ambiguous          1764       1764       1764       1764  ok
 unknown             193        193        193        193  ok
 (detected: injected records that got their type. expected: the injected records, a delta-0
- record for each commission, partial and timing counterpart, and 1650 group fee records)
+ record for each commission, partial and timing counterpart, and 1568 group fee records)
 
-clean books: pairs=17706 groups=1650, matches produced: 20128
+clean books: pairs=16548 unreferenced=193 splits=193 reversals=193 groups=1568, matches produced: 19467
 false matches: 0, intended pairs/groups not fully matched: 0
 runtime invariants: 3/3 PASSED (checked inside engine.Run)
 
-RESULT: PASS, 7/7 injected types detected, 0 false matches, 0 intended pairs/groups missed
+RESULT: PASS, 8/8 injected types detected, 0 false matches, 0 intended pairs/groups missed
 ```
 
 Yanlış eşleşmede çıkış kodu sıfırdan farklı olur. Bütün olarak eşleşmeyen bir çift ya da grup,
@@ -138,12 +145,36 @@ başka tür alan bir enjekte kayıt veya karşılığı olmayan bir kayıt da ay
 benchmark'ı her push'ta yeniden çalıştırıyor;
 [`main` üzerindeki son koşunun](https://github.com/hilberspace-dev/reconpilot/actions?query=branch%3Amain)
 benchmark adımı aynı PASS satırını GitHub'ın kendi makinesinde gösteriyor. Benchmark 1'den 100'e
-kadar her seed'de, hem varsayılan boyutta (`-n 50000`) hem `-n 20000` ile geçiyor (bunu `-seed`
-üzerinde dönen bir shell döngüsü kontrol ediyor). Bir de depo GitHub Codespaces'te benchmark
+kadar her seed'de `-n 200000`, `-n 50000` ve `-n 20000` ile geçiyor (bunu `-seed` üzerinde dönen bir
+shell döngüsü kontrol ediyor). Bir de depo GitHub Codespaces'te benchmark
 çalışır hâlde açılıyor; iddia yerel kurulum olmadan da kontrol edilebiliyor.
 
+## Gerçek veri
+
+Sentetik benchmark, motorun kendisi için kurulmuş her durumu doğru ele aldığını gösteriyor. Onun için
+kurulmamış kayıtlarda nasıl davrandığını görmek için motoru kamuya açık beş veri setinde çalıştırdım.
+Bu setlerde hangi satırların birbirine ait olduğunu yayıncının kendisi kaydetmiş. Kesinlik, motorun
+kurduğu eşleşmelerden bu bağlarla doğrulananların oranı:
+
+| Veri | Eşleşme | Yanlış | Kesinlik |
+|---|---|---|---|
+| Olist, Brezilya'da bir pazaryeri: siparişler ve ödemeleri | 96.522 | 0 | %100 |
+| BenchRec, bir bankanın defteri ve hesap ekstresi (değerlendirme dilimi) | 14.820 | 10 | %99,93 |
+| Fulton County, Georgia: çekler ve takasları | 26.320 | 3 | %99,99 |
+| Brezilya federal bütçesi: tahakkuklar ve ödemeleri | 6.474 | 3 | %99,95 |
+| Baltimore: tedarikçi faturaları ve onları ödeyen çekler | 116.089 | 2 | %99,998 |
+
+Motorun ilk sürümü aynı dosyalarda çok daha fazla yanlış eşleşme yapıyordu; Brezilya federal
+verisinde 13.320 eşleşmenin 5.920'si yanlıştı. Bu hataların nedenleri ve yerlerine gelen kurallar
+depodaki ADR 0006'da. Kesinlik kapsamayla aynı şey değil. İki taraf ortak bir referans taşımıyorsa
+motor birçok satırı bir kişinin kararına bırakıyor (BenchRec'te satırların yaklaşık yarısı). Kalan
+yanlışlar, tutarı tutan ama yayıncının başka yere bağladığı satırlar. Bunlar kamuya açık kayıtlar,
+bir satıcının kendi defterleri değil; dönüştürücüler de depoda yok. Dönüşümler, kapsama ve her yanlış
+eşleşme [sonuç sayfasında](https://github.com/hilberspace-dev/reconpilot/blob/main/docs/real-data.md).
+
 Başlıca tasarım kararlarının her biri için repoda bir ADR var: tamsayı para modeli, tek stack
-gerekçesi, sınırlı grup araması, şema düzeyindeki değişmezler ve HTTP/gözlemlenebilirlik sınırı.
+gerekçesi, sınırlı grup araması, şema düzeyindeki değişmezler, HTTP/gözlemlenebilirlik sınırı ve
+yalnızca tek bir eşi gösteren kanıtla eşleştirme.
 
 `Go` `PostgreSQL` `REST` `Prometheus` `Docker Compose` `pgx` `property-based testing`
 `testcontainers` `CI` `invariant-driven design`

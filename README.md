@@ -9,19 +9,27 @@ existing applications. I live in Türkiye and work in Turkish and English.
 ## Main project: ReconPilot
 
 ReconPilot is a Go/PostgreSQL application that imports PSP reports, bank statements and marketplace
-settlements. It applies exact, tolerant and group matching, then classifies whatever is left over.
+settlements. It applies exact, split, tolerant and group matching, then classifies whatever is left over; when
+two records fit equally well, it leaves them for a person instead of picking one.
 Runtime checks reject a result that leaves an input unaccounted for, or one that puts a transaction
 in more than one match group.
 
 The public repository has the CLI, the HTTP service, the HTML report, the tests and a seeded
 synthetic benchmark. The benchmark compares the matches with the groups the generator intended; here
-is its verification panel for seed 1, about 49,000 transactions:
+is its verification panel for seed 1, about 50,000 transactions:
 
-[![ReconPilot verification panel: 7/7 injected discrepancy types detected, 0 false matches, 0 intended pairs or groups missed](https://raw.githubusercontent.com/hilberspace-dev/reconpilot/main/docs/verification-panel-top.png)](https://github.com/hilberspace-dev/reconpilot)
+[![ReconPilot verification panel: 8/8 injected discrepancy types detected, 0 false matches, 0 intended pairs or groups missed](https://raw.githubusercontent.com/hilberspace-dev/reconpilot/main/docs/verification-panel-top.png)](https://github.com/hilberspace-dev/reconpilot)
 
-Since the benchmark has never run on customer data, it says nothing about accuracy there. CI repeats
-it on GitHub's runners on every push, and you can check the claim without installing anything: the
-repository opens in Codespaces with the benchmark running.
+I have also run it on five public datasets of real records whose publishers link the two sides: a
+bank's ledger against its statement, a marketplace's orders against their payments, the payment
+registers of two US local governments, and Brazil's federal accruals against their payments.
+Between 99.93 % and 100 % of the matches it made agree with those links, on 6,474 to 116,089 matches
+per set. Where the two sides share no reference it does not guess, and many rows stay open for a
+person. These are public records, not a merchant's own books; I have not run it on a customer's data
+yet.
+
+CI repeats the benchmark on GitHub's runners on every push, and you can check the claim without
+installing anything: the repository opens in Codespaces with the benchmark running.
 
 [Source and run instructions](https://github.com/hilberspace-dev/reconpilot) ·
 [Case study](projects/03-reconpilot-payment-reconciliation/)

@@ -9,18 +9,26 @@ yaşıyorum, Türkçe ve İngilizce çalışıyorum.
 ## Ana proje: ReconPilot
 
 ReconPilot, PSP raporlarını, banka ekstrelerini ve pazaryeri hakedişlerini içeri alan bir
-Go/PostgreSQL uygulaması. Kesin, toleranslı ve grup eşleştirmesi yapıyor, geriye kalan kayıtları da
-sınıflandırıyor. Bir girdiyi hesap dışında bırakan ya da aynı işlemi birden fazla eşleşme grubuna
+Go/PostgreSQL uygulaması. Kesin, bölünmüş ödeme, toleranslı ve grup eşleştirmesi yapıyor, geriye
+kalan kayıtları da sınıflandırıyor. İki kayıt aynı ölçüde uyuyorsa birini seçmiyor, kararı bir
+kişiye bırakıyor. Bir girdiyi hesap dışında bırakan ya da aynı işlemi birden fazla eşleşme grubuna
 koyan bir sonuç, çalışma anındaki kontrollerden geçemiyor.
 
 Açık depoda komut satırı aracı, HTTP servisi, HTML raporu, testler ve seed'li sentetik benchmark var.
 Benchmark, eşleşmeleri veri üreticisinin amaçladığı gruplarla karşılaştırıyor; aşağıdaki doğrulama
-paneli seed 1 için, yaklaşık 49 bin işlemlik koşunun sonucu:
+paneli seed 1 için, yaklaşık 50 bin işlemlik koşunun sonucu:
 
-[![ReconPilot doğrulama paneli: enjekte edilen 7 uyuşmazlık tipinin 7'si tespit edildi, 0 yanlış eşleşme, amaçlanan eşleşme ve gruplarda 0 kayıp](https://raw.githubusercontent.com/hilberspace-dev/reconpilot/main/docs/verification-panel-top.png)](https://github.com/hilberspace-dev/reconpilot)
+[![ReconPilot doğrulama paneli: enjekte edilen 8 uyuşmazlık tipinin 8'i tespit edildi, 0 yanlış eşleşme, amaçlanan eşleşme ve gruplarda 0 kayıp](https://raw.githubusercontent.com/hilberspace-dev/reconpilot/main/docs/verification-panel-top.png)](https://github.com/hilberspace-dev/reconpilot)
 
-Benchmark müşteri verisiyle hiç çalıştırılmadığı için oradaki doğruluk hakkında bir şey söylemiyor.
-CI her push'ta aynı koşuyu GitHub'ın kendi makinelerinde tekrarlıyor. İddiayı hiçbir şey kurmadan siz
+Motoru, iki taraf arasındaki bağları yayıncının kendisinin kaydettiği kamuya açık beş gerçek veri
+setinde de çalıştırdım: bir bankanın defteri ve hesap ekstresi, bir pazaryerinin siparişleri ve
+ödemeleri, ABD'de iki yerel yönetimin ödeme kayıtları ve Brezilya federal bütçesinin tahakkukları ve
+ödemeleri. Kurduğu eşleşmelerin %99,93 ile %100'ü bu bağlarla örtüşüyor; set başına 6.474 ile
+116.089 eşleşme var. İki taraf ortak bir referans taşımıyorsa tahmin etmek yerine birçok satırı açık
+bırakıyor. Bunlar kamuya açık kayıtlar, bir satıcının kendi defterleri değil; müşteri verisiyle henüz
+çalıştırmadım.
+
+CI her push'ta benchmark'ı GitHub'ın kendi makinelerinde tekrarlıyor. İddiayı hiçbir şey kurmadan siz
 de kontrol edebilirsiniz: depo Codespaces'te benchmark çalışır hâlde açılıyor.
 
 [Kaynak kod ve çalıştırma talimatları](https://github.com/hilberspace-dev/reconpilot) ·
