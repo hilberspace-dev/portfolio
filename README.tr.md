@@ -25,8 +25,7 @@ setinde de çalıştırdım: bir bankanın defteri ve hesap ekstresi, bir pazary
 ödemeleri, ABD'de iki yerel yönetimin ödeme kayıtları ve Brezilya federal bütçesinin tahakkukları ve
 ödemeleri. Kurduğu eşleşmelerin %99,93 ile %100'ü bu bağlarla örtüşüyor; set başına 6.474 ile
 116.089 eşleşme var. İki taraf ortak bir referans taşımıyorsa tahmin etmek yerine birçok satırı açık
-bırakıyor. Bunlar kamuya açık kayıtlar, bir satıcının kendi defterleri değil; müşteri verisiyle henüz
-çalıştırmadım.
+bırakıyor.
 
 CI her push'ta benchmark'ı GitHub'ın kendi makinelerinde tekrarlıyor. İddiayı hiçbir şey kurmadan siz
 de kontrol edebilirsiniz: depo Codespaces'te benchmark çalışır hâlde açılıyor.

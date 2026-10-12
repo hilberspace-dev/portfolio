@@ -18,8 +18,7 @@
 > The benchmark data is synthetic. The discrepancies are injected, and the generator is in the
 > repository; it also builds the hard cases on purpose (equal amounts, missing references, a
 > reference that names another order, late clearances) and fails if any of them is guessed. The
-> engine has also run on five public datasets of real records. They are not a merchant's own books,
-> and I have not run it on a customer's data yet.
+> engine has also run on five public datasets of real records; the results are below.
 
 > For non-technical readers: an online store gets paid through several channels at once (the
 > card-payment provider, marketplaces and its bank account), and each one reports the "same" money
@@ -163,8 +162,8 @@ The first version of the engine made far more false matches on the same files; o
 federal data it was 5,920 of 13,320. ADR 0006 in the repository has the faults behind them and the
 rules that replaced them. Precision is not coverage. Where the two sides share no reference, the
 engine leaves many rows open for a person (about half of them on BenchRec). The false matches that
-remain are coincidences of amounts that the publisher linked elsewhere. These are public records, not
-a merchant's own books, and the converters are not in the repository; the
+remain are coincidences of amounts that the publisher linked elsewhere. The converters are not in the
+repository; the
 [results page](https://github.com/hilberspace-dev/reconpilot/blob/main/docs/real-data.md) has the
 conversions, coverage and every false match.
 

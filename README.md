@@ -25,8 +25,7 @@ bank's ledger against its statement, a marketplace's orders against their paymen
 registers of two US local governments, and Brazil's federal accruals against their payments.
 Between 99.93 % and 100 % of the matches it made agree with those links, on 6,474 to 116,089 matches
 per set. Where the two sides share no reference it does not guess, and many rows stay open for a
-person. These are public records, not a merchant's own books; I have not run it on a customer's data
-yet.
+person.
 
 CI repeats the benchmark on GitHub's runners on every push, and you can check the claim without
 installing anything: the repository opens in Codespaces with the benchmark running.

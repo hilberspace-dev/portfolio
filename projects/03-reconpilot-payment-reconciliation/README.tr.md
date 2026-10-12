@@ -18,8 +18,7 @@
 > Benchmark verisi sentetik. Uyuşmazlıklar bu veriye enjekte ediliyor ve veri üreteci repoda. Üreteç
 > zor durumları da bilerek kuruyor: eşit tutarlar, referansı olmayan satırlar, başka bir siparişi
 > gösteren referans, geç takas edilen çekler. Motor bunlardan birini tahminle eşleştirirse benchmark
-> düşüyor. Motoru ayrıca kamuya açık beş gerçek veri setinde çalıştırdım. Bunlar bir satıcının kendi
-> defterleri değil; müşteri verisiyle henüz çalıştırmadım.
+> düşüyor. Motoru ayrıca kamuya açık beş gerçek veri setinde çalıştırdım; sonuçlar aşağıda.
 
 > Teknik olmayan okurlar için kısaca: Bir e-ticaret işletmesi aynı anda kart ödeme kuruluşundan,
 > pazaryerlerinden ve banka hesabından para alır. Her biri "aynı" parayı farklı biçimde raporlar.
@@ -168,8 +167,7 @@ Motorun ilk sürümü aynı dosyalarda çok daha fazla yanlış eşleşme yapıy
 verisinde 13.320 eşleşmenin 5.920'si yanlıştı. Bu hataların nedenleri ve yerlerine gelen kurallar
 depodaki ADR 0006'da. Kesinlik kapsamayla aynı şey değil. İki taraf ortak bir referans taşımıyorsa
 motor birçok satırı bir kişinin kararına bırakıyor (BenchRec'te satırların yaklaşık yarısı). Kalan
-yanlışlar, tutarı tutan ama yayıncının başka yere bağladığı satırlar. Bunlar kamuya açık kayıtlar,
-bir satıcının kendi defterleri değil; dönüştürücüler de depoda yok. Dönüşümler, kapsama ve her yanlış
+yanlışlar, tutarı tutan ama yayıncının başka yere bağladığı satırlar. Dönüştürücüler depoda yok. Dönüşümler, kapsama ve her yanlış
 eşleşme [sonuç sayfasında](https://github.com/hilberspace-dev/reconpilot/blob/main/docs/real-data.md).
 
 Başlıca tasarım kararlarının her biri için repoda bir ADR var: tamsayı para modeli, tek stack
